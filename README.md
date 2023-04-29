@@ -21,11 +21,11 @@
 ## 5. In Webstorm's terminal 
  - cd into supply_chain and run `npm install` and `sudo npm link`
  
-## 8. 
+## 6. Serve project!
 - run `ng serve` 
 - *[Optional] go to browser and open http://localhost:4200*
 
-## 9. Open new terminal in Webstorm
+## 7. Open new terminal in Webstorm
 - cd into project once again
 - start the electron app by running command `npm run electron`
 
