@@ -18,14 +18,19 @@
 - (free with students licence - you need to log-in) 
 - https://www.jetbrains.com/webstorm/
 
-## 5. In Webstorm's terminal 
- - cd into supply_chain and run `npm install` and `sudo npm link`
+## 5. Import project from Version-control (VCS)
+- use github link of this project
+- select your destination folder (where you will have project located)
+- I have selected `Supply_Chain`
+
+## 6. In Webstorm's terminal 
+ - cd into Supply_Chain and run `npm install` and `sudo npm link`
  
-## 6. Serve project!
+## 7. Serve project!
 - run `ng serve` 
 - *[Optional] go to browser and open http://localhost:4200*
 
-## 7. Open new terminal in Webstorm
+## 8. Open new terminal in Webstorm
 - cd into project once again
 - start the electron app by running command `npm run electron`
 
