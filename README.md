@@ -32,6 +32,7 @@
 
 ## 8. Open new terminal in Webstorm
 - cd into project once again
+- run `npm install electron --save-dev`
 - start the electron app by running command `npm run electron`
 
 
