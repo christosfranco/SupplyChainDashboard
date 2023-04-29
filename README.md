@@ -21,7 +21,7 @@
 ## 5. Import project from Version-control (VCS)
 - use github link of this project
 - select your destination folder (where you will have project located)
-- I have selected `Supply_Chain`
+- It has to be called  `..Supply_Chain/`!
 
 ## 6. In Webstorm's terminal 
  - cd into Supply_Chain and run `npm install` and `sudo npm link`
