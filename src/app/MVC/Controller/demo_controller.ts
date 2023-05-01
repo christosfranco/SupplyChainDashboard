@@ -1,10 +1,62 @@
 import { Component } from '@angular/core';
-import {SupplyChainInterface} from "../Model/demo_model";
+import {Node} from "../Model/demo_model";
+
 @Component({
   selector: 'app-user',
   templateUrl: '../View/demo_view.html',
-  styleUrls: ['../View/demo_view.scss']
+  styleUrls: ['../View/demo_view.scss'],
 })
+
+export class SupplyChain {
+  nodes: Node[] = [
+    {
+      Node_ID: 1,
+      Node_name: "Node 1",
+      Type: "Type A",
+      Root: true,
+      Supplying_To: [
+        2
+      ],
+      Suppliers: [],
+      Risks: []
+    },
+    {
+      Node_ID: 2,
+      Node_name: "Node 2",
+      Type: "Type B",
+      Root: false,
+      Supplying_To: [],
+      Suppliers: [
+        1
+      ],
+      Risks: [
+        {
+          Name: "Risk 1",
+          Risk_ID: 1,
+          Consequence: 5,
+          Likelihood: 1,
+          Mitigation_Strategies: ["Strategy 1", "Strategy 2"],
+          Concern_IDs: [
+            1,
+            2,
+            3
+          ]
+        }
+      ]
+    }
+  ];
+/*
+  constructor(private http: HttpClient) {
+    console.log('Constructor called');
+    this.http.get<Node[]>('assets/nodes.json').subscribe(data => {
+      console.log('Data received', data);
+      this.nodes = data;
+    });
+  }
+*/
+}
+
+/*
 export class SupplyChain {
   supplyC: SupplyChainInterface = {
     id: 1,
@@ -12,3 +64,10 @@ export class SupplyChain {
     concerns: 5
   };
 }
+*/
+
+
+
+
+
+
