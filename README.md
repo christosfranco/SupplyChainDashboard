@@ -35,6 +35,13 @@
 - run `npm install electron --save-dev`
 - start the electron app by running command `npm run electron`
 
+# Update
+## To serve project:
+### If you are doing it for the first time than you need to run `npm install express`
+## Otherwise run just: `node server.js`
+## Open new terminal and run also `npm start`
+Happy coding
+
 
 
 ### !Remember to always have one terminal to run: `ng serve` otherwise `npm run electron` will not work. 

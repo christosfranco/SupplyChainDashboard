@@ -43,6 +43,24 @@
   </div>
 </section>
 
+<div [ngSwitch]="isLoading">
+  <ng-template [ngSwitchCase]="true">
+    <h2>Loading data...</h2>
+  </ng-template>
+  <ng-template [ngSwitchCase]="false">
+    <h1>Data from server:</h1>
+    <ul>
+      <li *ngFor="let item of data">
+        <span *ngFor="let keyValuePair of item | keyvalue">
+          {{ keyValuePair.key }}: {{ keyValuePair.value }}
+        </span>
+      </li>
+    </ul>
+    <button (click)="getNodeDetails()">Load Data</button>
+  </ng-template>
+</div>
+
+
 <section
   class="u-align-center u-black u-clearfix u-container-style u-dialog-block u-opacity u-opacity-70 u-dialog-section-5"
   id="sec-5657">

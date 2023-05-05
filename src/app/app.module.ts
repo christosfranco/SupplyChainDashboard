@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import {SupplyChainHome} from "./MVC/Controller/demo_controller";
 import {SupplyChainVisualise} from "./MVC/Controller/visualization_controller";
 import {NgOptimizedImage} from "@angular/common";
+import { HttpClientModule } from "@angular/common/http";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {NgOptimizedImage} from "@angular/common";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
