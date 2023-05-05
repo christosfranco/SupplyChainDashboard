@@ -3,11 +3,16 @@ import {Node} from "../Model/demo_model";
 
 @Component({
   selector: 'app-user',
-  templateUrl: '../View/demo_view.html',
-  styleUrls: ['../View/demo_view.scss'],
+  templateUrl: '../View/import_view.html',
+  styleUrls: ['../View/style/import_view.scss', "../View/style/visualize_view.scss", "../View/style/modular.scss",
+              "../View/style/nicepage.scss"],
+  //templateUrl: '../View/import_view.html',
+  //styleUrls: []
+
 })
 
-export class SupplyChain {
+export class SupplyChainHome {
+  public imageUrl_help = "../../assets/images/help.png";
   nodes: Node[] = [
     {
       Node_ID: 1,

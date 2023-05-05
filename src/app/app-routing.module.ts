@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { SupplyChain } from "./MVC/Controller/demo_controller";
+import { SupplyChainHome } from "./MVC/Controller/demo_controller";
+import { SupplyChainVisualise } from "./MVC/Controller/visualization_controller";
 
 const routes: Routes = [
-  {path: '', component: SupplyChain }
+  {path: '', component: SupplyChainHome },
+  {path: 'visualise', component: SupplyChainVisualise }
 ];
 
 @NgModule({
