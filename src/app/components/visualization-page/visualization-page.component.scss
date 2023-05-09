@@ -28,15 +28,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 80vh;
+  width: 100%;
 }
 
 .vis-card {
   position: relative;
-  width: 80%;
-  height: 30rem;
+  width: 90%;
+  height: 80vh;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
-  display: flex;
-  justify-content: center;
+  margin: 0 auto;
 }
 
