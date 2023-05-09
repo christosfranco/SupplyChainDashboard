@@ -25,8 +25,10 @@ export class HighChartsVisComponent {
 
   chartOptions: Highcharts.Options = {
     chart: {
-      type: 'networkgraph',
-      height: '100%'
+      type: 'networkgraph'
+    },
+    title: {
+      text: ''
     },
     credits: {
       enabled: false
@@ -48,10 +50,16 @@ export class HighChartsVisComponent {
         marker: {
           radius: 10,
         },
-
+        point: {
+          events: {
+            click(e) {
+              alert('Name: ' + e.point.name + ' Color: ' + e.point.color);
+            }
+          }
+        },
         type: 'networkgraph',
         dataLabels: {
-          enabled: true,
+          enabled: true
         },
         data: [
           ['Miracle Mile Medical Center', 'Samer Alaiti M.D.'],
@@ -91,6 +99,17 @@ export class HighChartsVisComponent {
           ['Precision Occ MED Grp Inc.', 'Matrix Rehabilitation Inc'],
           ['Precision Occ MED Grp Inc.', 'Kaiser Foundation Hospitals'],
         ],
+        nodes: [{
+          id: 'Precision Occ MED Grp Inc.',
+          color: 'blue'
+        }, {
+          id: 'West Oaks Orthopaedic',
+          color: 'red'
+        }, {
+          id: 'Vantage Toxicology Management',
+          color: 'orange'
+        }
+        ]
       },
     ],
   };
