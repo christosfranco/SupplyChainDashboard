@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import HC_networkgraph from 'highcharts/modules/networkgraph';
 import {PanZoomConfig, PanZoomConfigOptions} from "ngx-panzoom";
+import HighchartsExporting from 'highcharts/modules/exporting';
+
+HighchartsExporting(Highcharts);
 HC_networkgraph(Highcharts);
 
 @Component({
@@ -33,8 +36,9 @@ export class HighChartsVisComponent {
     credits: {
       enabled: false
     },
-
-
+    exporting: {
+      enabled: true
+    },
     plotOptions: {
       networkgraph: {
         keys: ['from', 'to'],
