@@ -2,12 +2,6 @@ import { Component, ViewEncapsulation  } from '@angular/core';
 import * as d3 from 'd3';
 import * as d3dag from'd3-dag';
 
-//Defines an interface to pairs of links
-interface LinkPairs {
-  source: string;
-  target: string;
-}
-
 @Component({
   selector: 'app-dag-visualisation',
   encapsulation: ViewEncapsulation.None,  // Stops Angular from renaming class names in the CSS.
