@@ -1,0 +1,42 @@
+.base {
+  font-family: IBM-plex, arial, serif;
+  width: auto;
+  height: 100%;
+}
+.header {
+  background-color: #f5f7fa;
+  height: 15%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-span {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.import-export {
+  width: 35%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.vis-card-container {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vis-card {
+  position: relative;
+  width: 80%;
+  height: 30rem;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+}
+
