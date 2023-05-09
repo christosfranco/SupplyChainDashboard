@@ -21,38 +21,6 @@ interface LinkPairs {
 
 export class DagVisualisationComponent {
 
-  private nodes = [
-    {
-      "id": 1,
-      "name": "A"
-    },
-    {
-      "id": 2,
-      "name": "B"
-    }
-  ];
-
-  private links = [
-    {
-      "source": 1,
-      "target": 2
-    }
-  ];
-  private data2 = {
-    "nodes": this.nodes,
-    "links": this.links
-  }
-
-  private data3 = [
-    {
-      "id": "0",
-      "parentIds": ["8"]
-    },
-    {
-      "id": "8",
-      "parentIds": []
-    }]
-
   private data = [
     {
       "id": "0",
@@ -146,54 +114,80 @@ export class DagVisualisationComponent {
   private dag: d3dag.Dag<{ id: string; parentIds: string[]; }, undefined> | undefined;
 
   ngOnInit(): void {
-    this.create_dag();
+    this.createDag();
   }
 
-
-  private create_dag() {
+  private createDag(): void {
     this.dag = d3dag.dagStratify()(this.data);
-    const dag = d3dag.dagStratify()(this.data);
     const nodeRadius = 20;
     const layout = d3dag
       .sugiyama() // base layout
       .decross(d3dag.decrossOpt()) // minimize number of crossings
       .nodeSize((node) => [(node ? 3.6 : 0.25) * nodeRadius, 3 * nodeRadius]); // set node size instead of constraining to fit
 
-    const svgSelection = d3.select("svg")
-      .attr("width", "100%")
-      .attr("height", "100%");
+    const svgSelection = d3.select('svg')
+      .attr('width', '100%')
+      .attr('height', '100%');
+
     // @ts-ignore
     layout(this.dag);
+  }
+  ngAfterViewInit() {
+    const dag = this.dag;
+    const svg = d3.select("svg");
+    const nodeRadius = 20;
 
+    const zoomFn = d3.zoom().on('zoom', function handleZoom(event) {
+
+      svg.selectAll('g.node-group').attr("transform", event.transform);
+      const radius = nodeRadius / event.transform.k;
+
+      svg.selectAll('g.node-group')
+        .selectAll('circle')
+        .attr('r', radius);
+
+      svg.selectAll('g.node-group')
+        .selectAll('text')
+        .attr('font-size', 12 / event.transform.k);
+
+      svg.selectAll('path.edge-path')
+        .attr("transform", event.transform)
+        .attr("stroke-width", 3 / event.transform.k);
+    });
+
+    // @ts-ignore
+    svg.call(zoomFn);
 
     const line = d3
       .line()
-      .curve(d3.curveCatmullRom)// @ts-ignore
-      .x((d) => d.x)// @ts-ignore
+      .curve(d3.curveCatmullRom)     // @ts-ignore
+      .x((d) => d.x)     // @ts-ignore
       .y((d) => d.y);
 
-    // Plot edges
-    svgSelection
+    const edgePaths = svg
       .append("g")
-      .selectAll("path")
-      .data(this.dag.links())
+      .attr("class", "edge-group")
+      .selectAll("path")    // @ts-ignore
+      .data(dag.links())
       .enter()
-      .append("path")// @ts-ignore
+      .append("path")
+      .attr("class", "edge-path")    // @ts-ignore
       .attr("d", ({points}) => line(points))
       .attr("fill", "none")
       .attr("stroke-width", 3)
       .attr("stroke", "black")
+      .attr("transform", "translate(0, 0)");
 
-    // Select nodes
-    const nodes = svgSelection
+    const nodes = svg
       .append("g")
-      .selectAll("g")
-      .data(this.dag.descendants())
+      .attr("class", "node-group")
+      .selectAll("g")    // @ts-ignore
+      .data(dag.descendants())
       .enter()
       .append("g")
+      .attr("class", "node")
       .attr("transform", ({x, y}) => `translate(${x}, ${y})`);
 
-    // Plot node circles
     nodes
       .append("circle")
       .attr("r", nodeRadius)
@@ -205,35 +199,7 @@ export class DagVisualisationComponent {
       .attr("font-family", "sans-serif")
       .attr("text-anchor", "middle")
       .attr("alignment-baseline", "middle")
-      .attr("fill", "white");
-  }
-
-  ngAfterViewInit() {
-
-    const dag = this.dag
-    const svg = d3.select("svg");
-    const zoomFn = d3.zoom().on('zoom', function handleZoom(event, ) {
-      svg.selectAll('g').attr("transform", event.transform)
-      console.log(event.transform.x)
-      const nodes = svg
-        .append("g")
-        .selectAll("g")// @ts-ignore
-        .data(dag.descendants())
-        .enter()
-        .append("g")
-        .attr("transform", ({x, y}) => `translate(${ (event.transform.x + x) /event.transform.k}, ${(event.transform.y + y) /event.transform.k})`)
-
-      // Plot node circles
-      nodes
-        .append("circle")
-        .attr("r", 20)
-        .attr("fill", (n) => "blue");
-    });
-    // @ts-ignore
-    svg.call(zoomFn);
-
+      .attr("fill", "white")
+      .attr("font-size", "12px");
   }
 }
-
-
-
