@@ -136,9 +136,13 @@ export class DagVisualisationComponent {
       svg.selectAll('g.node-group').attr("transform", event.transform);
       const radius = nodeRadius / event.transform.k;
 
-      svg.selectAll('g.node-group')
+      svg.selectAll('g.node-group.nodes')
         .selectAll('circle')
         .attr('r', radius);
+
+      svg.selectAll('g.node-group.highlight')
+        .selectAll('circle')
+        .attr('r', radius+10);
 
       svg.selectAll('g.node-group')
         .selectAll('text')
@@ -184,8 +188,17 @@ export class DagVisualisationComponent {
 
     nodes
       .append("circle")
+      .attr("class", "nodes")
       .attr("r", nodeRadius)
       .attr("fill", (n) => "blue");
+    nodes
+      .append("circle")
+      .attr("class", "highlight")
+      .attr("r", nodeRadius+10)
+      .attr("fill", (n) => "none")
+      .style("stroke", d => "yellow")
+      .style("stroke-width", d=> 5);
+
     nodes
       .append("text")
       .text((d) => d.data.id)
