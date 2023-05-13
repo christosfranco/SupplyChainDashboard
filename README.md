@@ -38,7 +38,7 @@
 # Update
 ## To serve project:
 ### If you are doing it for the first time than you need to run `npm install express`
-## Otherwise run just: `node server.js`
+## Otherwise run just: `node express_server/server.js`
 ## Open new terminal and run also `npm start`
 Happy coding
 
