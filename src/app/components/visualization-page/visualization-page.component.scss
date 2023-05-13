@@ -23,6 +23,46 @@
   justify-content: space-between;
 }
 
+.btn {
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  padding: 14px 23px;
+}
+
+.new-sc-btn{
+  color: #ffffff;
+  background-color: #a4a5a6;
+  text-decoration: none;
+}
+
+.new-sc-btn:hover {
+  background-color: #7c7e7e;
+  cursor: pointer;
+}
+
+.export-btn{
+  color: #ffffff;
+  background-color: #77aad9;
+}
+
+.export-btn:hover {
+  background-color: #5d9ad2;
+  cursor: pointer;
+}
+
+.filter-btn{
+  color: #ffffff;
+  background-color: #176ab9;
+}
+
+.filter-btn:hover {
+  background-color: #608fd0;
+  cursor: pointer;
+}
+
+
 .vis-card-container {
   margin-top: 1rem;
   display: flex;

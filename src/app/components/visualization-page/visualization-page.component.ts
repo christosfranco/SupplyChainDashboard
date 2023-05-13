@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+
 import * as d3 from "d3";
+import {ModalService} from "../modal/modal.service";
 
 
 @Component({
@@ -164,6 +166,16 @@ export class VisualizationPageComponent {
       .force("charge", d3.forceManyBody().strength(-400))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
       .force("center", d3.forceCenter(this.width / 2, this.height / 2))     // This force attracts nodes to the center of the svg area
       .on("end", ticked);
+  }
+
+  constructor(private modalService: ModalService) {}
+
+  openModal(id: string) {
+    this.modalService.open(id)
+  }
+
+  closeModal(id: string) {
+    this.modalService.close(id)
   }
 
 }

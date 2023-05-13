@@ -2,10 +2,10 @@
   <div class="header">
     <div class="button-span">
       <div class="import-export">
-        <app-import text="Import a new Supply Chain"></app-import>
-        <app-import text="Export"></app-import>
+        <a href="" class="btn new-sc-btn">Import a new Supply Chain</a>
+        <button class="btn export-btn" (click)="openModal('export-modal')">Export</button>
       </div>
-      <app-import text="Apply Filters"></app-import>
+      <button class="filter-btn btn" (click)="openModal('filter-modal')">Apply Filters</button>
     </div>
   </div>
   <div class="vis-card-container">
@@ -15,5 +15,10 @@
     </div>
   </div>
 
+  <modal class="filter-modal" id="filter-modal" title="Apply Filters">
+  </modal>
+
+  <modal class="export-modal" id="export-modal" title="Export Supply Chain">
+  </modal>
 
 </div>
