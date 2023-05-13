@@ -49,6 +49,21 @@ const getNodeDetails = (req, res) => {
               }
           ]
 */
+  const data= [
+    {'id':1, 'name': 'booking.com', 'category': 'Booking Software', 'risks': [
+        {
+          'id': 5,
+          'name': 'IT Security',
+          'concern': ['CyberSecurity', 'Privacy'],
+          'description': 'Firewall Security Outdated',
+          'consequenceLevel': 1,
+          'likelihoodLevel':3,
+          'riskFactor': 3,
+          'mitigationStrategy': 'Updating Firewall maybe??'
+        }
+      ]}
+  ];
+  res.send(data);
 };
 
 const filterNodes = (req, res) => {
