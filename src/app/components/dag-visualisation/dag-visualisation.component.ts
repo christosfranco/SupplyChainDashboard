@@ -3,7 +3,6 @@ import * as d3 from 'd3';
 import * as d3dag from'd3-dag';
 import {NodesService} from "../../services/nodes.service";
 import { Node } from '../../model/node'
-import {hierarchy} from "d3-dag/dist/dag/create";
 
 @Component({
   selector: 'app-dag-visualisation',
@@ -31,21 +30,12 @@ export class DagVisualisationComponent {
 
   private createDag(): void {
     const data = { id: "parent", children: [{ id: "child" }] };
-    //const create = hierarchy();
-    // @ts-ignore
-    //const dag = create(data);
     this.dag = d3dag.dagStratify()(this.nodes);
     const nodeRadius = 30;
     const layout = d3dag
       .sugiyama()
-      //.layering(d3dag.layeringSimplex())
-      //.layering(d3dag.layeringTopological())
-      //.coord(d3dag.coordTopological())
       .layering(d3dag.layeringSimplex())
-      //.layering(d3dag.layeringLongestPath())
       .decross(d3dag.decrossOpt())
-      //.decross(d3dag.decrossTwoLayer())
-      //.coord(d3dag.coordGreedy())
       .coord(d3dag.coordSimplex())
       .nodeSize((node) => [(node ? 3.6 : 0.25) * nodeRadius, 3 * nodeRadius]); // set node size instead of constraining to fit
 
@@ -90,9 +80,11 @@ export class DagVisualisationComponent {
     //curveCatmullRom
     const line = d3
       .line()
-      .curve(d3.curveStepBefore)     // @ts-ignore
-      .x((d) => d.x)     // @ts-ignore
-      .y((d) => d.y);
+      // .curve(d3.curveStepBefore)     // @ts-ignore
+      .curve(d3.curveCatmullRom.alpha(0.2))  // @ts-ignore   // set alpha to adjust control points
+      .x((d) => 2*d.y) // @ts-ignore
+      .y((d) => d.x);
+
 
     const edgePaths = svg
       .append("g")
@@ -116,13 +108,7 @@ export class DagVisualisationComponent {
       .enter()
       .append("g")
       .attr("class", "node")// @ts-ignore
-      .attr("transform", ({x, y}) => `translate(${x}, ${y})`);
-
-    //nodes
-    //  .append("circle")
-    //  .attr("class", "nodes")
-    //  .attr("r", nodeRadius)
-    //  .attr("fill", (n) => "blue");
+      .attr("transform", ({x, y}) => `translate(${2*y}, ${x})`);
 
     nodes
       .filter(d => d.data.id in this.highlightedNodesIds)
@@ -135,12 +121,24 @@ export class DagVisualisationComponent {
 
     nodes
       .append("rect")// @ts-ignore
-      .attr("fill", (n) => "#69a3b2")
+      .attr("fill", (n) => "#77aad9")
       .attr('width', 96)
       .attr('height', 40)
       .style("stroke", d => "black")
       .style("stroke-width", d=> 1)// @ts-ignore
       .attr("transform", ({x, y}) => `translate(${-48}, ${-24})`);
+
+    // nodes
+    //   .filter(d => d.data.id in this.highlightedNodesIds)
+    //   .append("rect")
+    //   .attr("class", "highlight")
+    //   .attr('width', 106)
+    //   .attr('height', 50)
+    //   .attr("fill", (n) => "none")
+    //   .style("stroke", d => "yellow")
+    //   .style("stroke-width", d=> 8)
+    //   .attr("transform", ({x, y}) => `translate(${-53}, ${-29})`);
+
 
     nodes
       .append("text")
