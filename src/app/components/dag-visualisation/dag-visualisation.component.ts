@@ -1,6 +1,8 @@
 import { Component, ViewEncapsulation  } from '@angular/core';
 import * as d3 from 'd3';
 import * as d3dag from'd3-dag';
+import {NodesService} from "../../services/nodes.service";
+import { Node } from '../../model/node'
 
 @Component({
   selector: 'app-dag-visualisation',
@@ -15,108 +17,26 @@ import * as d3dag from'd3-dag';
 
 export class DagVisualisationComponent {
 
-  private data = [
-    {
-      "id": "0",
-      "parentIds": ["8"]
-    },
-    {
-      "id": "1",
-      "parentIds": []
-    },
-    {
-      "id": "2",
-      "parentIds": []
-    },
-    {
-      "id": "3",
-      "parentIds": ["11"]
-    },
-    {
-      "id": "4",
-      "parentIds": ["12"]
-    },
-    {
-      "id": "5",
-      "parentIds": ["18"]
-    },
-    {
-      "id": "6",
-      "parentIds": ["9", "15", "17"]
-    },
-    {
-      "id": "7",
-      "parentIds": ["3", "17", "20", "21"]
-    },
-    {
-      "id": "8",
-      "parentIds": []
-    },
-    {
-      "id": "9",
-      "parentIds": ["4"]
-    },
-    {
-      "id": "10",
-      "parentIds": ["16", "21"]
-    },
-    {
-      "id": "11",
-      "parentIds": ["2"]
-    },
-    {
-      "id": "12",
-      "parentIds": ["21"]
-    },
-    {
-      "id": "13",
-      "parentIds": ["4", "12"]
-    },
-    {
-      "id": "14",
-      "parentIds": ["1", "8"]
-    },
-    {
-      "id": "15",
-      "parentIds": []
-    },
-    {
-      "id": "16",
-      "parentIds": ["0"]
-    },
-    {
-      "id": "17",
-      "parentIds": ["19"]
-    },
-    {
-      "id": "18",
-      "parentIds": ["9"]
-    },
-    {
-      "id": "19",
-      "parentIds": []
-    },
-    {
-      "id": "20",
-      "parentIds": ["13"]
-    },
-    {
-      "id": "21",
-      "parentIds": []
-    }
-  ]
+  constructor(private nodesService: NodesService) { }
+  private nodes: Node[] = []
+  private highlightedNodesIds: String[] = []
   private dag: d3dag.Dag<{ id: string; parentIds: string[]; }, undefined> | undefined;
 
   ngOnInit(): void {
+    this.nodesService.getNodes().subscribe(nodes=> this.nodes = nodes);
+    this.nodesService.getHighlights().subscribe(ids => this.highlightedNodesIds=ids)
     this.createDag();
   }
 
   private createDag(): void {
-    this.dag = d3dag.dagStratify()(this.data);
-    const nodeRadius = 20;
+    const data = { id: "parent", children: [{ id: "child" }] };
+    this.dag = d3dag.dagStratify()(this.nodes);
+    const nodeRadius = 30;
     const layout = d3dag
-      .sugiyama() // base layout
-      .decross(d3dag.decrossOpt()) // minimize number of crossings
+      .sugiyama()
+      .layering(d3dag.layeringSimplex())
+      .decross(d3dag.decrossOpt())
+      .coord(d3dag.coordSimplex())
       .nodeSize((node) => [(node ? 3.6 : 0.25) * nodeRadius, 3 * nodeRadius]); // set node size instead of constraining to fit
 
     const svgSelection = d3.select('svg')
@@ -136,9 +56,13 @@ export class DagVisualisationComponent {
       svg.selectAll('g.node-group').attr("transform", event.transform);
       const radius = nodeRadius / event.transform.k;
 
-      svg.selectAll('g.node-group')
+      svg.selectAll('g.node-group.nodes')
         .selectAll('circle')
         .attr('r', radius);
+
+      svg.selectAll('g.node-group.highlight')
+        .selectAll('circle')
+        .attr('r', radius+10);
 
       svg.selectAll('g.node-group')
         .selectAll('text')
@@ -152,11 +76,15 @@ export class DagVisualisationComponent {
     // @ts-ignore
     svg.call(zoomFn);
 
+
+    //curveCatmullRom
     const line = d3
       .line()
-      .curve(d3.curveCatmullRom)     // @ts-ignore
-      .x((d) => d.x)     // @ts-ignore
-      .y((d) => d.y);
+      // .curve(d3.curveStepBefore)     // @ts-ignore
+      .curve(d3.curveCatmullRom.alpha(0.2))  // @ts-ignore   // set alpha to adjust control points
+      .x((d) => 2*d.y) // @ts-ignore
+      .y((d) => d.x);
+
 
     const edgePaths = svg
       .append("g")
@@ -179,21 +107,70 @@ export class DagVisualisationComponent {
       .data(dag.descendants())
       .enter()
       .append("g")
-      .attr("class", "node")
-      .attr("transform", ({x, y}) => `translate(${x}, ${y})`);
+      .attr("class", "node")// @ts-ignore
+      .attr("transform", ({x, y}) => `translate(${2*y}, ${x})`);
 
     nodes
+      .filter(d => d.data.id in this.highlightedNodesIds)
       .append("circle")
-      .attr("r", nodeRadius)
-      .attr("fill", (n) => "blue");
+      .attr("class", "highlight")
+      .attr("r", nodeRadius+35)
+      .attr("fill", (n) => "none")
+      .style("stroke", d => "yellow")
+      .style("stroke-width", d=> 5);
+
+    nodes
+      .append("rect")// @ts-ignore
+      .attr("fill", (n) => "#77aad9")
+      .attr('width', 96)
+      .attr('height', 40)
+      .style("stroke", d => "black")
+      .style("stroke-width", d=> 1)// @ts-ignore
+      .attr("transform", ({x, y}) => `translate(${-48}, ${-24})`);
+
+    // nodes
+    //   .filter(d => d.data.id in this.highlightedNodesIds)
+    //   .append("rect")
+    //   .attr("class", "highlight")
+    //   .attr('width', 106)
+    //   .attr('height', 50)
+    //   .attr("fill", (n) => "none")
+    //   .style("stroke", d => "yellow")
+    //   .style("stroke-width", d=> 8)
+    //   .attr("transform", ({x, y}) => `translate(${-53}, ${-29})`);
+
+
     nodes
       .append("text")
-      .text((d) => d.data.id)
+      .attr("transform", ({x, y}) => `translate(${-48}, ${-24})`)
+      .append("tspan")// @ts-ignore
+      .text((d) => d.data.product)
+      .attr("x", "48")
+      .attr("dy", "1em")
       .attr("font-weight", "bold")
       .attr("font-family", "sans-serif")
       .attr("text-anchor", "middle")
       .attr("alignment-baseline", "middle")
       .attr("fill", "white")
-      .attr("font-size", "12px");
+      .attr("font-size", "10px");
+
+
+    nodes
+      .selectAll('text')
+      .append("tspan")// @ts-ignore
+      .text((d) => d.data.company)
+      .attr("x", "48")
+      .attr( "dy","1.4em")
+      .attr("text-anchor", "middle")
+      .attr("alignment-baseline", "middle")
+      .attr("fill", "white")
+      .attr("font-size", "10px")
+      .attr("font-weight", "bold")
+      .attr("font-family", "sans-serif");
+
+
+    svg
+      .selectAll("g")// @ts-ignore
+      .attr("transform", ({x, y}) => `translate(${200}, ${0})`)
   }
 }
