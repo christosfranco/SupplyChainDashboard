@@ -16,6 +16,7 @@ import { HighChartsVisComponent } from './components/high-charts-vis/high-charts
 import {HighchartsChartModule} from "highcharts-angular";
 import {NgxPanZoomModule} from "ngx-panzoom";
 import {ModalModule} from "./components/modal/modal.component.module";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {ModalModule} from "./components/modal/modal.component.module";
     BrowserAnimationsModule,
     HighchartsChartModule,
     NgxPanZoomModule,
-    ModalModule
+    ModalModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
