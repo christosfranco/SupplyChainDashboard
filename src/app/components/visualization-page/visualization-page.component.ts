@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {Node} from "../../model/node";
 import {NodesService} from "../../services/nodes.service";
+import {DagVisualisationComponent} from "../dag-visualisation/dag-visualisation.component";
 
 @Component({
   selector: 'app-visualization-page',
@@ -9,6 +10,8 @@ import {NodesService} from "../../services/nodes.service";
 })
 export class VisualizationPageComponent {
 
+  @ViewChild(DagVisualisationComponent) graph: any;
+
   nodes: Node[] | undefined
   highlightedNodesIds: String[] = []
 
@@ -16,13 +19,19 @@ export class VisualizationPageComponent {
 
   ngOnInit(): void {
     this.nodesService.getNodes().subscribe(nodes=> {
-      console.log(nodes)
-      console.log("Done")
       this.nodes = nodes;
     });
     this.nodesService.getHighlights().subscribe(highlightedNodesIds=> {
       this.highlightedNodesIds = highlightedNodesIds;
     });
+  }
+
+  button(): void {
+    this.graph.highlightNodes(this.highlightedNodesIds)
+  }
+
+  removeButton(): void {
+    this.graph.removeHighlight()
   }
 
 }

@@ -18,17 +18,12 @@ export class DagVisualisationComponent {
 
   constructor() { }
   @Input() public nodes: Node[] = []
-  private highlightedNodesIds: String[] = []
   private dag: d3dag.Dag<{ id: string; parentIds: string[]; }, undefined> | undefined;
   private nodeRadius: any = 30;
   text: String | undefined
-  private delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
-  }
 
 
   ngOnInit(): void {
-    this.highlightedNodesIds = ["1", "2"]
     this.createDag();
   }
 
@@ -123,15 +118,6 @@ export class DagVisualisationComponent {
       .attr("transform", ({x, y}) => `translate(${-48}, ${-24})`);
 
     nodes
-      .filter(d => d.data.id in this.highlightedNodesIds)
-      .append("circle")
-      .attr("class", "highlight")
-      .attr("r", nodeRadius+35)
-      .attr("fill", (n) => "none")
-      .style("stroke", d => "yellow")
-      .style("stroke-width", d=> 5);
-
-    nodes
       .append("text")// @ts-ignore
       .text((d) => d.data.name)
       .attr("font-weight", "bold")
@@ -141,24 +127,27 @@ export class DagVisualisationComponent {
       .attr("fill", "white")
       .attr("font-size", "12px");
 
-    svg
-      .selectAll("g")// @ts-ignore
-      .attr("transform", ({x, y}) => `translate(${200}, ${0})`)
   }
 
-  private highlightNodes() {
+  public highlightNodes(highlightedNodesIds: String[]) {
+  const nodes = d3.select("svg")
+    .selectAll('.node')// @ts-ignore
+    .filter((d) => highlightedNodesIds.includes(d.data.id))
+    .append("circle")
+    .attr("class", "highlight")
+    .attr("r", this.nodeRadius+35)
+    .attr("fill", (n) => "none")
+    .style("stroke", d => "yellow")
+    .style("stroke-width", d=> 5);
+}
+
+  public removeHighlight() {
     const nodes = d3.select("svg")
-      .selectAll('g.node-group.nodes')// @ts-ignore
-      .filter(d => d.data.id in this.highlightedNodesIds)
-      .append("circle")
-      .attr("class", "highlight")
-      .attr("r", this.nodeRadius+35)
-      .attr("fill", (n) => "none")
-      .style("stroke", d => "yellow")
-      .style("stroke-width", d=> 5);
+      .selectAll('.highlight')// @ts-ignore
+      .remove()
   }
-
 
   ngAfterViewInit() {
   }
 }
+
