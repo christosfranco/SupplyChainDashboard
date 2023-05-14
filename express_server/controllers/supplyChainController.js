@@ -16,10 +16,6 @@ const getNodes = (req, res) => {
           }
         ]
   */
-  const data2 = [
-    { "id": '1', "name": 'booking.com', "parentIds": ['2', '3']},
-  ];
-
 
   const data = [
     {
@@ -140,6 +136,7 @@ const filterNodes = (req, res) => {
           "2"
         ]
 */
+  res.send(["1", "2"])
 };
 
 const uploadSupplyChain = (req, res) => {

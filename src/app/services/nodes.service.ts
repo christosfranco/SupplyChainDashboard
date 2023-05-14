@@ -68,7 +68,7 @@ export class NodesService {
   }
 
   public getHighlights(): Observable<String[]> {
-    return of<String[]>(this.highlightedNodes)
+    const body = { message: '' }
+    return this.httpClient.post<String[]>(`${this.nodeUrl}/filtered`, body)
   }
-
 }
