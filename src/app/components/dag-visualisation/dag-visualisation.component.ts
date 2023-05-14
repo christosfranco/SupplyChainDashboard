@@ -1,7 +1,6 @@
-import { Component, ViewEncapsulation  } from '@angular/core';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
 import * as d3dag from'd3-dag';
-import {NodesService} from "../../services/nodes.service";
 import { Node } from '../../model/node'
 
 @Component({
@@ -17,21 +16,26 @@ import { Node } from '../../model/node'
 
 export class DagVisualisationComponent {
 
-  constructor(private nodesService: NodesService) { }
-  private nodes: Node[] = []
+  constructor() { }
+  @Input() public nodes: Node[] = []
   private highlightedNodesIds: String[] = []
   private dag: d3dag.Dag<{ id: string; parentIds: string[]; }, undefined> | undefined;
+  private nodeRadius: any = 30;
+  text: String | undefined
+  private delay(ms: number) {
+    return new Promise( resolve => setTimeout(resolve, ms) );
+  }
+
 
   ngOnInit(): void {
-    this.nodesService.getNodes().subscribe(nodes=> this.nodes = nodes);
-    this.nodesService.getHighlights().subscribe(ids => this.highlightedNodesIds=ids)
+    this.highlightedNodesIds = ["1", "2"]
     this.createDag();
   }
 
+
   private createDag(): void {
-    const data = { id: "parent", children: [{ id: "child" }] };
     this.dag = d3dag.dagStratify()(this.nodes);
-    const nodeRadius = 30;
+    const nodeRadius = this.nodeRadius
     const layout = d3dag
       .sugiyama()
       .layering(d3dag.layeringSimplex())
@@ -45,12 +49,9 @@ export class DagVisualisationComponent {
 
     // @ts-ignore
     layout(this.dag);
-  }
-  ngAfterViewInit() {
+
     const dag = this.dag;
     const svg = d3.select("svg");
-    const nodeRadius = 20;
-
     const zoomFn = d3.zoom().on('zoom', function handleZoom(event) {
 
       svg.selectAll('g.node-group').attr("transform", event.transform);
@@ -111,6 +112,15 @@ export class DagVisualisationComponent {
       .attr("transform", ({x, y}) => `translate(${2*y}, ${x})`);
 
     nodes
+      .append("rect")// @ts-ignore
+      .attr("fill", (n) => "#77aad9")
+      .attr('width', 96)
+      .attr('height', 40)
+      .style("stroke", d => "black")
+      .style("stroke-width", d=> 1)// @ts-ignore
+      .attr("transform", ({x, y}) => `translate(${-48}, ${-24})`);
+
+    nodes
       .filter(d => d.data.id in this.highlightedNodesIds)
       .append("circle")
       .attr("class", "highlight")
@@ -120,57 +130,34 @@ export class DagVisualisationComponent {
       .style("stroke-width", d=> 5);
 
     nodes
-      .append("rect")// @ts-ignore
-      .attr("fill", (n) => "#77aad9")
-      .attr('width', 96)
-      .attr('height', 40)
-      .style("stroke", d => "black")
-      .style("stroke-width", d=> 1)// @ts-ignore
-      .attr("transform", ({x, y}) => `translate(${-48}, ${-24})`);
-
-    // nodes
-    //   .filter(d => d.data.id in this.highlightedNodesIds)
-    //   .append("rect")
-    //   .attr("class", "highlight")
-    //   .attr('width', 106)
-    //   .attr('height', 50)
-    //   .attr("fill", (n) => "none")
-    //   .style("stroke", d => "yellow")
-    //   .style("stroke-width", d=> 8)
-    //   .attr("transform", ({x, y}) => `translate(${-53}, ${-29})`);
-
-
-    nodes
-      .append("text")
-      .attr("transform", ({x, y}) => `translate(${-48}, ${-24})`)
-      .append("tspan")// @ts-ignore
-      .text((d) => d.data.product)
-      .attr("x", "48")
-      .attr("dy", "1em")
+      .append("text")// @ts-ignore
+      .text((d) => d.data.name)
       .attr("font-weight", "bold")
       .attr("font-family", "sans-serif")
       .attr("text-anchor", "middle")
       .attr("alignment-baseline", "middle")
       .attr("fill", "white")
-      .attr("font-size", "10px");
-
-
-    nodes
-      .selectAll('text')
-      .append("tspan")// @ts-ignore
-      .text((d) => d.data.company)
-      .attr("x", "48")
-      .attr( "dy","1.4em")
-      .attr("text-anchor", "middle")
-      .attr("alignment-baseline", "middle")
-      .attr("fill", "white")
-      .attr("font-size", "10px")
-      .attr("font-weight", "bold")
-      .attr("font-family", "sans-serif");
+      .attr("font-size", "12px");
 
 
     svg
       .selectAll("g")// @ts-ignore
       .attr("transform", ({x, y}) => `translate(${200}, ${0})`)
+  }
+
+  private highlightNodes() {
+    const nodes = d3.select("svg")
+      .selectAll('g.node-group.nodes')// @ts-ignore
+      .filter(d => d.data.id in this.highlightedNodesIds)
+      .append("circle")
+      .attr("class", "highlight")
+      .attr("r", this.nodeRadius+35)
+      .attr("fill", (n) => "none")
+      .style("stroke", d => "yellow")
+      .style("stroke-width", d=> 5);
+  }
+
+
+  ngAfterViewInit() {
   }
 }
