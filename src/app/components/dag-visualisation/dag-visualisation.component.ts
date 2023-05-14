@@ -52,7 +52,9 @@ export class DagVisualisationComponent {
 
     const dag = this.dag;
     const svg = d3.select("svg");
-    const zoomFn = d3.zoom().on('zoom', function handleZoom(event) {
+    const zoomFn = d3.zoom()
+      .scaleExtent([0.2, 10])
+      .on('zoom', function handleZoom(event) {
 
       svg.selectAll('g.node-group').attr("transform", event.transform);
       const radius = nodeRadius / event.transform.k;
