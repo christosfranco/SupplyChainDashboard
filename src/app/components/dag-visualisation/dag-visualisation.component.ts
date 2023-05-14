@@ -65,7 +65,7 @@ export class DagVisualisationComponent {
         .selectAll('circle')
         .attr('r', radius+10);
 
-      svg.selectAll('g.node-group')
+      svg.selectAll('g.node-group.nodes')
         .selectAll('text')
         .attr('font-size', 12 / event.transform.k);
 
@@ -138,7 +138,6 @@ export class DagVisualisationComponent {
       .attr("alignment-baseline", "middle")
       .attr("fill", "white")
       .attr("font-size", "12px");
-
 
     svg
       .selectAll("g")// @ts-ignore
