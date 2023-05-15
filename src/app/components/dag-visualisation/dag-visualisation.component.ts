@@ -1,4 +1,4 @@
-import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
 import * as d3dag from'd3-dag';
 import { Node } from '../../model/node'
@@ -18,15 +18,15 @@ export class DagVisualisationComponent {
 
   constructor() { }
   @Input() public nodes: Node[] = []
+  @Output() nodeClick: EventEmitter<any> = new EventEmitter<any>();
+
   private dag: d3dag.Dag<{ id: string; parentIds: string[]; }, undefined> | undefined;
   private nodeRadius: any = 30;
   text: String | undefined
 
-
   ngOnInit(): void {
     this.createDag();
   }
-
 
   private createDag(): void {
     this.dag = d3dag.dagStratify()(this.nodes);
@@ -106,7 +106,10 @@ export class DagVisualisationComponent {
       .enter()
       .append("g")
       .attr("class", "node")// @ts-ignore
-      .attr("transform", ({x, y}) => `translate(${2*y}, ${x})`);
+      .attr("transform", ({x, y}) => `translate(${2*y}, ${x})`)
+      .on("click", (event, d) => {
+        this.nodeClick.emit(d.data.id);
+      });
 
     nodes
       .append("rect")// @ts-ignore
@@ -147,7 +150,5 @@ export class DagVisualisationComponent {
       .remove()
   }
 
-  ngAfterViewInit() {
-  }
 }
 
