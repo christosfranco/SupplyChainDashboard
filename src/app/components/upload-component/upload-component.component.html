@@ -1,0 +1,9 @@
+<dialog #dialog>
+  <input id="file-input" #Image type="file" accept=".json,application/json" (change)="fileChanged($event)"/>
+  <div>
+    <button class="submit-btn" [disabled]="!fileChosen">Upload</button>
+    <button (click)="dialog.close()">Close</button>
+  </div>
+</dialog>
+<button class="import-btn" (click)="dialog.showModal()">
+  {{ text }}</button>

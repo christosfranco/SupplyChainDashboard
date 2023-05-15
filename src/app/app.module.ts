@@ -15,6 +15,7 @@ import { DagVisualisationComponent } from './components/dag-visualisation/dag-vi
 import { HighChartsVisComponent } from './components/high-charts-vis/high-charts-vis.component';
 import {HighchartsChartModule} from "highcharts-angular";
 import {NgxPanZoomModule} from "ngx-panzoom";
+import { UploadComponentComponent } from './components/upload-component/upload-component.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import {NgxPanZoomModule} from "ngx-panzoom";
     ImportComponent,
     VisualizationPageComponent,
     DagVisualisationComponent,
-    HighChartsVisComponent
+    HighChartsVisComponent,
+    UploadComponentComponent
   ],
   imports: [
     BrowserModule,
