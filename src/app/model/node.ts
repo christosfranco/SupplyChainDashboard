@@ -1,7 +1,6 @@
 
 export interface Node {
   id: string,
-  product: string,
-  company: string,
+  name: string,
   parentIds: string[]
 }

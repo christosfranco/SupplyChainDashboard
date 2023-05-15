@@ -1,7 +1,6 @@
-import { Component, ViewEncapsulation  } from '@angular/core';
+import {Component, Input, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
 import * as d3dag from'd3-dag';
-import {NodesService} from "../../services/nodes.service";
 import { Node } from '../../model/node'
 
 @Component({
@@ -17,21 +16,21 @@ import { Node } from '../../model/node'
 
 export class DagVisualisationComponent {
 
-  constructor(private nodesService: NodesService) { }
-  private nodes: Node[] = []
-  private highlightedNodesIds: String[] = []
+  constructor() { }
+  @Input() public nodes: Node[] = []
   private dag: d3dag.Dag<{ id: string; parentIds: string[]; }, undefined> | undefined;
+  private nodeRadius: any = 30;
+  text: String | undefined
+
 
   ngOnInit(): void {
-    this.nodesService.getNodes().subscribe(nodes=> this.nodes = nodes);
-    this.nodesService.getHighlights().subscribe(ids => this.highlightedNodesIds=ids)
     this.createDag();
   }
 
+
   private createDag(): void {
-    const data = { id: "parent", children: [{ id: "child" }] };
     this.dag = d3dag.dagStratify()(this.nodes);
-    const nodeRadius = 30;
+    const nodeRadius = this.nodeRadius
     const layout = d3dag
       .sugiyama()
       .layering(d3dag.layeringSimplex())
@@ -45,13 +44,12 @@ export class DagVisualisationComponent {
 
     // @ts-ignore
     layout(this.dag);
-  }
-  ngAfterViewInit() {
+
     const dag = this.dag;
     const svg = d3.select("svg");
-    const nodeRadius = 20;
-
-    const zoomFn = d3.zoom().on('zoom', function handleZoom(event) {
+    const zoomFn = d3.zoom()
+      .scaleExtent([0.2, 10])
+      .on('zoom', function handleZoom(event) {
 
       svg.selectAll('g.node-group').attr("transform", event.transform);
       const radius = nodeRadius / event.transform.k;
@@ -64,7 +62,7 @@ export class DagVisualisationComponent {
         .selectAll('circle')
         .attr('r', radius+10);
 
-      svg.selectAll('g.node-group')
+      svg.selectAll('g.node-group.nodes')
         .selectAll('text')
         .attr('font-size', 12 / event.transform.k);
 
@@ -111,15 +109,6 @@ export class DagVisualisationComponent {
       .attr("transform", ({x, y}) => `translate(${2*y}, ${x})`);
 
     nodes
-      .filter(d => d.data.id in this.highlightedNodesIds)
-      .append("circle")
-      .attr("class", "highlight")
-      .attr("r", nodeRadius+35)
-      .attr("fill", (n) => "none")
-      .style("stroke", d => "yellow")
-      .style("stroke-width", d=> 5);
-
-    nodes
       .append("rect")// @ts-ignore
       .attr("fill", (n) => "#77aad9")
       .attr('width', 96)
@@ -128,49 +117,37 @@ export class DagVisualisationComponent {
       .style("stroke-width", d=> 1)// @ts-ignore
       .attr("transform", ({x, y}) => `translate(${-48}, ${-24})`);
 
-    // nodes
-    //   .filter(d => d.data.id in this.highlightedNodesIds)
-    //   .append("rect")
-    //   .attr("class", "highlight")
-    //   .attr('width', 106)
-    //   .attr('height', 50)
-    //   .attr("fill", (n) => "none")
-    //   .style("stroke", d => "yellow")
-    //   .style("stroke-width", d=> 8)
-    //   .attr("transform", ({x, y}) => `translate(${-53}, ${-29})`);
-
-
     nodes
-      .append("text")
-      .attr("transform", ({x, y}) => `translate(${-48}, ${-24})`)
-      .append("tspan")// @ts-ignore
-      .text((d) => d.data.product)
-      .attr("x", "48")
-      .attr("dy", "1em")
+      .append("text")// @ts-ignore
+      .text((d) => d.data.name)
       .attr("font-weight", "bold")
       .attr("font-family", "sans-serif")
       .attr("text-anchor", "middle")
       .attr("alignment-baseline", "middle")
       .attr("fill", "white")
-      .attr("font-size", "10px");
+      .attr("font-size", "12px");
 
+  }
 
-    nodes
-      .selectAll('text')
-      .append("tspan")// @ts-ignore
-      .text((d) => d.data.company)
-      .attr("x", "48")
-      .attr( "dy","1.4em")
-      .attr("text-anchor", "middle")
-      .attr("alignment-baseline", "middle")
-      .attr("fill", "white")
-      .attr("font-size", "10px")
-      .attr("font-weight", "bold")
-      .attr("font-family", "sans-serif");
+  public highlightNodes(highlightedNodesIds: String[]) {
+  const nodes = d3.select("svg")
+    .selectAll('.node')// @ts-ignore
+    .filter((d) => highlightedNodesIds.includes(d.data.id))
+    .append("circle")
+    .attr("class", "highlight")
+    .attr("r", this.nodeRadius+35)
+    .attr("fill", (n) => "none")
+    .style("stroke", d => "yellow")
+    .style("stroke-width", d=> 5);
+}
 
+  public removeHighlight() {
+    const nodes = d3.select("svg")
+      .selectAll('.highlight')// @ts-ignore
+      .remove()
+  }
 
-    svg
-      .selectAll("g")// @ts-ignore
-      .attr("transform", ({x, y}) => `translate(${200}, ${0})`)
+  ngAfterViewInit() {
   }
 }
+
