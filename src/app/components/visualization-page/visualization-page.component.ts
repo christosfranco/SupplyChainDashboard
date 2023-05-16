@@ -320,6 +320,22 @@ export class VisualizationPageComponent {
     node.subconcerns.forEach((x: any) => {
       this.check(x, value);
     })
+  };
+
+  public resetCheckboxes() {
+    const filterCheckboxes = document.querySelectorAll(".filter");
+
+    // @ts-ignore
+    filterCheckboxes.forEach((checkbox: HTMLInputElement) => {
+      checkbox.checked = false;
+    });
+
+    const sliders = document.querySelectorAll(".slider-input");
+
+    // @ts-ignore
+    sliders.forEach((slider: HTMLElement) => {
+      slider.hidden = true;
+    })
   }
 
 

@@ -24,7 +24,7 @@
         <ng-template #concernTemplateRef let-concern="node">
           <div class="node">
             <label class="node-label">
-              <input type="checkbox" [ngModel]="concern.check"
+              <input type="checkbox" [ngModel]="concern.check" class="filter"
                      (ngModelChange)="selectNode(concern, $event)"> {{concern.concern}}
             </label>
             <div *ngIf="concern.subconcerns.length" class="node-children">
@@ -54,7 +54,8 @@
     </div>
 
     <div class="filter-slider">
-      <div><label class="filter-selection"><input type="checkbox" id="risk-level-filter" name="risk-level" [(ngModel)]="filterByRiskLevel">Risk
+      <div><label class="filter-selection"><input type="checkbox" id="risk-level-filter" class="filter"
+                                                  name="risk-level" [(ngModel)]="filterByRiskLevel">Risk
         Level</label></div>
       <div [hidden]="!filterByRiskLevel" class="slider-input">
         <div class="slider-container">
@@ -71,7 +72,7 @@
     </div>
 
     <div class="filter-slider">
-      <div><label class="filter-selection"><input type="checkbox" id="likelihood-filter" name="likelihood"
+      <div><label class="filter-selection"><input type="checkbox" id="likelihood-filter" name="likelihood" class="filter"
                                                   [(ngModel)]="filterByLikelihood">Likelihood</label>
       </div>
       <div [hidden]="!filterByLikelihood" class="slider-input">
@@ -89,8 +90,8 @@
     </div>
 
     <div class="filter-slider">
-      <div><label class="filter-selection"><input type="checkbox" id="factor-filter" name="risk-factor"
-                                                  [(ngModel)]="filterByRiskFactor">Risk
+      <div><label class="filter-selection"><input type="checkbox" id="factor-filter" name="risk-factor" class="filter"
+                                                  [checked]=false [(ngModel)]="filterByRiskFactor">Risk
         Factor</label></div>
       <div [hidden]="!filterByRiskFactor" class="slider-input">
         <div class="slider-container">
@@ -107,7 +108,7 @@
     </div>
 
     <div class="filter-slider">
-      <div><label class="filter-selection"><input type="checkbox" id="mitigation-filter" name="mitigation"
+      <div><label class="filter-selection"><input type="checkbox" id="mitigation-filter" name="mitigation" class="filter"
                                                   [(ngModel)]="filterByMitigation">Mitigation
         Strategy</label></div>
       <div [hidden]="!filterByMitigation" class="radio-wrapper">
@@ -124,8 +125,8 @@
     </div>
 
     <div class="bottom-btn">
-<!--    <button class="reset-filter-btn btn">Reset Filter</button>-->
-    <button class="apply-filter-btn btn">Apply Filter</button>
+    <button id="reset-btn" class="reset-filter-btn btn" (click)="resetCheckboxes()">Reset Filter</button>
+    <button id="apply-btn" class="apply-filter-btn btn">Apply Filter</button>
     </div>
   </modal>
 
