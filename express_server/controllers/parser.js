@@ -1,45 +1,81 @@
 const express = require('express');
 const app = express();
-const apiRoutes = require('./apis/apis');
+const apiRoutes = require('../apis/apis');
 const bodyParser = require('body-parser')
+const { Node, Risk, Data } = require('../models/supplyChainTree.js');
+const {instanceOf} = require("karma/common/util");
 
 
 app.use('/api',apiRoutes);
 
-const port = process.env.PORT || 3001;
-app.listen(port, () => console.log(`Listening on port ${port}...`));
-//express.json();
-//app.use(bodyParser.json())
-
-// nodes.html/txt should not pass
-const inputfile = require('../src/assets/nodes.json')
-//const {readFile} = require("fs");
 
 app.use(express.json()) // for parsing application/json
 app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-const { Node, Risk, Data } = require('./models/supplyChainTree.js');
-const {instanceOf} = require("karma/common/util");
 
 
 const data = new Data();
+const inputFile = require('../../src/assets/nodes.json')
+module.exports = {
+  data,
+  handleFilePost,
+  handleFileGet,
+  handleFileGetTest
+};
+
+function handleFilePost(req, res) {
+  if (!req.accepts(['json'])) {
+    res.status(406);
+    res.send('Not Acceptable');
+    return;
+  }
+
+  if (!req.body) {
+    res.status(400);
+    res.send('Invalid JSON payload');
+    return;
+  }
+
+  try {
+    let parsedData = parseData(req.body);
+    if (parsedData instanceof Error) {
+      console.error(parsedData);
+      res.status(406);
+      res.send(parsedData.message); // if Error, send Error message
+    } else {
+      console.log(parsedData);
+      res.json(parsedData);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(400);
+    res.send('Invalid JSON payload');
+  }
+}
 
 
-app.get('/file', function (req, res) {
+
+function handleFileGet(req, res) {
   if (!req.accepts(['json', 'text'])) {
     res.status(406);
     res.send('Not Acceptable');
   }else {
-      let parsedData = parseData(inputfile);
+      let parsedData = parseData(inputFile);
       if (parsedData instanceof Error){
         console.error(parsedData);
         res.status(406);
-        res.send(parsedData.message);
+        res.send(parsedData.message); // if Error send Error message
       } else {
         console.log(parsedData);
         res.json(parsedData);
       }
   }
-})
+}
+
+// tests that the data instance is set globally
+
+function handleFileGetTest(req, res) {
+  res.send(data);
+}
 function parseData(jsonData) {
 
   // Check if the required "Nodes" field exists and is an array
@@ -51,7 +87,7 @@ function parseData(jsonData) {
     if (parsedNodes.some(node => node instanceof Error)) {
       return parsedNodes.find(node => node instanceof Error);
     } else {
-      data.Nodes = parsedNodes;
+      data.Nodes = parsedNodes; // will only overwrite if valid
     }
   }
   return data;
