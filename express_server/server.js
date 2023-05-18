@@ -3,11 +3,11 @@ const app = express();
 const apiRoutes = require('./apis/apis');
 app.use('/api',apiRoutes);
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
 
 
-const { handleFilePost,handleFileGet,handleFileGetTest } = require('./controllers/parser');
+const { handleFilePost,handleFileGet,handleFileGetTest } = require('./controllers/parserController');
 
 app.post('/filePost', handleFilePost);
 

@@ -2,6 +2,7 @@ module.exports = {
   Node,
   Risk,
   Data,
+  NodeOrError,
 };
 
 function Node() {
@@ -26,3 +27,8 @@ function Risk() {
 function Data() {
   this.Nodes = [];
 }
+function NodeOrError(node, error) {
+  this.node = node;
+  this.error = error;
+}
+

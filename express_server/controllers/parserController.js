@@ -92,54 +92,63 @@ function parseData(jsonData) {
   }
   return data;
 }
-
 function parseNode(jsonNode) {
   const node = new Node();
-  let res =  checkType(jsonNode.Node_ID,node.Node_ID);
-  if (res instanceof Error) {
-    return res;
-  } else {
-    node.Node_ID = jsonNode.Node_ID;
+  let risks = new Risk();
+
+  for (const field in jsonNode) {
+    switch (field) {
+      case 'Node_ID':
+        let res = checkType(jsonNode[field], node[field]);
+        if (res instanceof Error) {
+          return res;
+        }
+        break;
+
+      case 'Node_name':
+      case 'Type':
+        let res1 = checkType(jsonNode[field], node[field]);
+        if (res1 instanceof Error) {
+          return res1;
+        }
+        break;
+
+      case 'Root':
+        let res2 = checkType(jsonNode[field], node[field]);
+        if (res2 instanceof Error) {
+          return res2;
+        }
+        break;
+
+      case 'Suppliers':
+      case 'Supplying_To':
+        if (!Array.isArray(jsonNode[field])) {
+          return Error(`Invalid '${field}' field in Node: ${jsonNode.Node_ID}`);
+        }
+        break;
+
+      case 'Risks':
+        risks = parseRisks(jsonNode[field]);
+        if (risks instanceof Error) {
+          return risks;
+        }
+        break;
+
+      default:
+        return Error(`Unexpected field '${field}' in Node: ${jsonNode.Node_ID}`);
+    }
+
   }
 
-
-  let res3 = checkType(jsonNode.Node_name,node.Node_name);
-  if (res3 instanceof Error) {
-    return res3;
-  } else {
-    node.Node_name = jsonNode.Node_name;
-  }
-
-  let res1 = checkType(jsonNode.Type, node.Type);
-  if (res1 instanceof Error) {
-    return res1;
-  } else {
-    node.Type = jsonNode.Type;
-  }
-
-
-  let res2 =  checkType(jsonNode.Root, node.Root);
-  if (res2 instanceof Error) {
-    return res2;
-  } else {
-    node.Root = jsonNode.Root;
-  }
-
-  if (!Array.isArray(jsonNode.Suppliers)) {
-    return Error(`Invalid 'Supplying_To' field in Node: ${jsonNode.Node_ID}`);
-  } else {
-    node.Suppliers = jsonNode.Suppliers;
-  }
-  if (!Array.isArray(jsonNode.Supplying_To)) {
-    return Error(`Invalid 'Supplying_To' field in Node: ${jsonNode.Node_ID}`);
-  } else {
-    node.Supplying_To = jsonNode.Supplying_To;
-  }
-  let risks = parseRisks(jsonNode.Risks);
-  if (risks instanceof Error) {
-    return risks;
-  } else {
-    node.Risks = risks
+  // ensure data not overwritten unless all parsed
+  for (const field in jsonNode) {
+    switch (field){
+      case 'Risks':
+        node[field] = risks;
+        break
+      default:
+        node[field] = jsonNode[field];
+    }
   }
 
   return node;
@@ -162,43 +171,43 @@ function parseRisks(jsonRisks) {
 function parseRisk(jsonRisk) {
   const risk = new Risk();
 
-  let res0 = checkType(jsonRisk.Name, risk.Name);
-  if (res0 instanceof  Error ) {
-    return new Error("Invalid 'Name' field in Risk");
-  } else {
-    risk.Name = jsonRisk.Name;
+  for (const field in jsonRisk) {
+    switch (field) {
+      case 'Name':
+        let res0 = checkType(jsonRisk[field], risk[field]);
+        if (res0 instanceof Error) {
+          return new Error("Invalid 'Name' field in Risk");
+        }
+        break;
+
+      case 'Risk_ID':
+      case 'Consequence':
+      case 'Likelihood':
+        let res = checkType(jsonRisk[field], risk[field]);
+        if (res instanceof Error) {
+          return res;
+        }
+        break;
+
+      case 'Mitigation_Strategies':
+      case 'Concern_IDs':
+        if (!Array.isArray(jsonRisk[field])) {
+          return Error(`Invalid '${field}' field in Risk`);
+        }
+        break;
+
+      default:
+        return Error(`Unexpected field '${field}' in Risk`);
+    }
   }
 
-  let res = checkType(jsonRisk.Risk_ID, risk.Risk_ID);
-  if (instanceOf(Error,res )){
-    return res;
-  } else {
-    risk.Risk_ID = jsonRisk.Risk_ID;
+  for (const field in jsonRisk) {
+    risk[field] = jsonRisk[field];
   }
-  let res1 = checkType(jsonRisk.Consequence, risk.Consequence);
-  if (instanceOf(Error,res )){
-    return res1;
-  } else {
-    risk.Consequence = jsonRisk.Consequence;
-  }
-  let res2 = checkType(jsonRisk.Likelihood,  risk.Likelihood);
-  if (instanceOf(Error,res )){
-    return res2;
-  }else {
-    risk.Likelihood = jsonRisk.Likelihood;
-  }
-  if (!Array.isArray(jsonRisk.Mitigation_Strategies)) {
-    return Error("Invalid 'Mitigation_Strategies' field in Risk");
-  } else {
-    risk.Mitigation_Strategies = jsonRisk.Mitigation_Strategies;
-  }
-  if (!Array.isArray(jsonRisk.Concern_IDs)) {
-    return Error("Invalid 'Concern_IDs' field in Risk");
-  } else {
-    risk.Concern_IDs = jsonRisk.Concern_IDs;
-  }
+
   return risk;
 }
+
 
 function checkType(actual, expected) {
   const tactual = typeof actual;
