@@ -1,28 +1,11 @@
-const express = require('express');
-const app = express();
-const apiRoutes = require('../apis/apis');
-const bodyParser = require('body-parser')
 const { Node, Risk, Data } = require('../models/supplyChainTree.js');
 const {instanceOf} = require("karma/common/util");
 
-
-app.use('/api',apiRoutes);
-
-
-app.use(express.json()) // for parsing application/json
-app.use(express.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
-
-
 const data = new Data();
 const inputFile = require('../../src/assets/nodes.json')
-module.exports = {
-  data,
-  handleFilePost,
-  handleFileGet,
-  handleFileGetTest
-};
 
-function handleFilePost(req, res) {
+
+const handleFilePost = (req, res, next) => {
   if (!req.accepts(['json'])) {
     res.status(406);
     res.send('Not Acceptable');
@@ -50,11 +33,11 @@ function handleFilePost(req, res) {
     res.status(400);
     res.send('Invalid JSON payload');
   }
-}
+};
 
 
 
-function handleFileGet(req, res) {
+const handleFileGet = (req, res,next) => {
   if (!req.accepts(['json', 'text'])) {
     res.status(406);
     res.send('Not Acceptable');
@@ -69,11 +52,11 @@ function handleFileGet(req, res) {
         res.json(parsedData);
       }
   }
-}
+};
 
 // tests that the data instance is set globally
 
-function handleFileGetTest(req, res) {
+const handleFileGetTest = (req, res,next) => {
   res.send(data);
 }
 function parseData(jsonData) {
@@ -92,6 +75,9 @@ function parseData(jsonData) {
   }
   return data;
 }
+
+
+
 function parseNode(jsonNode) {
   const node = new Node();
   let risks = new Risk();
@@ -298,3 +284,9 @@ function compareStructures(parsedData, expectedStructure) {
   return unexpectedFields;
 }
 
+module.exports = {
+  data,
+  handleFilePost,
+  handleFileGet,
+  handleFileGetTest,
+};
