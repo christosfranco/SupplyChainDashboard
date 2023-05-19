@@ -1,4 +1,5 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
+import {UploadService} from "../../services/upload.service";
 
 @Component({
   selector: 'app-upload-component',
@@ -7,24 +8,30 @@ import {Component, Input} from '@angular/core';
 })
 export class UploadComponentComponent {
 
-  @Input() text: string = "Import Supply Chain"
-  fileChosen: boolean = false
+  constructor(private uploadService: UploadService) {
+  }
 
-  file:any;
+  @Input() text: string = "Import Supply Chain"
+  @ViewChild ('dialog') dialogModal: any | undefined;
+  json: JSON | undefined
 
   fileChanged(e: any) {
-    this.fileChosen = true
-    this.file = e.target.files[0];
-    console.log(this.file)
+    const file = e.target.files[0];
     const fileReader = new FileReader();
-    fileReader.readAsText(this.file, "UTF-8");
+    fileReader.readAsText(file, "UTF-8");
     fileReader.onload = () => {
       // @ts-ignore
-      console.log(JSON.parse(fileReader.result));
+      this.json = JSON.parse(fileReader.result)
     }
     fileReader.onerror = (error) => {
       console.log(error);
     }
+  }
+
+  public uploadFile() {
+    this.uploadService.uploadFile(<JSON>this.json)
+    // @ts-ignore
+    this.dialogModal.nativeElement.close()
   }
 
 }
