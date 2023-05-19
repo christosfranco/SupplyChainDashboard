@@ -1,0 +1,16 @@
+<div *ngIf="details">
+  <h2>Name: {{ details.name }}</h2>
+  <p>Category: {{ details.category }}</p>
+  <h2>Risks:</h2>
+  <ul>
+    <li *ngFor="let risk of details.risks">
+      <h4>Risk name: {{ risk.name }}</h4>
+      <p>Risk description: {{ risk.description }}</p>
+      <p>Concern: {{ risk.concern.join(', ') }}</p>
+      <p>Consequence Level: {{ risk.consequenceLevel }}</p>
+      <p>Likelihood Level: {{ risk.likelihoodLevel }}</p>
+      <p>Risk Factor: {{ risk.riskFactor }}</p>
+      <p>Mitigation Strategy: {{ risk.mitigationStrategy }}</p>
+    </li>
+  </ul>
+</div>

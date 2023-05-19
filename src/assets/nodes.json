@@ -4,7 +4,7 @@
       "Node_ID": 1,
       "Node_name": "Node 1",
       "Type": "Type A",
-      "Root": true,
+      "Root":  true,
       "Supplying_To": [
         2
       ],
