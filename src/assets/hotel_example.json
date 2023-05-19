@@ -1,0 +1,150 @@
+{
+    "Metadata": {
+      "supply_chain_name": "Hotel Supply Chain"
+    },
+    "Nodes": [
+      {
+        "Node_ID": 0,
+        "Node_name": "Hotel",
+        "Type": "Hotel",
+        "Suppliers": [1, 2, 3, 7, 8],
+        "Risks": []
+      },
+      {
+        "Node_ID": 1,
+        "Node_name": "Hotel Homepage",
+        "Type": "Website",
+        "Suppliers": [4],
+        "Risks": [
+          {
+          "Name": "DDOS Attack",
+          "Risk_ID": 1,
+          "Consequence": 5,
+          "Likelihood": 3,
+          "Mitigation_Strategies": ["Antivir Software"],
+          "Concern_IDs": [
+            1
+          ]}         
+        ]
+      },
+      {
+        "Node_ID": 2,
+        "Node_name": "Trivago",
+        "Type": "Website",
+        "Suppliers": [],
+        "Risks": [
+          {
+          "Name": "DDOS Attack",
+          "Risk_ID": 2,
+          "Consequence": 5,
+          "Likelihood": 1,
+          "Mitigation_Strategies": ["Handled by external supplier"],
+          "Concern_IDs": [
+            1
+          ]}         
+        ]
+      },
+      {
+        "Node_ID": 3,
+        "Node_name": "Booking.com",
+        "Type": "Website",
+        "Suppliers": [],
+        "Risks": [
+            {
+            "Name": "DDOS Attack",
+            "Risk_ID": 2,
+            "Consequence": 5,
+            "Likelihood": 1,
+            "Mitigation_Strategies": ["Handled by external supplier"],
+            "Concern_IDs": [
+              1
+            ]}         
+          ]
+      },
+      {
+        "Node_ID": 4,
+        "Node_name": "Server",
+        "Type": "Hardware",
+        "Suppliers": [5,6],
+        "Risks": [
+            {
+            "Name": "Unexpected Shutdown",
+            "Risk_ID": 3,
+            "Consequence": 5,
+            "Likelihood": 3,
+            "Mitigation_Strategies": ["Backup Server"],
+            "Concern_IDs": [
+              2
+            ]}         
+          ]
+      },
+      {
+        "Node_ID": 5,
+        "Node_name": "Firewall",
+        "Type": "Software",
+        "Suppliers": [1],
+        "Risks": [
+          {
+          "Name": "Exploit",
+          "Risk_ID": 4,
+          "Consequence": 5,
+          "Likelihood": 1,
+          "Mitigation_Strategies": ["Regular Updates"],
+          "Concern_IDs": [
+            1
+          ]}         
+        ]
+      },
+      {
+        "Node_ID": 6,
+        "Node_name": "Security Guards",
+        "Type": "Service",
+        "Suppliers": [1],
+        "Risks": [
+          {
+          "Name": "Breach of phyiscal access",
+          "Risk_ID": 5,
+          "Consequence": 5,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            3
+          ]}         
+        ]
+      },
+      {
+        "Node_ID": 7,
+        "Node_name": "Work Scheduling Software",
+        "Type": "Software",
+        "Suppliers": [1],
+        "Risks": [
+          {
+          "Name": "Bugs",
+          "Risk_ID": 6,
+          "Consequence": 3,
+          "Likelihood": 5,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            4
+          ]}         
+        ]
+      },
+      {
+        "Node_ID": 8,
+        "Node_name": "Cleaning Supply",
+        "Type": "Physical Goods",
+        "Suppliers": [1],
+        "Risks": [
+          {
+          "Name": "Theft",
+          "Risk_ID": 7,
+          "Consequence": 1,
+          "Likelihood": 3,
+          "Mitigation_Strategies": ["Security surveillance"],
+          "Concern_IDs": [
+            3
+          ]}         
+        ]
+      }
+    ]
+  }
