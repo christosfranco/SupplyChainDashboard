@@ -1,0 +1,126 @@
+
+<p class="filter-text">Select criteria for the nodes you want to filter.</p>
+<div>
+  <p class="txt">Select concerns:</p>
+  <div class="select-criteria">
+
+    <ng-template #concernTemplateRef let-concern="node">
+      <div class="node">
+        <label class="node-label">
+          <input type="checkbox" [ngModel]="concern.check" class="filter"
+                 (ngModelChange)="selectNode(concern, $event)"> {{concern.concern}}
+        </label>
+        <div *ngIf="concern.subconcerns.length" class="node-children">
+          <ng-template ngFor let-subconcern [ngForOf]="concern.subconcerns">
+
+            <ng-template
+              [ngTemplateOutlet]="concernTemplateRef"
+              [ngTemplateOutletContext]="{node:subconcern}">
+            </ng-template>
+          </ng-template>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template ngFor let-concerns [ngForOf]="concernForest.roots">
+      <ng-template
+        [ngTemplateOutlet]="concernTemplateRef"
+        [ngTemplateOutletContext]="{node:concerns}">
+      </ng-template>
+    </ng-template>
+  </div>
+</div>
+
+<div>
+  <p class="txt">Select risks:</p>
+  <div class="select-criteria">
+  </div>
+</div>
+
+<div class="filter-slider">
+  <div><label class="filter-selection"><input type="checkbox" id="risk-level-filter" class="filter"
+                                              name="risk-level" [(ngModel)]="filterByRiskLevel">Risk
+    Level</label></div>
+  <div [hidden]="!filterByRiskLevel" class="slider-input">
+    <div class="slider-container">
+      <input id="fromSliderRisk" type="range" value="3" min="0" max="10">
+      <input id="toSliderRisk" type="range" value="5" min="0" max="10">
+    </div>
+    <div class="slider-values">
+      <div>Lowest Value<input class="slider-number-input" type="number" id="fromInputRisk" value="3" min="0"
+                              max="10"></div>
+      <div>Highest Value<input class="slider-number-input" type="number" id="toInputRisk" value="5" min="0"
+                               max="10"></div>
+    </div>
+  </div>
+</div>
+
+<div class="filter-slider">
+  <div><label class="filter-selection"><input type="checkbox" id="likelihood-filter" name="likelihood"
+                                              class="filter"
+                                              [(ngModel)]="filterByLikelihood">Likelihood</label>
+  </div>
+  <div [hidden]="!filterByLikelihood" class="slider-input">
+    <div class="slider-container">
+      <input id="fromSliderLikelihood" type="range" value="3" min="0" max="10">
+      <input id="toSliderLikelihood" type="range" value="5" min="0" max="10">
+    </div>
+    <div class="slider-values">
+      <div>Lowest Value<input class="slider-number-input" type="number" id="fromInputLikelihood" value="3" min="0"
+                              max="10"></div>
+      <div>Highest Value<input class="slider-number-input" type="number" id="toInputLikelihood" value="5" min="0"
+                               max="10"></div>
+    </div>
+  </div>
+</div>
+
+<div class="filter-slider">
+  <div><label class="filter-selection"><input type="checkbox" id="factor-filter" name="risk-factor" class="filter"
+                                              [checked]=false [(ngModel)]="filterByRiskFactor">Risk
+    Factor</label></div>
+  <div [hidden]="!filterByRiskFactor" class="slider-input">
+    <div class="slider-container">
+      <input id="fromSliderRiskFac" type="range" value="3" min="0" max="10">
+      <input id="toSliderRiskFac" type="range" value="5" min="0" max="10">
+    </div>
+    <div class="slider-values">
+      <div>Lowest Value<input class="slider-number-input" type="number" id="fromInputRiskFac" value="3" min="0"
+                              max="10"></div>
+      <div>Highest Value<input class="slider-number-input" type="number" id="toInputRiskFac" value="5" min="0"
+                               max="10"></div>
+    </div>
+  </div>
+</div>
+
+<div class="filter-slider">
+  <div><label class="filter-selection"><input type="checkbox" id="mitigation-filter" name="mitigation"
+                                              class="filter"
+                                              [(ngModel)]="filterByMitigation">Mitigation
+    Strategy</label></div>
+  <div [hidden]="!filterByMitigation" class="radio-wrapper">
+    <p class="txt">Select nodes that: </p>
+    <div class="radio-value">
+      <input id="has-mitigation" type="radio" class="mitigation-radio filter" name="mitigation"
+             value="has-mitigation">
+      <label class="radio-text txt" for="has-mitigation">have a mitigation strategy</label>
+    </div>
+    <div class="radio-value">
+      <input id="no-mitigation" type="radio" class="mitigation-radio filter" name="mitigation"
+             value="no-mitigation">
+      <label class="radio-text txt" for="no-mitigation">don't have a mitigation strategy</label>
+    </div>
+  </div>
+</div>
+
+<div class="filter-specs">
+  <div class="filter-name"><p class="txt">Name the filter: </p>
+    <input type="text" id="filter-name" maxlength="25" placeholder="Filter Name" [(ngModel)]="filterNameField"
+           required>
+  </div>
+  <div class="filter-color"><p class="txt">Select color for the filter: </p><input type="color" id="filter-color"
+                                                                                   value="#e66465"></div>
+</div>
+
+<div class="bottom-btn">
+  <button id="reset-btn" class="reset-filter-btn btn" (click)="resetCheckboxes()">Reset Filter</button>
+  <button id="apply-btn" class="apply-filter-btn btn">Apply Filter</button>
+</div>
