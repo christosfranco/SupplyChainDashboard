@@ -1,5 +1,4 @@
-import {Component} from '@angular/core';
-import {MatNativeDateModule} from '@angular/material/core';
+import {Component} from '@angular/core'
 
 import * as d3 from "d3";
 import {ModalService} from "../modal/modal.service";
@@ -12,6 +11,9 @@ import {ModalService} from "../modal/modal.service";
 })
 
 export class VisualizationPageComponent {
+  public imageUrl_edit = "../../assets/images/edit.png";
+  public imageUrl_trash = "../../assets/images/trash.png";
+  public imageUrl_attention = "../../assets/images/attention.png";
 
   private nodes = [
     {
@@ -208,9 +210,9 @@ export class VisualizationPageComponent {
 
 
     this.selectedConcernNodes = null;
-    this.concernForest = {roots: CONCERN_FOREST_EXAMPLE}
+    this.concernForest = {roots: CONCERN_FOREST_EXAMPLE};
 
-
+    this.filters = FILTERS_EXAMPLE;
   }
 
   openModal(id: string) {
@@ -227,6 +229,7 @@ export class VisualizationPageComponent {
   filterByRiskFactor = false;
   filterByMitigation = false;
 
+  noFiltersMsg = false;
 
   // Dual sliders
   private controlFromInput(fromSlider: any, fromInput: any, toInput: any, controlSlider: any) {
@@ -310,6 +313,9 @@ export class VisualizationPageComponent {
 
   public concernForest: ConcernForest;
   public selectedConcernNodes: ConcernNode | null;
+  filterNameField: string | undefined;
+
+  public filters: Filter[] | undefined;
 
   public selectNode(node: ConcernNode, value: boolean): void {
     this.check(node, value);
@@ -330,15 +336,30 @@ export class VisualizationPageComponent {
       checkbox.checked = false;
     });
 
-    const sliders = document.querySelectorAll(".slider-input");
+    this.filterByRiskLevel = false;
+    this.filterByLikelihood = false;
+    this.filterByRiskFactor = false;
+    this.filterByMitigation = false;
 
-    // @ts-ignore
-    sliders.forEach((slider: HTMLElement) => {
-      slider.hidden = true;
-    })
+    this.filterNameField = "";
   }
 
+  public hideApplied() {
+    const appliedFilters = document.getElementById("applied-filters");
+    appliedFilters!.hidden = true;
+  }
 
+  public showApplied() {
+    if (this.filters?.length) {
+      const appliedFilters = document.getElementById("applied-filters");
+      appliedFilters!.hidden = false;
+    } else {
+      this.noFiltersMsg = true;
+      setTimeout(() => {
+        this.noFiltersMsg = false;
+      }, 2000);
+    }
+  }
 }
 
 interface ConcernForest {
@@ -411,5 +432,43 @@ const CONCERN_FOREST_EXAMPLE = [
       }]
   }
 ];
+
+interface Filter {
+  id: string;
+  name: string;
+  color: string;
+  concerns: null | string[];
+  risks: null | string[];
+  risk_level: null | number[];
+  likelihood: null | number[];
+  risk_factor: null | number[];
+  mitigation_strategy: null | boolean;
+}
+
+
+const FILTERS_EXAMPLE = [
+  {
+    "id": "1",
+    "name": "This is long filter name",
+    "color": "#DEB92AFF",
+    "concerns": ["1"],
+    "risks": null,
+    "risk_level": null,
+    "likelihood": null,
+    "risk_factor": null,
+    "mitigation_strategy": null
+  },
+  {
+    "id": "2",
+    "name": "Filter2",
+    "color": "#3FCFDCFF",
+    "concerns": ["2"],
+    "risks": null,
+    "risk_level": null,
+    "likelihood": null,
+    "risk_factor": null,
+    "mitigation_strategy": null
+  }
+]
 
 
