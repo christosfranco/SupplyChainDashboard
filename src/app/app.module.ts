@@ -15,6 +15,8 @@ import { DagVisualisationComponent } from './components/dag-visualisation/dag-vi
 import { HighChartsVisComponent } from './components/high-charts-vis/high-charts-vis.component';
 import {HighchartsChartModule} from "highcharts-angular";
 import {NgxPanZoomModule} from "ngx-panzoom";
+import { DetailsComponent } from './components/details/details.component';
+import {MatDialogModule} from "@angular/material/dialog";
 import {ModalModule} from "./components/modal/modal.component.module";
 import {FormsModule} from "@angular/forms";
 
@@ -28,7 +30,8 @@ import {FormsModule} from "@angular/forms";
     ImportComponent,
     VisualizationPageComponent,
     DagVisualisationComponent,
-    HighChartsVisComponent
+    HighChartsVisComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +40,8 @@ import {FormsModule} from "@angular/forms";
     HttpClientModule,
     BrowserAnimationsModule,
     HighchartsChartModule,
+    NgxPanZoomModule,
+    MatDialogModule,
     NgxPanZoomModule,
     ModalModule,
     FormsModule
