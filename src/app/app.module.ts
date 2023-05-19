@@ -16,7 +16,8 @@ import { HighChartsVisComponent } from './components/high-charts-vis/high-charts
 import {HighchartsChartModule} from "highcharts-angular";
 import {NgxPanZoomModule} from "ngx-panzoom";
 import { UploadComponentComponent } from './components/upload-component/upload-component.component';
-
+import { DetailsComponent } from './components/details/details.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { UploadComponentComponent } from './components/upload-component/upload-c
     VisualizationPageComponent,
     DagVisualisationComponent,
     HighChartsVisComponent,
-    UploadComponentComponent
+    UploadComponentComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +39,8 @@ import { UploadComponentComponent } from './components/upload-component/upload-c
     HttpClientModule,
     BrowserAnimationsModule,
     HighchartsChartModule,
-    NgxPanZoomModule
+    NgxPanZoomModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

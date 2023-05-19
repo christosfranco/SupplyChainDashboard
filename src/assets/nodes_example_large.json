@@ -1,0 +1,84 @@
+{
+  "Nodes": [
+    {
+      "Node_ID": 1,
+      "Node_name": "Node 1",
+      "Type": "Train Station",
+      "Root": true,
+      "Supplying_To": [2, 3],
+      "Suppliers": [],
+      "Risks": []
+    },
+    {
+      "Node_ID": 2,
+      "Node_name": "Node 2",
+      "Type": "Train Track",
+      "Root": false,
+      "Supplying_To": [4, 5],
+      "Suppliers": [1],
+      "Risks": [
+        {
+          "Name": "Collision",
+          "Risk_ID": 1,
+          "Consequence": 5,
+          "Likelihood": 3,
+          "Mitigation_Strategies": ["Train Speed Control", "Signaling System"],
+          "Concern_IDs": [1, 2, 3]
+        },
+        {
+          "Name": "Track Damage",
+          "Risk_ID": 2,
+          "Consequence": 4,
+          "Likelihood": 2,
+          "Mitigation_Strategies": ["Regular Inspections", "Maintenance"],
+          "Concern_IDs": [4, 5]
+        }
+      ]
+    },
+    {
+      "Node_ID": 3,
+      "Node_name": "Node 3",
+      "Type": "Train Yard",
+      "Root": false,
+      "Supplying_To": [],
+      "Suppliers": [1],
+      "Risks": [
+        {
+          "Name": "Fire Hazard",
+          "Risk_ID": 3,
+          "Consequence": 4,
+          "Likelihood": 1,
+          "Mitigation_Strategies": ["Fire Suppression System", "Regular Safety Drills"],
+          "Concern_IDs": [6, 7, 8]
+        }
+      ]
+    },
+    {
+      "Node_ID": 4,
+      "Node_name": "Node 4",
+      "Type": "Train Track",
+      "Root": false,
+      "Supplying_To": [],
+      "Suppliers": [2],
+      "Risks": [
+        {
+          "Name": "Derailment",
+          "Risk_ID": 4,
+          "Consequence": 5,
+          "Likelihood": 2,
+          "Mitigation_Strategies": ["Track Maintenance", "Train Inspection"],
+          "Concern_IDs": [9, 10]
+        }
+      ]
+    },
+    {
+      "Node_ID": 5,
+      "Node_name": "Node 5",
+      "Type": "Train Station",
+      "Root": false,
+      "Supplying_To": [],
+      "Suppliers": [2],
+      "Risks": []
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Node } from '../model/node'
+import {Node, NodeDetails} from '../model/node'
 import {Observable, of} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 
@@ -70,5 +70,9 @@ export class NodesService {
   public getHighlights(): Observable<String[]> {
     const body = { message: '' }
     return this.httpClient.post<String[]>(`${this.nodeUrl}/filtered`, body)
+  }
+
+  public getDetails(node: string): Observable<NodeDetails> {
+    return this.httpClient.get<NodeDetails>(`${this.nodeUrl}/${node}/details`)
   }
 }
