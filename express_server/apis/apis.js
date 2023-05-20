@@ -4,11 +4,13 @@ const supplyChainController = require('../controllers/supplyChainController');
 const {handleFileGet} = require("../controllers/parserController");
 const parserController  = require('../controllers/parserController')
 
+const bodyParser = require('body-parser')
+const jsonParser = bodyParser.json()
 
 
-router.get('/fileGet',parserController.handleFileGet);
-router.post('/filePost',parserController.handleFilePost);
-
+router.get('/getLocalSupplyChainFile',parserController.handleFileGet);
+router.post('/postSupplyChainData',jsonParser,parserController.handleFilePost);
+router.get('/getSupplyChainData',parserController.handleFileGetTest);
 
 router.get('/nodes', supplyChainController.getNodes);
 router.get('/nodes/:nodeID/details', supplyChainController.getNodeDetails);

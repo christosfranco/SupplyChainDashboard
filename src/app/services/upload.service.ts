@@ -8,7 +8,7 @@ import {catchError, Observable, of, tap, throwError} from "rxjs";
 export class UploadService {
 
   private httpHeaders: HttpHeaders =  new HttpHeaders({ 'Content-Type': 'application/json' });
-  private url: string = "api/upload"
+  private url: string = "/api/postSupplyChainData"
 
   constructor(private httpClient: HttpClient) { }
 
@@ -16,7 +16,7 @@ export class UploadService {
 
     const httpOptions:Object = { headers: this.httpHeaders, responseType: 'text'}
     this.httpClient
-      .post(`${this.url}/supplychain`,json, httpOptions)
+      .post(`${this.url}`,json, httpOptions)
       .pipe(
         catchError(
           error => {

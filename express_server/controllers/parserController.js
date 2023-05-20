@@ -6,30 +6,35 @@ const inputFile = require('../../src/assets/nodes.json')
 
 
 const handleFilePost = (req, res, next) => {
-  if (!req.accepts(['json'])) {
+  if (!req.accepts(['json', 'text'])) {
     res.status(406);
     res.send('Not Acceptable');
+    // console.log("Json post Didnt work");
     return;
   }
 
   if (!req.body) {
+    // console.log(req.body);
+    // console.log(req);
     res.status(400);
     res.send('Invalid JSON payload');
+    // console.log("no body in paryload Json post Didnt work");
     return;
   }
 
   try {
     let parsedData = parseData(req.body);
     if (parsedData instanceof Error) {
-      console.error(parsedData);
+      // console.error(parsedData);
+      // console.log("Json post Didnt work");
       res.status(406);
       res.send(parsedData.message); // if Error, send Error message
     } else {
-      console.log(parsedData);
+      // console.log(parsedData);
       res.json(parsedData);
     }
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     res.status(400);
     res.send('Invalid JSON payload');
   }
