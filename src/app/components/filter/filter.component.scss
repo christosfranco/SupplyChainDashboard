@@ -2,6 +2,10 @@
   font-family: IBM-plex, arial, serif;
 }
 
+.btn {
+  cursor: pointer;
+}
+
 .select-criteria {
   overflow: auto;
   width: 90%;
@@ -25,29 +29,6 @@
 
 .filter-text {
   font-weight: bolder;
-}
-
-.reset-filter-btn {
-  font-size: 0.8rem;
-}
-
-.reset-filter-btn:hover {
-  background-color: #afafaf;
-  cursor: pointer;
-}
-
-.apply-filter-btn {
-  position: sticky;
-  left: 50%;
-  transform: translate(-50%);
-
-  color: #ffffff;
-  background-color: #9f1212;
-}
-
-.apply-filter-btn:hover {
-  background-color: #d02b2b;
-  cursor: pointer;
 }
 
 .slider-input {
@@ -151,9 +132,6 @@ input[type="range"] {
   padding-bottom: 10px;
 }
 
-.bottom-btn {
-  padding-top: 15px;
-}
 
 .filter-specs {
   overflow: hidden;
@@ -177,4 +155,50 @@ input[type="range"] {
 
 #filter-color {
   align-self: center;
+}
+
+.reset-filter-btn {
+  font-size: 0.8rem;
+}
+
+.reset-filter-btn:hover {
+  background-color: #afafaf;
+}
+
+.apply-filter-btn {
+  color: #ffffff;
+  background-color: #9f1212;
+}
+
+.apply-filter-btn:hover {
+  background-color: #d02b2b;
+}
+
+#apply-btn {
+  position: absolute;
+  margin-left: 35%;
+}
+
+.bottom {
+  padding-top: 15px;
+  display: flex;
+}
+
+.bottom-btn {
+  display: flex;
+}
+
+#attention-div {
+  display: flex;
+  margin-left: 42%;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#attention-txt {
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 8px;
+
 }

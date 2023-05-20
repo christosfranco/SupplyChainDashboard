@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {ModalService} from "../modal/modal.service";
+import {FilterService} from "../../services/filter.service";
 
 @Component({
   selector: 'filter',
@@ -9,10 +10,26 @@ import {ModalService} from "../modal/modal.service";
 
 export class FilterComponent {
 
-  constructor(private modalService: ModalService) {
+  public show_attention = false;
+  public imageUrl_attention = "../../assets/images/attention.png";
+  public attention_msg = "";
 
-    this.selectedConcernNodes = null;
+  public concernForest: ConcernForest;
+
+  selectedConcernNodes: string[];
+  selectedRisks: string[];
+
+  selectedColor: string;
+  filterNameField: string | undefined;
+
+  constructor(private modalService: ModalService, private filterService: FilterService) {
+
     this.concernForest = {roots: CONCERN_FOREST_EXAMPLE};
+
+    this.selectedConcernNodes = [];
+    this.selectedRisks = [];
+
+    this.selectedColor = "#e3c75e";
   }
 
   ngOnInit(): void {
@@ -41,7 +58,6 @@ export class FilterComponent {
   filterByLikelihood = false;
   filterByRiskFactor = false;
   filterByMitigation = false;
-
 
 
   // Dual sliders
@@ -124,10 +140,6 @@ export class FilterComponent {
     }
   }
 
-  public concernForest: ConcernForest;
-  public selectedConcernNodes: ConcernNode | null;
-  filterNameField: string | undefined;
-
 
   public selectNode(node: ConcernNode, value: boolean): void {
     this.check(node, value);
@@ -138,6 +150,14 @@ export class FilterComponent {
     node.subconcerns.forEach((x: any) => {
       this.check(x, value);
     })
+    if (value) {
+      this.selectedConcernNodes.push(node.id);
+    } else {
+      const index = this.selectedConcernNodes.indexOf(node.id, 0);
+      if (index > -1) {
+        this.selectedConcernNodes.splice(index, 1);
+      }
+    }
   };
 
   public resetCheckboxes() {
@@ -156,7 +176,164 @@ export class FilterComponent {
     this.filterNameField = "";
   }
 
+  public applyFilter() {
 
+    if (this.filterNameField?.length) {
+
+      var conditionList: Condition[] = [];
+
+      // CONCERNS
+      if (this.selectedConcernNodes.length) {
+        conditionList.push({
+          conditionName: "concerns",
+          operator: "IN",
+          value: this.selectedConcernNodes
+        });
+      }
+
+      // RISKS
+      // TODO
+
+
+      // RISK LEVEL
+      if (this.filterByRiskLevel) {
+        const fromRiskLevel = (<HTMLInputElement>document.getElementById("fromSliderRisk")!).value;
+        const toRiskLevel = (<HTMLInputElement>document.getElementById("toSliderRisk")!).value;
+        if (fromRiskLevel == toRiskLevel) {
+          conditionList.push({
+            conditionName: "risk_level",
+            operator: "EQ",
+            value: fromRiskLevel
+          });
+        }
+        else {
+          conditionList.push({
+            conditionName: "risk_level",
+            operator: "GT",
+            value: fromRiskLevel
+          });
+          conditionList.push({
+            conditionName: "risk_level",
+            operator: "LT",
+            value: toRiskLevel
+          })
+        }
+      }
+
+      // LIKELIHOOD
+      if (this.filterByLikelihood) {
+        const fromLikelihood = (<HTMLInputElement>document.getElementById("fromSliderLikelihood")!).value;
+        const toLikelihood = (<HTMLInputElement>document.getElementById("toSliderLikelihood")!).value;
+        if (fromLikelihood == toLikelihood) {
+          conditionList.push({
+            conditionName: "likelihood",
+            operator: "EQ",
+            value: fromLikelihood
+          });
+        }
+        else {
+          conditionList.push({
+            conditionName: "likelihood",
+            operator: "GT",
+            value: fromLikelihood
+          });
+          conditionList.push({
+            conditionName: "likelihood",
+            operator: "LT",
+            value: toLikelihood
+          })
+        }
+      }
+
+      // RISK FACTOR
+      if (this.filterByRiskFactor) {
+        const fromRiskFactor = (<HTMLInputElement>document.getElementById("fromSliderRiskFac")!).value;
+        const toRiskFactor = (<HTMLInputElement>document.getElementById("toSliderRiskFac")!).value;
+        if (fromRiskFactor == toRiskFactor) {
+          conditionList.push({
+            conditionName: "risk_factor",
+            operator: "EQ",
+            value: fromRiskFactor
+          });
+        }
+        else {
+          conditionList.push({
+            conditionName: "risk_factor",
+            operator: "GT",
+            value: fromRiskFactor
+          });
+          conditionList.push({
+            conditionName: "risk_factor",
+            operator: "LT",
+            value: toRiskFactor
+          })
+        }
+      }
+
+      // MITIGATION STRATEGY
+      if (this.filterByMitigation) {
+        const hasMitigation = (<HTMLInputElement>document.getElementById("has-mitigation")!).checked;
+        const noMitigation = (<HTMLInputElement>document.getElementById("no-mitigation")!).checked;
+        if (hasMitigation) {
+          conditionList.push({
+            conditionName: "mitigation",
+            operator: "EQ",
+            value: "yes"
+          });
+        }
+        else if (noMitigation) {
+          conditionList.push({
+            conditionName: "mitigation",
+            operator: "EQ",
+            value: "yes"
+          });
+        }
+      }
+
+      if (conditionList.length) {
+        const newFilter: Filter = {
+          name: this.filterNameField,
+          color: (<HTMLInputElement>document.querySelector("#filter-color")!).value,
+          conditions: conditionList
+        }
+
+        this.resetCheckboxes();
+        this.modalService.close("filter-modal");
+        console.log(newFilter);
+
+        this.filterService.filerNodes(JSON.parse(JSON.stringify(newFilter)));
+
+      } else {
+        this.attention_msg = "Please select at least one condition."
+
+        this.show_attention = true;
+        setTimeout(() => {
+          this.show_attention = false;
+        }, 2000);
+      }
+
+    } else {
+      this.attention_msg = "Please select a name for the filter."
+
+      this.show_attention = true;
+      setTimeout(() => {
+        this.show_attention = false;
+      }, 2000);
+    }
+  }
+}
+
+
+interface Filter {
+  name: string;
+  color: string;
+  conditions: Condition[];
+}
+
+interface Condition {
+  conditionName: string;
+  operator: string;
+  value: string[] | string;
 }
 
 interface ConcernForest {
