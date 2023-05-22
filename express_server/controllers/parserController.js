@@ -72,8 +72,7 @@ const handleFileGet = (req, res,next) => {
   }
 };
 
-// tests that the data instance is set globally
-
+// test that the data instance is set globally
 const handleFileGetTest = (req, res,next) => {
   res.send(data);
 }
@@ -354,4 +353,11 @@ module.exports = {
   handleFilePost,
   handleFileGet,
   handleFileGetTest,
+  Risk,
+  parseNode,
+  parseRisks,
+  parseRisk,
+  checkTypeArray,
+  checkType,
+  Node,
 };
