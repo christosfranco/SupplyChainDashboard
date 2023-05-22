@@ -3,6 +3,7 @@
   width: auto;
   height: 100%;
 }
+
 .header {
   background-color: #f5f7fa;
   height: 15%;
@@ -23,6 +24,47 @@
   justify-content: space-between;
 }
 
+.btn {
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  padding: 14px 23px;
+  cursor: pointer;
+}
+
+.new-sc-btn {
+  color: #ffffff;
+  background-color: #a4a5a6;
+  text-decoration: none;
+}
+
+.new-sc-btn:hover {
+  background-color: #7c7e7e;
+  cursor: pointer;
+}
+
+.export-btn {
+  color: #ffffff;
+  background-color: #77aad9;
+}
+
+.export-btn:hover {
+  background-color: #5d9ad2;
+  cursor: pointer;
+}
+
+.filter-btn {
+  color: #ffffff;
+  background-color: #176ab9;
+}
+
+.filter-btn:hover {
+  background-color: #608fd0;
+  cursor: pointer;
+}
+
+
 .vis-card-container {
   margin-top: 1rem;
   display: flex;
@@ -36,8 +78,108 @@
   position: relative;
   width: 90%;
   height: 80vh;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
   margin: 0 auto;
+}
+
+.txt {
+  font-family: IBM-plex, arial, serif;
+}
+
+
+#applied-filters {
+  position: absolute;
+  right: 3%;
+  width: 25%;
+  box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.2);
+  background: white;
+  z-index: 4;
+}
+
+#show-applied {
+  position: absolute;
+  font-size: 80%;
+  right: 8%;
+  margin-top: 5px;
+  z-index: 3;
+}
+
+#show-applied:hover {
+  background: #d5d5d5;
+}
+
+#no-filters-msg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  font-size: 90%;
+  right: 8%;
+  margin-top: 60px;
+  border: 2px solid #fd2146;
+  border-radius: 8px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+#no-filters-img {
+  padding-right: 10px;
+}
+
+#applied-filters-title {
+  text-align: center;
+  font-weight: bold;
+  margin-left: 25%;
+}
+
+.filter-color-name {
+  display: flex;
+  margin-bottom: auto;
+  margin-top: auto;
+  width: 100%;
+}
+
+.applied_filter {
+  display: flex;
+  padding: 10px;
+}
+
+.color-box{
+  height: 14px;
+  width: 14px;
+  border: 1px solid black;
+  margin-left: 10px;
+}
+
+.filter-name-applied {
+  margin-left: 10px;
+}
+
+#edit-filter, #delete-filter {
+  background: none;
+  border: none;
+}
+
+.applied_filter-btn {
+  margin-right: 0;
+}
+
+.applied-filter-header {
+  display: flex;
+  width: 100%;
+}
+
+#hide-applied-button {
+  margin-left: 28%;
+  margin-top: 10px;
+  font-size: 10px;
+  padding: 8px;
+  height: 30px;
+  letter-spacing: 0.1rem;
+}
+
+#hide-applied-button:hover {
+  background: #d5d5d5;
 }
 

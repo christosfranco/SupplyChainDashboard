@@ -5,16 +5,50 @@
   <div class="header">
     <div class="button-span">
       <div class="import-export">
-        <app-import text="Import a new Supply Chain"></app-import>
-        <app-import text="Export"></app-import>
+        <a href="" class="btn new-sc-btn">Import a new Supply Chain</a>
+        <button class="btn export-btn" (click)="openModal('export-modal')">Export</button>
       </div>
-      <app-import text="Apply Filters"></app-import>
+      <button class="filter-btn btn" (click)="openModal('filter-modal')">Add Filter</button>
     </div>
   </div>
+
+
+  <button class="btn" id="show-applied" (click)="showApplied()">Show applied filters</button>
+  <div *ngIf="noFiltersMsg" id="no-filters-msg">
+    <img id="no-filters-img"
+         ngSrc="{{ imageUrl_attention }}" height="20" width="20" alt="Attention">
+    <p>No filters to show</p></div>
+
+  <div hidden="until-found" id="applied-filters">
+    <div class="applied-filter-header">
+      <p class="txt" id="applied-filters-title">Applied Filters</p>
+      <button class="btn" id="hide-applied-button" (click)="hideApplied()">HIDE</button>
+    </div>
+    <div class="applied_filter" *ngFor="let filter of filters">
+      <input type="checkbox">
+      <label class="filter-color-name">
+        <div class="color-box" [style.background-color]="filter.color"></div>
+        <div class="txt filter-name-applied">{{filter.name}}</div>
+      </label>
+      <button class="applied-filter-btn" id="edit-filter" title="Edit filter">
+        <img id="edit-icon"
+             ngSrc="{{ imageUrl_edit }}" height="25" width="25" alt="Edit"></button>
+      <button class="applied-filter-btn" id="delete-filter" title="Delete filter">
+        <img id="delete-icon"
+             ngSrc="{{ imageUrl_trash }}" height="25" width="25" alt="Delete"></button>
+    </div>
+  </div>
+
   <div class="vis-card-container">
     <div class="vis-card">
       <app-dag-visualisation *ngIf="nodes" [nodes]="nodes" (nodeClick)="onNodeClick($event)"></app-dag-visualisation>
       <!--<app-high-charts-vis></app-high-charts-vis>-->
     </div>
   </div>
+
+  <modal id="filter-modal" title ="Add New Filter"><filter></filter></modal>
+
+  <modal class="export-modal" id="export-modal" title="Export Supply Chain">
+  </modal>
+
 </div>

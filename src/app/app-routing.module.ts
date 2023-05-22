@@ -4,6 +4,7 @@ import { SupplyChainHome } from "./MVC/Controller/demo_controller";
 import { SupplyChainVisualise } from "./MVC/Controller/visualization_controller";
 import {LandingPageComponent} from "./components/landing-page/landing-page.component";
 import {VisualizationPageComponent} from "./components/visualization-page/visualization-page.component";
+import { ModalModule} from "./components/modal/modal.component.module";
 
 const routes: Routes = [
   {path: '', component: LandingPageComponent },
@@ -13,7 +14,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes), ModalModule],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

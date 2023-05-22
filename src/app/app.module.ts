@@ -17,7 +17,11 @@ import {HighchartsChartModule} from "highcharts-angular";
 import {NgxPanZoomModule} from "ngx-panzoom";
 import { UploadComponentComponent } from './components/upload-component/upload-component.component';
 import { DetailsComponent } from './components/details/details.component';
+import {FilterComponent} from "./components/filter/filter.component";
 import {MatDialogModule} from "@angular/material/dialog";
+import {ModalModule} from "./components/modal/modal.component.module";
+import {FormsModule} from "@angular/forms";
+
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     DagVisualisationComponent,
     HighChartsVisComponent,
     UploadComponentComponent,
-    DetailsComponent
+    DetailsComponent,
+    FilterComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +45,10 @@ import {MatDialogModule} from "@angular/material/dialog";
     BrowserAnimationsModule,
     HighchartsChartModule,
     NgxPanZoomModule,
-    MatDialogModule
+    MatDialogModule,
+    NgxPanZoomModule,
+    ModalModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
