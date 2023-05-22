@@ -4,10 +4,6 @@
       "Node_ID": 1,
       "Node_name": "Node 1",
       "Type": "Type A",
-      "Root":  true,
-      "Supplying_To": [
-        2
-      ],
       "Suppliers": [],
       "Risks": []
     },
@@ -15,8 +11,6 @@
       "Node_ID": 2,
       "Node_name": "Node 2",
       "Type": "Type B",
-      "Root": false,
-      "Supplying_To": [],
       "Suppliers": [
         1
       ],
