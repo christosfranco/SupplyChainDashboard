@@ -124,20 +124,11 @@ function parseNode(jsonNode) {
         }
         break;
 
-      // case 'Root':
-      //   let res2 = checkType(jsonNode[field], node[field]);
-      //   if (res2 instanceof Error) {
-      //     return res2;
-      //   }
-      //   break;
-
       case 'Suppliers':
-      // case 'Supplying_To':
         if (!Array.isArray(jsonNode[field])) {
           return Error(`Invalid '${field}' field in Node: ${jsonNode.Node_ID}`);
         }
         const arrResCon = checkTypeArray(jsonNode[field], 1);
-        // console.log("arr checked\n");
         if (arrResCon instanceof Error) {
           return arrResCon;
         }
@@ -227,9 +218,7 @@ function parseRisk(jsonRisk) {
         if (!Array.isArray(jsonRisk[field])) {
           return Error(`Invalid '${field}' field in Risk`);
         }
-        // console.log("checkarra");
         const arrResCon = checkTypeArray(jsonRisk[field], 1);
-        // console.log("arr checked\n");
         if (arrResCon instanceof Error) {
           return arrResCon;
         }
@@ -262,7 +251,6 @@ function checkTypeArray(array, expected) {
   }
   for (const value of array) {
     const result = checkType(value, expected);
-    // console.log(value, expected);
     if (result instanceof Error) {
       return result;
     }
@@ -274,9 +262,6 @@ function checkTypeArray(array, expected) {
 function checkType(actual, expected) {
   const tactual = typeof actual;
   const texpected = typeof expected;
-  // if ((texpected === MyEnum && tactual === MyEnum)) {
-  //   return undefined;
-  // }
   if (tactual !== texpected || (texpected === ('number') && actual < 1) || (texpected === 'string' && actual === '')) {
     return Error(`Expected type: ${texpected} \n \
     Got type: ${tactual} and value: ${actual.valueOf()}\n \
