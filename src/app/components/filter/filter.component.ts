@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {ModalService} from "../modal/modal.service";
 import {FilterService} from "../../services/filter.service";
 
@@ -9,6 +9,8 @@ import {FilterService} from "../../services/filter.service";
 })
 
 export class FilterComponent {
+  @Output() filterSelected = new EventEmitter<JSON>();
+  // @Output() clearFilters = new EventEmitter<void>();
 
   public show_attention = false;
   public imageUrl_attention = "../../assets/images/attention.png";
@@ -174,6 +176,8 @@ export class FilterComponent {
     this.filterByMitigation = false;
 
     this.filterNameField = "";
+
+    // this.clearFilters.emit();
   }
 
   public applyFilter() {
@@ -301,8 +305,7 @@ export class FilterComponent {
         this.modalService.close("filter-modal");
         console.log(newFilter);
 
-        this.filterService.filerNodes(JSON.parse(JSON.stringify(newFilter)));
-
+        this.filterSelected.emit(JSON.parse(JSON.stringify(newFilter)));
       } else {
         this.attention_msg = "Please select at least one condition."
 

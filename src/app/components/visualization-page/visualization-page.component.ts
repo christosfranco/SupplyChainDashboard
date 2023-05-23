@@ -3,9 +3,9 @@ import { Node } from "../../model/node";
 import { NodesService } from "../../services/nodes.service";
 import { DagVisualisationComponent } from "../dag-visualisation/dag-visualisation.component";
 import { DetailsComponent } from "../details/details.component";
-import {FilterComponent} from "../filter/filter.component";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import {ModalService} from "../modal/modal.service";
+import {FilterService} from "../../services/filter.service";
 
 @Component({
   selector: 'app-visualization-page',
@@ -19,13 +19,10 @@ export class VisualizationPageComponent {
   public imageUrl_trash = "../../assets/images/trash.png";
   public imageUrl_attention = "../../assets/images/attention.png";
 
-
-
   nodes: Node[] | undefined;
-  highlightedNodesIds: String[] = [];
 
   constructor(private nodesService: NodesService, private dialog: MatDialog,
-              private modalService: ModalService) {
+              private modalService: ModalService, private filterService: FilterService) {
 
     this.filters = FILTERS_EXAMPLE;
   }
@@ -33,9 +30,6 @@ export class VisualizationPageComponent {
   ngOnInit(): void {
     this.nodesService.getNodes().subscribe(nodes => {
       this.nodes = nodes;
-    });
-    this.nodesService.getHighlights().subscribe(highlightedNodesIds => {
-      this.highlightedNodesIds = highlightedNodesIds;
     });
   }
 
@@ -53,12 +47,12 @@ export class VisualizationPageComponent {
     this.dialog.open(DetailsComponent, dialogConfig);
   }
 
-  button(): void {
-    this.graph.highlightNodes(this.highlightedNodesIds);
-  }
-
-  removeButton(): void {
+  handleFilterSelected(selectedFilters: JSON) {
     this.graph.removeHighlight();
+    this.filterService
+      .filterNodes(selectedFilters)
+      .subscribe(
+        (response: any) => this.graph.highlightNodes(response));
   }
 
   onNodeClick(d: any) {

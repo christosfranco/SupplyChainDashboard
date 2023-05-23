@@ -1,6 +1,3 @@
-<button (click)="button()">Highlight</button>
-<button (click)="removeButton()">Clear filters</button>
-
 <div class="base">
   <div class="header">
     <div class="button-span">
@@ -42,11 +39,10 @@
   <div class="vis-card-container">
     <div class="vis-card">
       <app-dag-visualisation *ngIf="nodes" [nodes]="nodes" (nodeClick)="onNodeClick($event)"></app-dag-visualisation>
-      <!--<app-high-charts-vis></app-high-charts-vis>-->
     </div>
   </div>
 
-  <modal id="filter-modal" title ="Add New Filter"><filter></filter></modal>
+  <modal id="filter-modal" title ="Add New Filter"><filter (filterSelected)="handleFilterSelected($event)"></filter></modal>
 
   <modal class="export-modal" id="export-modal" title="Export Supply Chain">
   </modal>
