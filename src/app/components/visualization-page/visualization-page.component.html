@@ -30,7 +30,7 @@
       <button class="applied-filter-btn" id="edit-filter" title="Edit filter">
         <img id="edit-icon"
              ngSrc="{{ imageUrl_edit }}" height="25" width="25" alt="Edit"></button>
-      <button class="applied-filter-btn" id="delete-filter" title="Delete filter" (click)="handleClearFilters()">
+      <button class="applied-filter-btn" id="delete-filter" title="Delete filter" (click)="handleClearFilters(filter.color)">
         <img id="delete-icon"
              ngSrc="{{ imageUrl_trash }}" height="25" width="25" alt="Delete"></button>
     </div>

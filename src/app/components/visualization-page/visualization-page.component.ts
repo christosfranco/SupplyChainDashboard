@@ -6,6 +6,7 @@ import { DetailsComponent } from "../details/details.component";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import {ModalService} from "../modal/modal.service";
 import {FilterService} from "../../services/filter.service";
+import {Filter} from "../../model/filters";
 
 @Component({
   selector: 'app-visualization-page',
@@ -20,12 +21,10 @@ export class VisualizationPageComponent {
   public imageUrl_attention = "../../assets/images/attention.png";
 
   nodes: Node[] | undefined;
+  filters: Filter[] = [];
 
   constructor(private nodesService: NodesService, private dialog: MatDialog,
-              private modalService: ModalService, private filterService: FilterService) {
-
-    this.filters = FILTERS_EXAMPLE;
-  }
+              private modalService: ModalService, private filterService: FilterService) {}
 
   ngOnInit(): void {
     this.nodesService.getNodes().subscribe(nodes => {
@@ -47,16 +46,20 @@ export class VisualizationPageComponent {
     this.dialog.open(DetailsComponent, dialogConfig);
   }
 
-  handleFilterSelected(selectedFilters: JSON) {
+  handleFilterSelected(selectedFilters: Filter) {
+    const color = selectedFilters.color;
     this.graph.removeHighlight();
     this.filterService
-      .filterNodes(selectedFilters)
+      .filterNodes(JSON.parse(JSON.stringify(selectedFilters)))
       .subscribe(
-        (response: any) => this.graph.highlightNodes(response));
+        (response: any) => this.graph.highlightNodes(response, color));
+    this.filters?.push(selectedFilters);
   }
   // handleClearFilters($event: void) + to add to html (clearFilters)="handleClearFilters($event)"
-  handleClearFilters() {
-      this.graph.removeHighlight();
+  handleClearFilters(color:string) {
+      this.graph.removeHighlight(color);
+      this.filters = this.filters.filter(filter => filter.color !== color);
+
   }
 
   onNodeClick(d: any) {
@@ -77,7 +80,6 @@ export class VisualizationPageComponent {
     const appliedFilters = document.getElementById("applied-filters");
     appliedFilters!.hidden = true;
   }
-  public filters: Filter[] | undefined;
 
   public showApplied() {
     if (this.filters?.length) {
@@ -91,43 +93,3 @@ export class VisualizationPageComponent {
     }
   }
 }
-
-interface Filter {
-  id: string;
-  name: string;
-  color: string;
-  concerns: null | string[];
-  risks: null | string[];
-  risk_level: null | number[];
-  likelihood: null | number[];
-  risk_factor: null | number[];
-  mitigation_strategy: null | boolean;
-}
-
-
-const FILTERS_EXAMPLE = [
-  {
-    "id": "1",
-    "name": "This is long filter name",
-    "color": "#DEB92AFF",
-    "concerns": ["1"],
-    "risks": null,
-    "risk_level": null,
-    "likelihood": null,
-    "risk_factor": null,
-    "mitigation_strategy": null
-  },
-  {
-    "id": "2",
-    "name": "Filter2",
-    "color": "#3FCFDCFF",
-    "concerns": ["2"],
-    "risks": null,
-    "risk_level": null,
-    "likelihood": null,
-    "risk_factor": null,
-    "mitigation_strategy": null
-  }
-]
-
-

@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {ModalService} from "../modal/modal.service";
 import {FilterService} from "../../services/filter.service";
+import {ConcernForest, ConcernNode, Condition, Filter} from '../../model/filters';
 
 @Component({
   selector: 'filter',
@@ -9,7 +10,7 @@ import {FilterService} from "../../services/filter.service";
 })
 
 export class FilterComponent {
-  @Output() filterSelected = new EventEmitter<JSON>();
+  @Output() filterSelected = new EventEmitter<Filter>();
   // @Output() clearFilters = new EventEmitter<void>();
 
   public show_attention = false;
@@ -324,29 +325,6 @@ export class FilterComponent {
       }, 2000);
     }
   }
-}
-
-
-interface Filter {
-  name: string;
-  color: string;
-  conditions: Condition[];
-}
-
-interface Condition {
-  conditionName: string;
-  operator: string;
-  value: string[] | string;
-}
-
-interface ConcernForest {
-  roots: ConcernNode[];
-}
-
-interface ConcernNode {
-  concern: string;
-  check?: boolean;
-  subconcerns: ConcernNode[];
 }
 
 const CONCERN_FOREST_EXAMPLE = [

@@ -132,7 +132,7 @@ export class DagVisualisationComponent {
 
   }
 
-  public highlightNodes(highlightedNodesIds: String[]) {
+  public highlightNodes(highlightedNodesIds: String[], color: string) {
   const nodes = d3.select("svg")
     .selectAll('.node')// @ts-ignore
     .filter((d) => highlightedNodesIds.includes(d.data.id))
@@ -140,15 +140,24 @@ export class DagVisualisationComponent {
     .attr("class", "highlight")
     .attr("r", this.nodeRadius+35)
     .attr("fill", (n) => "none")
-    .style("stroke", d => "yellow")
+    .style("stroke", d => color)
     .style("stroke-width", d=> 5);
 }
 
-  public removeHighlight() {
+  public removeHighlight(color: string) {
     const nodes = d3.select("svg")
-      .selectAll('.highlight')// @ts-ignore
-      .remove()
+      .selectAll('.highlight')
+      .filter(function () {
+        const node = d3.select(this);
+        console.log(d3.rgb(node.style("stroke")).formatHex())
+        return d3.rgb(node.style("stroke")).formatHex() === color;
+      })
+      .remove();
   }
+
+
+
+
 
 }
 
