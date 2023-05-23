@@ -6,7 +6,7 @@
       <div class="node">
         <label class="node-label">
           <input type="checkbox" [ngModel]="concern.check" class="filter"
-                 (ngModelChange)="selectNode(concern, $event)"> {{concern.concern}}
+                 (ngModelChange)="selectNode(concern, $event)" [id]="concern.id">{{concern.concern}}
         </label>
         <div *ngIf="concern.subconcerns.length" class="node-children">
           <ng-template ngFor let-subconcern [ngForOf]="concern.subconcerns">

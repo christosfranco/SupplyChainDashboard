@@ -15,6 +15,7 @@ export interface ConcernForest {
 }
 
 export interface ConcernNode {
+  id: string
   concern: string;
   check?: boolean;
   subconcerns: ConcernNode[];

@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {ModalService} from "../modal/modal.service";
-import {FilterService} from "../../services/filter.service";
 import {ConcernForest, ConcernNode, Condition, Filter} from '../../model/filters';
 
 @Component({
@@ -11,7 +10,6 @@ import {ConcernForest, ConcernNode, Condition, Filter} from '../../model/filters
 
 export class FilterComponent {
   @Output() filterSelected = new EventEmitter<Filter>();
-  // @Output() clearFilters = new EventEmitter<void>();
 
   public show_attention = false;
   public imageUrl_attention = "../../assets/images/attention.png";
@@ -290,7 +288,7 @@ export class FilterComponent {
           conditionList.push({
             conditionName: "mitigation",
             operator: "EQ",
-            value: "yes"
+            value: "no"
           });
         }
       }
@@ -324,6 +322,57 @@ export class FilterComponent {
         this.show_attention = false;
       }, 2000);
     }
+  }
+
+  populateFilters(filter: Filter) {
+    this.resetCheckboxes();
+
+    if (filter.conditions.find(condition => condition.conditionName === 'concerns')) {
+      // @ts-ignore
+      this.selectedConcernNodes = filter.conditions.find(condition => condition.conditionName === 'concerns')!.value;
+      for(const concernId of this.selectedConcernNodes){
+        const checkbox = document.getElementById(concernId) as HTMLInputElement;
+        checkbox.checked = true;
+      }
+    }
+
+    if (filter.conditions.find(condition => condition.conditionName === 'risks')) {
+      const riskCondition = filter.conditions.find(condition => condition.conditionName === 'risks')!;
+      // TODO
+    }
+
+    if (filter.conditions.find(condition => condition.conditionName === 'risk_level')) {
+      this.filterByRiskLevel = true;
+      const riskLevelCondition = filter.conditions.find(condition => condition.conditionName === 'risk_level')!;
+      riskLevelCondition.value;
+    }
+
+    if (filter.conditions.find(condition => condition.conditionName === 'likelihood')) {
+      this.filterByLikelihood = true;
+      const likelihoodCondition = filter.conditions.find(condition => condition.conditionName === 'likelihood')!;
+      likelihoodCondition.value;
+    }
+
+    if (filter.conditions.find(condition => condition.conditionName === 'risk_factor')) {
+      this.filterByRiskFactor = true;
+      const riskFactorCondition = filter.conditions.find(condition => condition.conditionName === 'risk_factor')!;
+      riskFactorCondition.value;
+    }
+
+    if (filter.conditions.find(condition => condition.conditionName === 'mitigation')) {
+      this.filterByMitigation = true;
+      const mitigationCondition = filter.conditions.find(condition => condition.conditionName === 'mitigation')!;
+      const mitigationValue = mitigationCondition.value;
+      if (mitigationValue === "yes") {
+        const hasMitigationRadioButton = document.getElementById('has-mitigation') as HTMLInputElement;
+        hasMitigationRadioButton.checked = true;
+      } else if (mitigationValue === "no") {
+        const noMitigationRadioButton = document.getElementById('no-mitigation') as HTMLInputElement;
+        noMitigationRadioButton.checked = true;
+      }
+    }
+    this.filterNameField = filter.name;
+    this.selectedColor = filter.color;
   }
 }
 

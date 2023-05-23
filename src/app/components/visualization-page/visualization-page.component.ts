@@ -7,6 +7,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import {ModalService} from "../modal/modal.service";
 import {FilterService} from "../../services/filter.service";
 import {Filter} from "../../model/filters";
+import {FilterComponent} from "../filter/filter.component";
 
 @Component({
   selector: 'app-visualization-page',
@@ -16,6 +17,8 @@ import {Filter} from "../../model/filters";
 
 export class VisualizationPageComponent {
   @ViewChild(DagVisualisationComponent) graph: any;
+  @ViewChild(FilterComponent) filterForm: any;
+
   public imageUrl_edit = "../../assets/images/edit.png";
   public imageUrl_trash = "../../assets/images/trash.png";
   public imageUrl_attention = "../../assets/images/attention.png";
@@ -68,6 +71,11 @@ export class VisualizationPageComponent {
 
   openModal(id: string) {
     this.modalService.open(id)
+  }
+
+  editFilters(id: string, selectedFilters: Filter): void{
+    this.modalService.open(id)
+    this.filterForm.populateFilters(selectedFilters)
   }
 
   closeModal(id: string) {
