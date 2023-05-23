@@ -25,7 +25,7 @@ export class FilterComponent {
   selectedColor: string;
   filterNameField: string | undefined;
 
-  constructor(private modalService: ModalService, private filterService: FilterService) {
+  constructor(private modalService: ModalService) {
 
     this.concernForest = {roots: CONCERN_FOREST_EXAMPLE};
 
