@@ -54,6 +54,10 @@ export class VisualizationPageComponent {
       .subscribe(
         (response: any) => this.graph.highlightNodes(response));
   }
+  // handleClearFilters($event: void) + to add to html (clearFilters)="handleClearFilters($event)"
+  handleClearFilters() {
+      this.graph.removeHighlight();
+  }
 
   onNodeClick(d: any) {
     this.openDialog(d);
