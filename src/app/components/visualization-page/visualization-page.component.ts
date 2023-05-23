@@ -51,7 +51,7 @@ export class VisualizationPageComponent {
 
   handleFilterSelected(selectedFilters: Filter) {
     const color = selectedFilters.color;
-    this.graph.removeHighlight();
+    this.graph.removeHighlight(color);
     this.filterService
       .filterNodes(JSON.parse(JSON.stringify(selectedFilters)))
       .subscribe(
@@ -62,7 +62,6 @@ export class VisualizationPageComponent {
   handleClearFilters(color:string) {
       this.graph.removeHighlight(color);
       this.filters = this.filters.filter(filter => filter.color !== color);
-
   }
 
   onNodeClick(d: any) {
@@ -75,6 +74,7 @@ export class VisualizationPageComponent {
 
   editFilters(id: string, selectedFilters: Filter): void{
     this.modalService.open(id)
+    this.filters = this.filters.filter(filter => filter.name !== selectedFilters.name);
     this.filterForm.populateFilters(selectedFilters)
   }
 
