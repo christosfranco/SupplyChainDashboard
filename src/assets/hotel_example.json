@@ -3,30 +3,7 @@
       "supply_chain_name": "Hotel Supply Chain"
     },
     "Nodes": [
-      {
-        "Node_ID": 0,
-        "Node_name": "Hotel",
-        "Type": "Hotel",
-        "Suppliers": [1, 2, 3, 7, 8],
-        "Risks": []
-      },
-      {
-        "Node_ID": 1,
-        "Node_name": "Hotel Homepage",
-        "Type": "Website",
-        "Suppliers": [4],
-        "Risks": [
-          {
-          "Name": "DDOS Attack",
-          "Risk_ID": 1,
-          "Consequence": 5,
-          "Likelihood": 3,
-          "Mitigation_Strategies": ["Antivir Software"],
-          "Concern_IDs": [
-            1
-          ]}         
-        ]
-      },
+
       {
         "Node_ID": 2,
         "Node_name": "Trivago",
@@ -41,7 +18,7 @@
           "Mitigation_Strategies": ["Handled by external supplier"],
           "Concern_IDs": [
             1
-          ]}         
+          ]}
         ]
       },
       {
@@ -58,24 +35,7 @@
             "Mitigation_Strategies": ["Handled by external supplier"],
             "Concern_IDs": [
               1
-            ]}         
-          ]
-      },
-      {
-        "Node_ID": 4,
-        "Node_name": "Server",
-        "Type": "Hardware",
-        "Suppliers": [5,6],
-        "Risks": [
-            {
-            "Name": "Unexpected Shutdown",
-            "Risk_ID": 3,
-            "Consequence": 5,
-            "Likelihood": 3,
-            "Mitigation_Strategies": ["Backup Server"],
-            "Concern_IDs": [
-              2
-            ]}         
+            ]}
           ]
       },
       {
@@ -92,7 +52,7 @@
           "Mitigation_Strategies": ["Regular Updates"],
           "Concern_IDs": [
             1
-          ]}         
+          ]}
         ]
       },
       {
@@ -109,7 +69,43 @@
           "Mitigation_Strategies": [],
           "Concern_IDs": [
             3
-          ]}         
+          ]}
+        ]
+      },
+
+      {
+        "Node_ID": 4,
+        "Node_name": "Server",
+        "Type": "Hardware",
+        "Suppliers": [5,6],
+        "Risks": [
+          {
+            "Name": "Unexpected Shutdown",
+            "Risk_ID": 3,
+            "Consequence": 5,
+            "Likelihood": 3,
+            "Mitigation_Strategies": ["Backup Server"],
+            "Concern_IDs": [
+              2
+            ]}
+        ]
+      },
+
+      {
+        "Node_ID": 1,
+        "Node_name": "Hotel Homepage",
+        "Type": "Website",
+        "Suppliers": [4],
+        "Risks": [
+          {
+            "Name": "DDOS Attack",
+            "Risk_ID": 1,
+            "Consequence": 5,
+            "Likelihood": 3,
+            "Mitigation_Strategies": ["Antivir Software"],
+            "Concern_IDs": [
+              1
+            ]}
         ]
       },
       {
@@ -126,7 +122,7 @@
           "Mitigation_Strategies": [],
           "Concern_IDs": [
             4
-          ]}         
+          ]}
         ]
       },
       {
@@ -143,8 +139,15 @@
           "Mitigation_Strategies": ["Security surveillance"],
           "Concern_IDs": [
             3
-          ]}         
+          ]}
         ]
+      },
+      {
+        "Node_ID": 0,
+        "Node_name": "Hotel",
+        "Type": "Hotel",
+        "Suppliers": [1, 2, 3, 7, 8],
+        "Risks": []
       }
     ]
   }

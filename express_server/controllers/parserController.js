@@ -5,6 +5,8 @@ const inputFile = require('../../src/assets/nodes.json')
 
 const debugLog = true;
 const allowSelfSupply = false;
+const rootNode = 0;
+
 
 const handleFilePost = (req, res, _next) => {
   if (!req.accepts(['json', 'text'])) {
@@ -90,12 +92,24 @@ function parseData(jsonData) {
     if (parsedNodes.some(node => node instanceof Error)) {
       return parsedNodes.find(node => node instanceof Error);
     } else {
+      let checkedSuppliers = jsonData.Nodes.map(checkSuppliers)
+      if (checkedSuppliers.some(node => node instanceof Error)) {
+        return checkedSuppliers.find(node => node instanceof Error);
+      }
       data.Nodes = parsedNodes; // will only overwrite if valid
     }
   }
   return data;
 }
 
+function checkSuppliers(jsonNode) {
+  // Check if IDs exist in Node_IDs
+  for (const id of jsonNode.Suppliers) {
+    if (!nodeIDs.has(id)) {
+      return Error(`Invalid '${jsonNode.Suppliers}' ID '${id}' in Node: ${jsonNode.Node_ID}`);
+    }
+  }
+}
 
 function parseNode(jsonNode) {
   const node = new Node();
@@ -128,12 +142,6 @@ function parseNode(jsonNode) {
         const arrResCon = checkTypeArray(jsonNode[field], 1);
         if (arrResCon instanceof Error) {
           return arrResCon;
-        }
-        // Check if IDs exist in Node_IDs
-        for (const id of jsonNode[field]) {
-          if (!nodeIDs.has(id)) {
-            return Error(`Invalid '${field}' ID '${id}' in Node: ${jsonNode.Node_ID}`);
-          }
         }
         break;
 
@@ -256,7 +264,7 @@ function checkTypeArray(array, expected) {
 function checkType(actual, expected) {
   const tactual = typeof actual;
   const texpected = typeof expected;
-  if (tactual !== texpected || (texpected === ('number') && actual < 1) || (texpected === 'string' && actual === '')) {
+  if (tactual !== texpected || (texpected === ('number') && actual < 0) || (texpected === 'string' && actual === '')) {
     return Error(`Expected type: ${texpected} \n \
     Got type: ${tactual} and value: ${actual.valueOf()}\n \
     In Node with ID: ${actual.Node_ID} \n \
