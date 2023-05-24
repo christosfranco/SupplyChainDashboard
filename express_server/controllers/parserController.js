@@ -1,14 +1,12 @@
 const { Node, Risk, Data } = require('../models/supplyChainTree.js');
-const {instanceOf} = require("karma/common/util");
 
 const data = new Data();
 const inputFile = require('../../src/assets/nodes.json')
-const {ConsLike, MyEnum} = require("../models/supplyChainTree");
 
 const debugLog = true;
 const allowSelfSupply = false;
 
-const handleFilePost = (req, res, next) => {
+const handleFilePost = (req, res, _next) => {
   if (!req.accepts(['json', 'text'])) {
     res.status(406);
     res.send('Not Acceptable');
@@ -24,7 +22,7 @@ const handleFilePost = (req, res, next) => {
     if (debugLog) {
       console.log(req);
       console.log(req.body);
-      console.log("no body in paryload Json post Didnt work");
+      console.log("no body in payload Json post Didnt work");
     }
     return;
   }
@@ -55,7 +53,7 @@ const handleFilePost = (req, res, next) => {
 
 
 
-const handleFileGet = (req, res,next) => {
+const handleFileGet = (req, res,_next) => {
   if (!req.accepts(['json', 'text'])) {
     res.status(406);
     res.send('Not Acceptable');
@@ -73,7 +71,7 @@ const handleFileGet = (req, res,next) => {
 };
 
 // test that the data instance is set globally
-const handleFileGetTest = (req, res,next) => {
+const handleFileGetTest = (req, res,_next) => {
   res.send(data);
 }
 function parseData(jsonData) {
@@ -124,9 +122,6 @@ function parseNode(jsonNode) {
         break;
 
       case 'Suppliers':
-        if (!Array.isArray(jsonNode[field])) {
-          return Error(`Invalid '${field}' field in Node: ${jsonNode.Node_ID}`);
-        }
         const arrResCon = checkTypeArray(jsonNode[field], 1);
         if (arrResCon instanceof Error) {
           return arrResCon;
@@ -214,9 +209,6 @@ function parseRisk(jsonRisk) {
         break;
 
       case 'Concern_IDs':
-        if (!Array.isArray(jsonRisk[field])) {
-          return Error(`Invalid '${field}' field in Risk`);
-        }
         const arrResCon = checkTypeArray(jsonRisk[field], 1);
         if (arrResCon instanceof Error) {
           return arrResCon;
@@ -224,9 +216,6 @@ function parseRisk(jsonRisk) {
         break;
 
       case 'Mitigation_Strategies':
-        if (!Array.isArray(jsonRisk[field])) {
-          return Error(`Invalid '${field}' field in Risk`);
-        }
         const arrRes = checkTypeArray(jsonRisk[field], " ");
         if (arrRes instanceof Error){
           return arrRes;
@@ -245,6 +234,9 @@ function parseRisk(jsonRisk) {
   return risk;
 }
 function checkTypeArray(array, expected) {
+  if (!Array.isArray(array)) {
+    return Error(`Not array in Node: ${array.Node_ID}`);
+  }
   if (array === []) {
     return true;
   }
@@ -268,84 +260,6 @@ function checkType(actual, expected) {
     In Risk with ID: ${actual.Risk_ID} \n \
     In the field: ${JSON.stringify(actual[Object.keys(expected)[0]])}`);
   }
-}
-
-function checkUnexpectedFields(jsonData, expectedFields) {
-  const unexpectedFields = [];
-
-  function recurse(obj, path) {
-    for (const key in obj) {
-      const currentPath = path ? `${path}.${key}` : key;
-      if (!expectedFields.includes(currentPath)) {
-        unexpectedFields.push(currentPath);
-      }
-      if (typeof obj[key] === 'object' && obj[key] !== null) {
-        recurse(obj[key], currentPath);
-      }
-    }
-  }
-
-  recurse(jsonData, '');
-
-  return unexpectedFields;
-}
-function compareStructuresBool(parsedData, expectedStructure) {
-  function recurse(parsedObj, expectedObj) {
-    for (const key in expectedObj) {
-      if (!(key in parsedObj)) {
-        return false;
-      }
-      if (typeof expectedObj[key] === 'object' && expectedObj[key] !== null) {
-        if (typeof parsedObj[key] !== 'object' || parsedObj[key] === null) {
-          return false;
-        }
-        if (!recurse(parsedObj[key], expectedObj[key])) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-  return recurse(parsedData, expectedStructure);
-}
-
-function compareStructures(parsedData, expectedStructure) {
-  const unexpectedFields = [];
-
-  function recurse(parsedObj, expectedObj, currentPath = '') {
-    for (const key in parsedObj) {
-      const fieldPath = currentPath ? `${currentPath}.${key}` : key;
-
-      if (!(key in expectedObj)) {
-        unexpectedFields.push(key);
-        continue;
-      }
-
-      if (typeof expectedObj[key] === 'object' && expectedObj[key] !== null) {
-        if (typeof parsedObj[key] !== 'object' || parsedObj[key] === null) {
-          unexpectedFields.push(key);
-          continue;
-        }
-
-        if (Array.isArray(expectedObj[key])) {
-          if (!Array.isArray(parsedObj[key])) {
-            unexpectedFields.push(key);
-            continue;
-          }
-
-          // Check if array items match the expected structure
-          for (let i = 0; i < parsedObj[key].length; i++) {
-            recurse(parsedObj[key][i], expectedObj[key][0], `${fieldPath}[${i}]`);
-          }
-        } else {
-          recurse(parsedObj[key], expectedObj[key], fieldPath);
-        }
-      }
-    }
-  }
-  recurse(parsedData, expectedStructure);
-  return unexpectedFields;
 }
 
 module.exports = {

@@ -1,0 +1,11 @@
+DONE make node id duplicate check.
+
+DONE check that suppliers and supplying to node_ids exist
+
+DONE check special type cons and likelihood
+
+error message correct output, either node id or risk id. also output field
+
+make tests,
+  unit test for each function
+  integration test with API

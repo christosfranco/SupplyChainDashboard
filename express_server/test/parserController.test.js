@@ -48,13 +48,35 @@ describe('Nodes and Risk Parsing', () => {
   });
 
   it('should return true for a valid array', () => {
-    // const array = ['value1', 'value2', 'value3'];
-    const array = [];
-    const result = checkTypeArray(array, "hi");
+    const array1 = ['value1', 'value2', 'value3'];
+    const arrayEmpty = [];
+    const resultEmpty = checkTypeArray(arrayEmpty, "hi");
+    const result1 = checkTypeArray(array1, "hi");
     // Add more assertions for different scenarios
-    assert.strictEqual(result, true, 'The value is not equal to 1');
+    assert.strictEqual(resultEmpty, true, 'Empty array is valid');
+    assert.strictEqual(result1, true, 'String array is valid');
 
     // ...
+  });
+
+  it('should return false for an invalid array', () => {
+    const arrayEmptyString = ['', 'value2', 'value3'];
+    const arrayEmptyString2 = ['s', 'value2', ''];
+    const arrayEmptyString3 = [''];
+    const number = 1;
+    const stringEmpty = "";
+    const string = "hi";
+    const bool = true;
+    const nan = NaN;
+    const Null = null;
+
+    const allArrays = [arrayEmptyString,arrayEmptyString2,arrayEmptyString3,number, stringEmpty,string, bool, nan,Null];
+    for (const array in allArrays) {
+        const res = checkTypeArray(array, "hi");
+        assert.throws(checkTypeArray,Error);
+        assert.instanceOf(res, Error);
+
+    }
   });
 
   it('should return true for a valid value', () => {
