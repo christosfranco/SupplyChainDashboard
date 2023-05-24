@@ -1,40 +1,51 @@
 const { Node, Risk, Data } = require('../models/supplyChainTree.js');
-const {instanceOf} = require("karma/common/util");
 
 const data = new Data();
 const inputFile = require('../../src/assets/nodes.json')
 
+const debugLog = true;
+const allowSelfSupply = false;
 
-const handleFilePost = (req, res, next) => {
+const handleFilePost = (req, res, _next) => {
   if (!req.accepts(['json', 'text'])) {
     res.status(406);
     res.send('Not Acceptable');
-    // console.log("Json post Didnt work");
+    if (debugLog) {
+      console.log("Json post Didnt work");
+    }
     return;
   }
 
   if (!req.body) {
-    // console.log(req.body);
-    // console.log(req);
     res.status(400);
     res.send('Invalid JSON payload');
-    // console.log("no body in paryload Json post Didnt work");
+    if (debugLog) {
+      console.log(req);
+      console.log(req.body);
+      console.log("no body in payload Json post Didnt work");
+    }
     return;
   }
 
   try {
     let parsedData = parseData(req.body);
     if (parsedData instanceof Error) {
-      // console.error(parsedData);
-      // console.log("Json post Didnt work");
+      if (debugLog) {
+        console.error(parsedData);
+        console.log("Json post Didnt work");
+      }
       res.status(406);
       res.send(parsedData.message); // if Error, send Error message
     } else {
-      // console.log(parsedData);
+      if (debugLog) {
+        console.log(parsedData);
+      }
       res.json(parsedData);
     }
   } catch (error) {
-    // console.error(error);
+    if (debugLog) {
+      console.error(error);
+    }
     res.status(400);
     res.send('Invalid JSON payload');
   }
@@ -42,7 +53,7 @@ const handleFilePost = (req, res, next) => {
 
 
 
-const handleFileGet = (req, res,next) => {
+const handleFileGet = (req, res,_next) => {
   if (!req.accepts(['json', 'text'])) {
     res.status(406);
     res.send('Not Acceptable');
@@ -59,9 +70,8 @@ const handleFileGet = (req, res,next) => {
   }
 };
 
-// tests that the data instance is set globally
-
-const handleFileGetTest = (req, res,next) => {
+// test that the data instance is set globally
+const handleFileGetTest = (req, res,_next) => {
   res.send(data);
 }
 function parseData(jsonData) {
@@ -82,14 +92,21 @@ function parseData(jsonData) {
 }
 
 
+let nodeIDs = new Set(); // To track duplicate Node_IDs
 
 function parseNode(jsonNode) {
   const node = new Node();
-  let risks = new Risk();
+  let risks = [];
 
   for (const field in jsonNode) {
     switch (field) {
       case 'Node_ID':
+        if (nodeIDs.has(jsonNode[field])) {
+          return Error(`Duplicate 'Node_ID' found: ${jsonNode.Node_ID}`);
+        }
+        if (allowSelfSupply) {
+          nodeIDs.add(jsonNode.Node_ID);
+        }
         let res = checkType(jsonNode[field], node[field]);
         if (res instanceof Error) {
           return res;
@@ -104,17 +121,16 @@ function parseNode(jsonNode) {
         }
         break;
 
-      case 'Root':
-        let res2 = checkType(jsonNode[field], node[field]);
-        if (res2 instanceof Error) {
-          return res2;
-        }
-        break;
-
       case 'Suppliers':
-      case 'Supplying_To':
-        if (!Array.isArray(jsonNode[field])) {
-          return Error(`Invalid '${field}' field in Node: ${jsonNode.Node_ID}`);
+        const arrResCon = checkTypeArray(jsonNode[field], 1);
+        if (arrResCon instanceof Error) {
+          return arrResCon;
+        }
+        // Check if IDs exist in Node_IDs
+        for (const id of jsonNode[field]) {
+          if (!nodeIDs.has(id)) {
+            return Error(`Invalid '${field}' ID '${id}' in Node: ${jsonNode.Node_ID}`);
+          }
         }
         break;
 
@@ -130,7 +146,10 @@ function parseNode(jsonNode) {
     }
 
   }
-
+  // only add Node_ID if everything parses, will also ensure cant supply to itself
+  if (!allowSelfSupply) {
+    nodeIDs.add(jsonNode.Node_ID);
+  }
   // ensure data not overwritten unless all parsed
   for (const field in jsonNode) {
     switch (field){
@@ -161,7 +180,10 @@ function parseRisks(jsonRisks) {
 
 function parseRisk(jsonRisk) {
   const risk = new Risk();
-
+  // console.log(jsonRisk);
+  if (jsonRisk === []) {
+    return risk;
+  }
   for (const field in jsonRisk) {
     switch (field) {
       case 'Name':
@@ -171,19 +193,32 @@ function parseRisk(jsonRisk) {
         }
         break;
 
-      case 'Risk_ID':
       case 'Consequence':
       case 'Likelihood':
+        let res1 = checkType(jsonRisk[field], risk[field]);
+        if (res1 instanceof Error) {
+          return res1;
+        }
+        break;
+
+      case 'Risk_ID':
         let res = checkType(jsonRisk[field], risk[field]);
         if (res instanceof Error) {
           return res;
         }
         break;
 
-      case 'Mitigation_Strategies':
       case 'Concern_IDs':
-        if (!Array.isArray(jsonRisk[field])) {
-          return Error(`Invalid '${field}' field in Risk`);
+        const arrResCon = checkTypeArray(jsonRisk[field], 1);
+        if (arrResCon instanceof Error) {
+          return arrResCon;
+        }
+        break;
+
+      case 'Mitigation_Strategies':
+        const arrRes = checkTypeArray(jsonRisk[field], " ");
+        if (arrRes instanceof Error){
+          return arrRes;
         }
         break;
 
@@ -198,95 +233,33 @@ function parseRisk(jsonRisk) {
 
   return risk;
 }
+function checkTypeArray(array, expected) {
+  if (!Array.isArray(array)) {
+    return Error(`Not array in Node: ${array.Node_ID}`);
+  }
+  if (array === []) {
+    return true;
+  }
+  for (const value of array) {
+    const result = checkType(value, expected);
+    if (result instanceof Error) {
+      return result;
+    }
+  }
+  return true;
+}
 
-
+// checks actual type is equal to expected, for strings also check nonempty string
 function checkType(actual, expected) {
   const tactual = typeof actual;
   const texpected = typeof expected;
-  if (tactual !== texpected || (texpected === 'string' && actual === '')) {
+  if (tactual !== texpected || (texpected === ('number') && actual < 1) || (texpected === 'string' && actual === '')) {
     return Error(`Expected type: ${texpected} \n \
     Got type: ${tactual} and value: ${actual.valueOf()}\n \
     In Node with ID: ${actual.Node_ID} \n \
+    In Risk with ID: ${actual.Risk_ID} \n \
     In the field: ${JSON.stringify(actual[Object.keys(expected)[0]])}`);
   }
-}
-
-function checkUnexpectedFields(jsonData, expectedFields) {
-  const unexpectedFields = [];
-
-  function recurse(obj, path) {
-    for (const key in obj) {
-      const currentPath = path ? `${path}.${key}` : key;
-      if (!expectedFields.includes(currentPath)) {
-        unexpectedFields.push(currentPath);
-      }
-      if (typeof obj[key] === 'object' && obj[key] !== null) {
-        recurse(obj[key], currentPath);
-      }
-    }
-  }
-
-  recurse(jsonData, '');
-
-  return unexpectedFields;
-}
-function compareStructuresBool(parsedData, expectedStructure) {
-  function recurse(parsedObj, expectedObj) {
-    for (const key in expectedObj) {
-      if (!(key in parsedObj)) {
-        return false;
-      }
-      if (typeof expectedObj[key] === 'object' && expectedObj[key] !== null) {
-        if (typeof parsedObj[key] !== 'object' || parsedObj[key] === null) {
-          return false;
-        }
-        if (!recurse(parsedObj[key], expectedObj[key])) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-  return recurse(parsedData, expectedStructure);
-}
-
-function compareStructures(parsedData, expectedStructure) {
-  const unexpectedFields = [];
-
-  function recurse(parsedObj, expectedObj, currentPath = '') {
-    for (const key in parsedObj) {
-      const fieldPath = currentPath ? `${currentPath}.${key}` : key;
-
-      if (!(key in expectedObj)) {
-        unexpectedFields.push(key);
-        continue;
-      }
-
-      if (typeof expectedObj[key] === 'object' && expectedObj[key] !== null) {
-        if (typeof parsedObj[key] !== 'object' || parsedObj[key] === null) {
-          unexpectedFields.push(key);
-          continue;
-        }
-
-        if (Array.isArray(expectedObj[key])) {
-          if (!Array.isArray(parsedObj[key])) {
-            unexpectedFields.push(key);
-            continue;
-          }
-
-          // Check if array items match the expected structure
-          for (let i = 0; i < parsedObj[key].length; i++) {
-            recurse(parsedObj[key][i], expectedObj[key][0], `${fieldPath}[${i}]`);
-          }
-        } else {
-          recurse(parsedObj[key], expectedObj[key], fieldPath);
-        }
-      }
-    }
-  }
-  recurse(parsedData, expectedStructure);
-  return unexpectedFields;
 }
 
 module.exports = {
@@ -294,4 +267,11 @@ module.exports = {
   handleFilePost,
   handleFileGet,
   handleFileGetTest,
+  Risk,
+  parseNode,
+  parseRisks,
+  parseRisk,
+  checkTypeArray,
+  checkType,
+  Node,
 };
