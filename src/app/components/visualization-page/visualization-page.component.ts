@@ -51,20 +51,20 @@ export class VisualizationPageComponent {
 
   handleFilterSelected(selectedFilters: Filter) {
     const color = selectedFilters.color;
-    this.graph.removeHighlight(color);
+    const name = selectedFilters.name;
+    this.graph.removeHighlight(color,name);
     this.filterService
       .filterNodes(JSON.parse(JSON.stringify(selectedFilters)))
       .subscribe(
-        (response: any) => this.graph.highlightNodes(response, color));
+        (response: any) => this.graph.highlightNodes(response, color, name));
     if (this.filters) {
       this.filters = this.filters.filter(filter => filter.name !== selectedFilters.name);
     }
     this.filters?.push(selectedFilters);
   }
-  // handleClearFilters($event: void) + to add to html (clearFilters)="handleClearFilters($event)"
-  handleClearFilters(color:string) {
-      this.graph.removeHighlight(color);
-      this.filters = this.filters.filter(filter => filter.color !== color);
+  handleClearFilters(color:string, name:string) {
+      this.graph.removeHighlight(color, name);
+      this.filters = this.filters.filter(filter => filter.name !== name);
   }
 
   onNodeClick(d: any) {

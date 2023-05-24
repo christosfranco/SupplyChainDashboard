@@ -132,28 +132,30 @@ export class DagVisualisationComponent {
 
   }
 
-  public highlightNodes(highlightedNodesIds: String[], color: string) {
-  const nodes = d3.select("svg")
-    .selectAll('.node')// @ts-ignore
-    .filter((d) => highlightedNodesIds.includes(d.data.id))
-    .append("circle")
-    .attr("class", "highlight")
-    .attr("r", this.nodeRadius+35)
-    .attr("fill", (n) => "none")
-    .style("stroke", d => color)
-    .style("stroke-width", d=> 5);
-}
+  public highlightNodes(highlightedNodesIds: string[], color: string, filterName: string) {
+    const nodes = d3.select("svg")
+      .selectAll('.node')// @ts-ignore
+      .filter((d) => highlightedNodesIds.includes(d.data.id))
+      .append("circle")
+      .attr("class", `highlight ${filterName}`)
+      .attr("r", this.nodeRadius + 35)
+      .attr("fill", "none")
+      .style("stroke", color)
+      .style("stroke-width", 5);
+  }
 
-  public removeHighlight(color: string) {
+  public removeHighlight(color: string, filterName: string) {
     const nodes = d3.select("svg")
       .selectAll('.highlight')
       .filter(function () {
         const node = d3.select(this);
-        console.log(d3.rgb(node.style("stroke")).formatHex())
-        return d3.rgb(node.style("stroke")).formatHex() === color;
+        const nodeColor = d3.rgb(node.style("stroke")).formatHex();
+        const nodeFilterName = node.attr("class").split(" ").find(cls => cls !== "highlight");
+        return nodeColor === color && nodeFilterName === filterName;
       })
       .remove();
   }
+
 
 
 
