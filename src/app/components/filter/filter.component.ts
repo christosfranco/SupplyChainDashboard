@@ -302,8 +302,6 @@ export class FilterComponent {
 
         this.resetCheckboxes();
         this.modalService.close("filter-modal");
-        console.log(newFilter);
-
         this.filterSelected.emit(JSON.parse(JSON.stringify(newFilter)));
       } else {
         this.attention_msg = "Please select at least one condition."

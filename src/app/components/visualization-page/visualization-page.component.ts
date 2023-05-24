@@ -56,6 +56,9 @@ export class VisualizationPageComponent {
       .filterNodes(JSON.parse(JSON.stringify(selectedFilters)))
       .subscribe(
         (response: any) => this.graph.highlightNodes(response, color));
+    if (this.filters) {
+      this.filters = this.filters.filter(filter => filter.name !== selectedFilters.name);
+    }
     this.filters?.push(selectedFilters);
   }
   // handleClearFilters($event: void) + to add to html (clearFilters)="handleClearFilters($event)"
@@ -74,7 +77,6 @@ export class VisualizationPageComponent {
 
   editFilters(id: string, selectedFilters: Filter): void{
     this.modalService.open(id)
-    this.filters = this.filters.filter(filter => filter.name !== selectedFilters.name);
     this.filterForm.populateFilters(selectedFilters)
   }
 
