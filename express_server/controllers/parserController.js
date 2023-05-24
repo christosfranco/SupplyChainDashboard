@@ -74,8 +74,13 @@ const handleFileGet = (req, res,_next) => {
 const handleFileGetTest = (req, res,_next) => {
   res.send(data);
 }
+
+
+let nodeIDs = new Set(); // To track duplicate Node_IDs
+
 function parseData(jsonData) {
 
+  nodeIDs = new Set();
   // Check if the required "Nodes" field exists and is an array
   if (!Array.isArray(jsonData.Nodes)) {
     return Error('Invalid JSON: Missing or invalid "Nodes" field');
@@ -91,8 +96,6 @@ function parseData(jsonData) {
   return data;
 }
 
-
-let nodeIDs = new Set(); // To track duplicate Node_IDs
 
 function parseNode(jsonNode) {
   const node = new Node();
