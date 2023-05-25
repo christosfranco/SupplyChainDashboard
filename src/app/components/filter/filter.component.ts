@@ -173,147 +173,129 @@ export class FilterComponent {
     this.filterByLikelihood = false;
     this.filterByRiskFactor = false;
     this.filterByMitigation = false;
-
-    this.filterNameField = "";
-
-    // this.clearFilters.emit();
   }
 
   public applyFilter() {
+    var conditionList: Condition[] = [];
 
-    if (this.filterNameField?.length) {
+    // CONCERNS
+    if (this.selectedConcernNodes.length) {
+      conditionList.push({
+        conditionName: "concerns",
+        operator: "IN",
+        value: this.selectedConcernNodes
+      });
+    }
 
-      var conditionList: Condition[] = [];
+    // RISKS
+    // TODO
 
-      // CONCERNS
-      if (this.selectedConcernNodes.length) {
+
+    // RISK LEVEL
+    if (this.filterByRiskLevel) {
+      const fromRiskLevel = (<HTMLInputElement>document.getElementById("fromSliderRisk")!).value;
+      const toRiskLevel = (<HTMLInputElement>document.getElementById("toSliderRisk")!).value;
+      if (fromRiskLevel == toRiskLevel) {
         conditionList.push({
-          conditionName: "concerns",
-          operator: "IN",
-          value: this.selectedConcernNodes
+          conditionName: "risk_level",
+          operator: "EQ",
+          value: fromRiskLevel
         });
       }
+      else {
+        conditionList.push({
+          conditionName: "risk_level",
+          operator: "GT",
+          value: fromRiskLevel
+        });
+        conditionList.push({
+          conditionName: "risk_level",
+          operator: "LT",
+          value: toRiskLevel
+        })
+      }
+    }
 
-      // RISKS
-      // TODO
+    // LIKELIHOOD
+    if (this.filterByLikelihood) {
+      const fromLikelihood = (<HTMLInputElement>document.getElementById("fromSliderLikelihood")!).value;
+      const toLikelihood = (<HTMLInputElement>document.getElementById("toSliderLikelihood")!).value;
+      if (fromLikelihood == toLikelihood) {
+        conditionList.push({
+          conditionName: "likelihood",
+          operator: "EQ",
+          value: fromLikelihood
+        });
+      }
+      else {
+        conditionList.push({
+          conditionName: "likelihood",
+          operator: "GT",
+          value: fromLikelihood
+        });
+        conditionList.push({
+          conditionName: "likelihood",
+          operator: "LT",
+          value: toLikelihood
+        })
+      }
+    }
 
+    // RISK FACTOR
+    if (this.filterByRiskFactor) {
+      const fromRiskFactor = (<HTMLInputElement>document.getElementById("fromSliderRiskFac")!).value;
+      const toRiskFactor = (<HTMLInputElement>document.getElementById("toSliderRiskFac")!).value;
+      if (fromRiskFactor == toRiskFactor) {
+        conditionList.push({
+          conditionName: "risk_factor",
+          operator: "EQ",
+          value: fromRiskFactor
+        });
+      }
+      else {
+        conditionList.push({
+          conditionName: "risk_factor",
+          operator: "GT",
+          value: fromRiskFactor
+        });
+        conditionList.push({
+          conditionName: "risk_factor",
+          operator: "LT",
+          value: toRiskFactor
+        })
+      }
+    }
 
-      // RISK LEVEL
-      if (this.filterByRiskLevel) {
-        const fromRiskLevel = (<HTMLInputElement>document.getElementById("fromSliderRisk")!).value;
-        const toRiskLevel = (<HTMLInputElement>document.getElementById("toSliderRisk")!).value;
-        if (fromRiskLevel == toRiskLevel) {
-          conditionList.push({
-            conditionName: "risk_level",
-            operator: "EQ",
-            value: fromRiskLevel
-          });
-        }
-        else {
-          conditionList.push({
-            conditionName: "risk_level",
-            operator: "GT",
-            value: fromRiskLevel
-          });
-          conditionList.push({
-            conditionName: "risk_level",
-            operator: "LT",
-            value: toRiskLevel
-          })
-        }
+    // MITIGATION STRATEGY
+    if (this.filterByMitigation) {
+      const hasMitigation = (<HTMLInputElement>document.getElementById("has-mitigation")!).checked;
+      const noMitigation = (<HTMLInputElement>document.getElementById("no-mitigation")!).checked;
+      if (hasMitigation) {
+        conditionList.push({
+          conditionName: "mitigation",
+          operator: "EQ",
+          value: "yes"
+        });
+      }
+      else if (noMitigation) {
+        conditionList.push({
+          conditionName: "mitigation",
+          operator: "EQ",
+          value: "no"
+        });
+      }
+    }
+
+    if (conditionList.length) {
+      const newFilter: Filter = {
+        conditions: conditionList
       }
 
-      // LIKELIHOOD
-      if (this.filterByLikelihood) {
-        const fromLikelihood = (<HTMLInputElement>document.getElementById("fromSliderLikelihood")!).value;
-        const toLikelihood = (<HTMLInputElement>document.getElementById("toSliderLikelihood")!).value;
-        if (fromLikelihood == toLikelihood) {
-          conditionList.push({
-            conditionName: "likelihood",
-            operator: "EQ",
-            value: fromLikelihood
-          });
-        }
-        else {
-          conditionList.push({
-            conditionName: "likelihood",
-            operator: "GT",
-            value: fromLikelihood
-          });
-          conditionList.push({
-            conditionName: "likelihood",
-            operator: "LT",
-            value: toLikelihood
-          })
-        }
-      }
-
-      // RISK FACTOR
-      if (this.filterByRiskFactor) {
-        const fromRiskFactor = (<HTMLInputElement>document.getElementById("fromSliderRiskFac")!).value;
-        const toRiskFactor = (<HTMLInputElement>document.getElementById("toSliderRiskFac")!).value;
-        if (fromRiskFactor == toRiskFactor) {
-          conditionList.push({
-            conditionName: "risk_factor",
-            operator: "EQ",
-            value: fromRiskFactor
-          });
-        }
-        else {
-          conditionList.push({
-            conditionName: "risk_factor",
-            operator: "GT",
-            value: fromRiskFactor
-          });
-          conditionList.push({
-            conditionName: "risk_factor",
-            operator: "LT",
-            value: toRiskFactor
-          })
-        }
-      }
-
-      // MITIGATION STRATEGY
-      if (this.filterByMitigation) {
-        const hasMitigation = (<HTMLInputElement>document.getElementById("has-mitigation")!).checked;
-        const noMitigation = (<HTMLInputElement>document.getElementById("no-mitigation")!).checked;
-        if (hasMitigation) {
-          conditionList.push({
-            conditionName: "mitigation",
-            operator: "EQ",
-            value: "yes"
-          });
-        }
-        else if (noMitigation) {
-          conditionList.push({
-            conditionName: "mitigation",
-            operator: "EQ",
-            value: "no"
-          });
-        }
-      }
-
-      if (conditionList.length) {
-        const newFilter: Filter = {
-          name: this.filterNameField,
-          color: (<HTMLInputElement>document.querySelector("#filter-color")!).value,
-          conditions: conditionList
-        }
-
-        this.resetCheckboxes();
-        this.modalService.close("filter-modal");
-        this.filterSelected.emit(JSON.parse(JSON.stringify(newFilter)));
-      } else {
-        this.attention_msg = "Please select at least one condition."
-
-        this.show_attention = true;
-        setTimeout(() => {
-          this.show_attention = false;
-        }, 2000);
-      }
-
+      this.resetCheckboxes();
+      this.modalService.close("filter-modal");
+      this.filterSelected.emit(JSON.parse(JSON.stringify(newFilter)));
     } else {
-      this.attention_msg = "Please select a name for the filter."
+      this.attention_msg = "Please select at least one condition."
 
       this.show_attention = true;
       setTimeout(() => {
@@ -369,8 +351,6 @@ export class FilterComponent {
         noMitigationRadioButton.checked = true;
       }
     }
-    this.filterNameField = filter.name;
-    this.selectedColor = filter.color;
   }
 }
 

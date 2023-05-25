@@ -8,6 +8,7 @@ import {ModalService} from "../modal/modal.service";
 import {FilterService} from "../../services/filter.service";
 import {Filter} from "../../model/filters";
 import {FilterComponent} from "../filter/filter.component";
+import {AppliedFiltersComponent} from "../applied-filters/applied-filters.component";
 
 @Component({
   selector: 'app-visualization-page',
@@ -18,13 +19,13 @@ import {FilterComponent} from "../filter/filter.component";
 export class VisualizationPageComponent {
   @ViewChild(DagVisualisationComponent) graph: any;
   @ViewChild(FilterComponent) filterForm: any;
+  @ViewChild(AppliedFiltersComponent) appliedFilters: any;
 
-  public imageUrl_edit = "../../assets/images/edit.png";
-  public imageUrl_trash = "../../assets/images/trash.png";
+
   public imageUrl_attention = "../../assets/images/attention.png";
 
   nodes: Node[] | undefined;
-  filters: Filter[] = [];
+  filters: Filter | undefined;
 
   constructor(private nodesService: NodesService, private dialog: MatDialog,
               private modalService: ModalService, private filterService: FilterService) {}
@@ -50,21 +51,17 @@ export class VisualizationPageComponent {
   }
 
   handleFilterSelected(selectedFilters: Filter) {
-    const color = selectedFilters.color;
-    const name = selectedFilters.name;
-    this.graph.removeHighlight(color,name);
+    this.graph.removeHighlight();
+    this.filters = selectedFilters;
     this.filterService
       .filterNodes(JSON.parse(JSON.stringify(selectedFilters)))
-      .subscribe(
-        (response: any) => this.graph.highlightNodes(response, color, name));
-    if (this.filters) {
-      this.filters = this.filters.filter(filter => filter.name !== selectedFilters.name);
-    }
-    this.filters?.push(selectedFilters);
+      .subscribe((response: any) => this.graph.highlightNodes(response));
   }
-  handleClearFilters(color:string, name:string) {
-      this.graph.removeHighlight(color, name);
-      this.filters = this.filters.filter(filter => filter.name !== name);
+
+  handleClearFilters() {
+      this.graph.removeHighlight();
+      this.filters = undefined;
+      this.appliedFilters.hideApplied();
   }
 
   onNodeClick(d: any) {
@@ -75,9 +72,9 @@ export class VisualizationPageComponent {
     this.modalService.open(id)
   }
 
-  editFilters(id: string, selectedFilters: Filter): void{
-    this.modalService.open(id)
-    this.filterForm.populateFilters(selectedFilters)
+  handleEditFilters(id: string, selectedFilters: Filter | undefined) {
+    this.modalService.open(id);
+    this.filterForm.populateFilters(selectedFilters);
   }
 
   closeModal(id: string) {
@@ -86,15 +83,13 @@ export class VisualizationPageComponent {
 
   noFiltersMsg = false;
 
-  public hideApplied() {
-    const appliedFilters = document.getElementById("applied-filters");
-    appliedFilters!.hidden = true;
-  }
-
   public showApplied() {
-    if (this.filters?.length) {
+    if (this.filters) {
       const appliedFilters = document.getElementById("applied-filters");
       appliedFilters!.hidden = false;
+
+      const showButton = document.getElementById("show-applied");
+      showButton!.style.display = "none";
     } else {
       this.noFiltersMsg = true;
       setTimeout(() => {
@@ -102,4 +97,5 @@ export class VisualizationPageComponent {
       }, 2000);
     }
   }
+
 }

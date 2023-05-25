@@ -1,6 +1,4 @@
 export interface Filter {
-  name: string;
-  color: string;
   conditions: Condition[];
 }
 
