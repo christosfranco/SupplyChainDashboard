@@ -3,7 +3,7 @@ import { Node } from "../../model/node";
 import { NodesService } from "../../services/nodes.service";
 import { DagVisualisationComponent } from "../dag-visualisation/dag-visualisation.component";
 import { DetailsComponent } from "../details/details.component";
-import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {ModalService} from "../modal/modal.service";
 
 @Component({

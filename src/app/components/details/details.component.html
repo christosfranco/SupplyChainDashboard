@@ -1,4 +1,5 @@
 <div *ngIf="details">
+  <button class="close-button" (click)="closeDialog()">&#x2716;</button>
   <h2>Node details</h2>
   <h4><span class="label">Name:</span> <span class="value">{{ details.name }}</span></h4>
   <h4><span class="label">Category:</span> <span class="value">{{ details.category }}</span></h4>
