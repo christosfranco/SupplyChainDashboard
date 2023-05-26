@@ -9,11 +9,11 @@
     </div>
   </div>
 
-  <button class="btn" id="show-applied" (click)="showApplied()">Show applied filters</button>
+  <button class="btn" id="show-applied" (click)="showApplied()">Show applied filter</button>
   <div *ngIf="noFiltersMsg" id="no-filters-msg">
     <img id="no-filters-img"
          ngSrc="{{ imageUrl_attention }}" height="20" width="20" alt="Attention">
-    <p>No filters to show</p></div>
+    <p>No filter to show</p></div>
 
   <div class="content-container">
     <div class="graph-container">
@@ -23,7 +23,10 @@
     </div>
 
     <div class="applied-filters-container">
-      <app-applied-filters [filters]="filters" (clearFilters)="handleClearFilters()" (editFilters)="handleEditFilters($event.id, $event.selectedFilters)"></app-applied-filters>
+      <app-applied-filters
+        [filters]="filters" (clearFilters)="handleClearFilters()"
+        (editFilters)="handleEditFilters($event.id, $event.selectedFilters)">
+      </app-applied-filters>
     </div>
   </div>
 

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import { Filter } from '../../model/filters';
+import {ConcernNode, Filter} from '../../model/filters';
 
 @Component({
   selector: 'app-applied-filters',
@@ -9,11 +9,16 @@ import { Filter } from '../../model/filters';
 export class AppliedFiltersComponent {
   @Input() filters: Filter | undefined;
   @Output() clearFilters: EventEmitter<void> = new EventEmitter<void>();
-  @Output() editFilters: EventEmitter<{ id: string; selectedFilters: Filter | undefined }> = new EventEmitter<{ id: string; selectedFilters: Filter | undefined }>();
-
+  @Output() editFilters: EventEmitter<{ id: string; selectedFilters: Filter | undefined }> =
+    new EventEmitter<{ id: string; selectedFilters: Filter | undefined }>();
 
   public imageUrl_edit = "../../assets/images/edit.png";
   public imageUrl_trash = "../../assets/images/trash.png";
+
+  ngOnInit(): void {
+    const appliedFilters = document.getElementById("applied-filters");
+    appliedFilters!.hidden = true;
+  }
 
   // @ts-ignore
   filterNamesSet : string[] = Array(new Set(this.filters?.conditions.map(filter => filter.conditionName) || []));
@@ -23,7 +28,6 @@ export class AppliedFiltersComponent {
   }
 
   handleEditFilters(id: string, selectedFilters: Filter | undefined) {
-    console.log(this.filters)
     this.editFilters.emit({ id, selectedFilters });
   }
 
@@ -52,6 +56,15 @@ export class AppliedFiltersComponent {
   getMaxValue(filter: any): any {
     const maxFilter = this.filters?.conditions.find((f: any) => f.conditionName === filter.conditionName && f.operator === 'LT');
     return maxFilter ? maxFilter.value : 0;
+  }
+
+  getFilterDisplay(filter: any) {
+    if (filter.operator == "EQ") {
+      return " is equal to "+ filter.value+".";
+    }
+    const ltValue = filter.value;
+    const gtValue = this.filters!.conditions.find((f: any) => f.conditionName === filter.conditionName && f.operator === 'GT')!.value;
+    return " is between "+gtValue+" and "+ltValue+".";
   }
 
   public hideApplied() {

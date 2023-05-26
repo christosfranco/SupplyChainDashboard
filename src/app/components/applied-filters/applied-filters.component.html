@@ -1,14 +1,20 @@
 <div hidden="until-found" id="applied-filters">
-  <button class="hide-filters-btn" (click)="hideApplied()">Hide</button>
-  <div class="applied-filter-header">
-    <p class="txt" id="applied-filters-title">Applied Filters</p>
+  <div class="applied-header">
     <div class="filter-actions">
-      <button class="applied-filter-btn" id="edit-filter" title="Edit filter" (click)="handleEditFilters('filter-modal', filters)">
+      <button class="applied-filter-btn" id="edit-filter" title="Edit filter"
+              (click)="handleEditFilters('filter-modal', filters)">
         <img id="edit-icon"
              ngSrc="{{ imageUrl_edit }}" height="25" width="25" alt="Edit"></button>
       <button class="applied-filter-btn" title="Delete filter" (click)="handleClearFilters()">
         <img id="delete-icon"
              ngSrc="{{ imageUrl_trash }}" height="25" width="25" alt="Delete"></button>
+    </div>
+
+    <div class="applied-filter-header">
+      <p class="txt" id="applied-filters-title">Applied Filter</p>
+    </div>
+    <div class="hide-btn-container">
+    <button class="hide-filters-btn" (click)="hideApplied()">Hide</button>
     </div>
   </div>
   <div class="applied-filter-list">
@@ -19,13 +25,13 @@
           <p>{{ filter.value }}</p>
         </div>
       </div>
-      <div *ngIf="filter.conditionName === 'risk_factor' || filter.conditionName === 'risk_level' || filter.conditionName === 'likelihood'">
+      <div *ngIf="(((filter.conditionName === 'risk_factor') ||
+                   (filter.conditionName === 'risk_level') ||
+                   (filter.conditionName === 'likelihood')) &&
+                    (filter.operator != 'GT'))">
         <p class="filter-label">{{ getFilterDisplayName(filter.conditionName) }}</p>
         <div class="filter-value">
-          <mat-slider min="0" max="10" discrete showTickMarks>
-            <input [value]="getMinValue(filter)" matSliderStartThumb>
-            <input [value]="getMaxValue(filter)" matSliderEndThumb>
-          </mat-slider>
+          <span>{{ getFilterDisplay(filter) }}</span>
         </div>
       </div>
       <div *ngIf="filter.conditionName === 'mitigation'">
