@@ -25,13 +25,15 @@
 
     <div class="applied-filters-container">
       <app-applied-filters
-        [filters]="filters" (clearFilters)="handleClearFilters()"
+        [filters]="filters" (clearFilters)="handleClearFilters()" [concernForest]="concernForest"
         (editFilters)="handleEditFilters($event.id, $event.selectedFilters)">
       </app-applied-filters>
     </div>
   </div>
 
-  <modal id="filter-modal" title ="Add New Filter"><filter (filterSelected)="handleFilterSelected($event)"></filter></modal>
+  <modal id="filter-modal" title ="Add New Filter">
+    <filter (filterSelected)="handleFilterSelected($event)" [concernForest]="concernForest" ></filter>
+  </modal>
 
   <modal class="export-modal" id="export-modal" title="Export Supply Chain">
   </modal>

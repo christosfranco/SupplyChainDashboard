@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ConcernNode, Filter} from '../../model/filters';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {ConcernForest, ConcernNode, Filter} from '../../model/filters';
 
 @Component({
   selector: 'app-applied-filters',
@@ -8,6 +8,7 @@ import {ConcernNode, Filter} from '../../model/filters';
 })
 export class AppliedFiltersComponent {
   @Input() filters: Filter | undefined;
+  @Input() concernForest: ConcernForest | undefined;
   @Output() clearFilters: EventEmitter<void> = new EventEmitter<void>();
   @Output() editFilters: EventEmitter<{ id: string; selectedFilters: Filter | undefined }> =
     new EventEmitter<{ id: string; selectedFilters: Filter | undefined }>();
@@ -55,6 +56,35 @@ export class AppliedFiltersComponent {
     const ltValue = filter.value;
     const gtValue = this.filters!.conditions.find((f: any) => f.conditionName === filter.conditionName && f.operator === 'GT')!.value;
     return " is between "+gtValue+" and "+ltValue+".";
+  }
+
+  getConcernNames(concernIds: string[]|string): string {
+    var appliedConcerns = "";
+    for (const concernId of concernIds) {
+      const concern = this.getConcernById(concernId, this.concernForest!.roots);
+      if (concern) {
+        if (appliedConcerns) {
+          appliedConcerns += ", "
+        }
+        appliedConcerns += concern
+      }
+    }
+    return appliedConcerns;
+  }
+
+  getConcernById(concernId:string, concerns: ConcernNode[]): string | undefined {
+    for (const concern of concerns) {
+      if (concern.id == concernId) {
+        return concern.concern
+      }
+      if (concern.subconcerns.length) {
+        const foundConcern = this.getConcernById(concernId, concern.subconcerns)
+        if (foundConcern) {
+          return foundConcern;
+        }
+      }
+    }
+    return undefined;
   }
 
   public hideApplied() {

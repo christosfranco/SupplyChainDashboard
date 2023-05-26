@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ModalService} from "../modal/modal.service";
 import {ConcernForest, ConcernNode, Condition, Filter} from '../../model/filters';
 
@@ -9,13 +9,12 @@ import {ConcernForest, ConcernNode, Condition, Filter} from '../../model/filters
 })
 
 export class FilterComponent {
+  @Input() concernForest: ConcernForest | undefined;
   @Output() filterSelected = new EventEmitter<Filter>();
 
   public show_attention = false;
   public imageUrl_attention = "../../assets/images/attention.png";
   public attention_msg = "";
-
-  public concernForest: ConcernForest;
 
   selectedConcernNodes: string[];
 
@@ -23,8 +22,6 @@ export class FilterComponent {
   filterNameField: string | undefined;
 
   constructor(private modalService: ModalService) {
-
-    this.concernForest = {roots: CONCERN_FOREST_EXAMPLE};
 
     this.selectedConcernNodes = [];
 
@@ -176,6 +173,7 @@ export class FilterComponent {
     this.filterByMitigation = false;
     this.selectedConcernNodes = [];
 
+    // @ts-ignore
     for (const root of this.concernForest.roots) {
       this.selectNode(root, false)
     }
@@ -362,66 +360,5 @@ export class FilterComponent {
     }
   }
 }
-
-const CONCERN_FOREST_EXAMPLE = [
-  {
-    concern: "Concern1",
-    id: "1",
-    subconcerns: [
-      {
-        concern: "Concern1.1",
-        id: "1.1",
-        subconcerns: []
-      },
-      {
-        concern: "Concern1.2",
-        id: "1.2",
-        subconcerns: [
-          {
-            concern: "Concern1.2.1",
-            id: "1.2.1",
-            subconcerns: []
-          },
-          {
-            concern: "Concern1.2.2",
-            id: "1.2.2",
-            subconcerns: [
-              {
-                concern: "Concern1.2.2.1",
-                id: "1.2.2.1",
-                subconcerns: []
-              },
-              {
-                concern: "Concern1.2.2.2",
-                id: "1.2.2.2",
-                subconcerns: []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        concern: "Concern1.3",
-        id: "1.3",
-        subconcerns: []
-      }
-    ]
-  },
-  {
-    concern: "Concern2",
-    id: "2",
-    subconcerns: [
-      {
-        concern: "Concern2.1",
-        id: "2.1",
-        subconcerns: []
-      },
-      {
-        concern: "Concern2.2",
-        id: "2.2",
-        subconcerns: []
-      }]
-  }
-];
 
 

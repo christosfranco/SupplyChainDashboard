@@ -19,7 +19,7 @@
         </div>
       </div>
     </ng-template>
-    <ng-template ngFor let-concerns [ngForOf]="concernForest.roots">
+    <ng-template ngFor let-concerns [ngForOf]="concernForest!.roots">
       <ng-template
         [ngTemplateOutlet]="concernTemplateRef"
         [ngTemplateOutletContext]="{node:concerns}">

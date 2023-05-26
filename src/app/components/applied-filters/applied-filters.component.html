@@ -22,7 +22,7 @@
       <div *ngIf="filter.conditionName === 'concerns'">
         <p class="filter-label">{{ getFilterDisplayName(filter.conditionName) }}</p>
         <div class="filter-value">
-          <p>{{ filter.value }}</p>
+          <p>{{ getConcernNames(filter.value) }}</p>
         </div>
       </div>
       <div *ngIf="(((filter.conditionName === 'risk_factor') ||

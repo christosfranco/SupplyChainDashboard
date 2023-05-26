@@ -6,7 +6,7 @@ import { DetailsComponent } from "../details/details.component";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import {ModalService} from "../modal/modal.service";
 import {FilterService} from "../../services/filter.service";
-import {Filter} from "../../model/filters";
+import {ConcernForest, Filter} from "../../model/filters";
 import {FilterComponent} from "../filter/filter.component";
 import {AppliedFiltersComponent} from "../applied-filters/applied-filters.component";
 
@@ -26,9 +26,11 @@ export class VisualizationPageComponent {
 
   nodes: Node[] | undefined;
   filters: Filter | undefined;
+  concernForest: ConcernForest = {roots: CONCERN_FOREST_EXAMPLE};
 
   constructor(private nodesService: NodesService, private dialog: MatDialog,
-              private modalService: ModalService, private filterService: FilterService) {}
+              private modalService: ModalService, private filterService: FilterService) {
+  }
 
   ngOnInit(): void {
     this.nodesService.getNodes().subscribe(nodes => {
@@ -100,3 +102,64 @@ export class VisualizationPageComponent {
   }
 
 }
+
+const CONCERN_FOREST_EXAMPLE = [
+  {
+    concern: "Concern1",
+    id: "1",
+    subconcerns: [
+      {
+        concern: "Concern1.1",
+        id: "1.1",
+        subconcerns: []
+      },
+      {
+        concern: "Concern1.2",
+        id: "1.2",
+        subconcerns: [
+          {
+            concern: "Concern1.2.1",
+            id: "1.2.1",
+            subconcerns: []
+          },
+          {
+            concern: "Concern1.2.2",
+            id: "1.2.2",
+            subconcerns: [
+              {
+                concern: "Concern1.2.2.1",
+                id: "1.2.2.1",
+                subconcerns: []
+              },
+              {
+                concern: "Concern1.2.2.2",
+                id: "1.2.2.2",
+                subconcerns: []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        concern: "Concern1.3",
+        id: "1.3",
+        subconcerns: []
+      }
+    ]
+  },
+  {
+    concern: "Concern2",
+    id: "2",
+    subconcerns: [
+      {
+        concern: "Concern2.1",
+        id: "2.1",
+        subconcerns: []
+      },
+      {
+        concern: "Concern2.2",
+        id: "2.2",
+        subconcerns: []
+      }]
+  }
+];
