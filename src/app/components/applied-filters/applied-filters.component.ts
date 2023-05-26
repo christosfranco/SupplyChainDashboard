@@ -48,16 +48,6 @@ export class AppliedFiltersComponent {
     }
   }
 
-  getMinValue(filter: any): any {
-    const minFilter = this.filters?.conditions.find((f: any) => f.conditionName === filter.conditionName && f.operator === 'GT');
-    return minFilter ? minFilter.value : 0;
-  }
-
-  getMaxValue(filter: any): any {
-    const maxFilter = this.filters?.conditions.find((f: any) => f.conditionName === filter.conditionName && f.operator === 'LT');
-    return maxFilter ? maxFilter.value : 0;
-  }
-
   getFilterDisplay(filter: any) {
     if (filter.operator == "EQ") {
       return " is equal to "+ filter.value+".";

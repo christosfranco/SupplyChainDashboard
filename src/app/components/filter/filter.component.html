@@ -5,7 +5,7 @@
     <ng-template #concernTemplateRef let-concern="node">
       <div class="node">
         <label class="node-label">
-          <input type="checkbox" [ngModel]="concern.check" class="filter"
+          <input type="checkbox" [checked]="concern.check" [ngModel]="concern.check" class="filter"
                  (ngModelChange)="selectNode(concern, $event)" [id]="concern.id">{{concern.concern}}
         </label>
         <div *ngIf="concern.subconcerns.length" class="node-children">

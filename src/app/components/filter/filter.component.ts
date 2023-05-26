@@ -18,7 +18,6 @@ export class FilterComponent {
   public concernForest: ConcernForest;
 
   selectedConcernNodes: string[];
-  selectedRisks: string[];
 
   selectedColor: string;
   filterNameField: string | undefined;
@@ -28,7 +27,6 @@ export class FilterComponent {
     this.concernForest = {roots: CONCERN_FOREST_EXAMPLE};
 
     this.selectedConcernNodes = [];
-    this.selectedRisks = [];
 
     this.selectedColor = "#e3c75e";
   }
@@ -147,12 +145,15 @@ export class FilterComponent {
   }
 
   check(node: any, value: boolean) {
+
     node.check = value;
     node.subconcerns.forEach((x: any) => {
       this.check(x, value);
     })
     if (value) {
-      this.selectedConcernNodes.push(node.id);
+      if (!(this.selectedConcernNodes.includes(node.id))) {
+        this.selectedConcernNodes.push(node.id);
+      }
     } else {
       const index = this.selectedConcernNodes.indexOf(node.id, 0);
       if (index > -1) {
@@ -173,6 +174,12 @@ export class FilterComponent {
     this.filterByLikelihood = false;
     this.filterByRiskFactor = false;
     this.filterByMitigation = false;
+    this.selectedConcernNodes = [];
+
+    for (const root of this.concernForest.roots) {
+      this.selectNode(root, false)
+    }
+
   }
 
   public applyFilter() {
@@ -291,9 +298,11 @@ export class FilterComponent {
         conditions: conditionList
       }
 
-      this.resetCheckboxes();
+
       this.modalService.close("filter-modal");
+
       this.filterSelected.emit(JSON.parse(JSON.stringify(newFilter)));
+      this.resetCheckboxes();
     } else {
       this.attention_msg = "Please select at least one condition."
 

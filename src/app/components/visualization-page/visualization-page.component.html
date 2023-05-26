@@ -5,15 +5,16 @@
         <a href="" class="btn new-sc-btn">Import a new Supply Chain</a>
         <button class="btn export-btn" (click)="openModal('export-modal')">Export</button>
       </div>
-      <button class="filter-btn btn" (click)="openModal('filter-modal')">Add Filter</button>
+      <button *ngIf="!filters" class="filter-btn btn" (click)="openModal('filter-modal')">Add Filter</button>
+      <button *ngIf="filters" class="btn" id="show-applied" (click)="showApplied()">Show applied filter</button>
     </div>
   </div>
 
-  <button class="btn" id="show-applied" (click)="showApplied()">Show applied filter</button>
-  <div *ngIf="noFiltersMsg" id="no-filters-msg">
-    <img id="no-filters-img"
-         ngSrc="{{ imageUrl_attention }}" height="20" width="20" alt="Attention">
-    <p>No filter to show</p></div>
+
+<!--  <div *ngIf="noFiltersMsg" id="no-filters-msg">-->
+<!--    <img id="no-filters-img"-->
+<!--         ngSrc="{{ imageUrl_attention }}" height="20" width="20" alt="Attention">-->
+<!--    <p>No filter to show</p></div>-->
 
   <div class="content-container">
     <div class="graph-container">

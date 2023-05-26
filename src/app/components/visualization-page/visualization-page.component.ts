@@ -62,6 +62,7 @@ export class VisualizationPageComponent {
       this.graph.removeHighlight();
       this.filters = undefined;
       this.appliedFilters.hideApplied();
+      this.filterForm.resetCheckboxes();
   }
 
   onNodeClick(d: any) {
