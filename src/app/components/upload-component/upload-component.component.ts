@@ -16,6 +16,10 @@ export class UploadComponentComponent {
   @Output() fileEvent = new EventEmitter<string>;
   json: JSON | undefined
 
+  public show_attention = false;
+  public imageUrl_attention = "../../assets/images/attention.png";
+  public attention_msg = "";
+
   fileName=""
 
   fileChanged(e: any) {
@@ -24,11 +28,29 @@ export class UploadComponentComponent {
     const fileReader = new FileReader();
     fileReader.readAsText(file, "UTF-8");
     fileReader.onload = () => {
-      // @ts-ignore
-      this.json = JSON.parse(fileReader.result)
+
+      try {
+        // @ts-ignore
+        this.json = JSON.parse(fileReader.result)
+      } catch (e) {
+        console.error(e);
+        this.attention_msg = "Please select a valid json file."
+
+        this.show_attention = true;
+        setTimeout(() => {
+          this.show_attention = false;
+        }, 2000);
+      }
+
     }
     fileReader.onerror = (error) => {
-      console.log(error);
+      console.error(error);
+      this.attention_msg = "Please select a valid json file."
+
+      this.show_attention = true;
+      setTimeout(() => {
+        this.show_attention = false;
+      }, 2000);
     }
   }
 

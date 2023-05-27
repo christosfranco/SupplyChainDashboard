@@ -50,6 +50,18 @@ input[type="file"] {
 
 #file-name {
   margin-left: 20px;
+}
 
+#attention-div {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#attention-txt {
+  margin-left: 10px;
+  font-size: 15px;
 }
 
