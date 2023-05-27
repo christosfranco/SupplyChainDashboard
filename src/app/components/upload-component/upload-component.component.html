@@ -1,14 +1,12 @@
 <div>
   <div class="file-wrapper">
-  <label for="file-input" class="btn choose-btn">Choose file</label>
-  <input id="file-input" type="file" accept=".json,application/json" (change)="fileChanged($event)"/>
+    <label for="file-input" class="btn choose-btn">Choose file</label>
+    <input id="file-input" type="file" accept=".json,application/json" (change)="fileChanged($event)"/>
     <div *ngIf="json"><p id="file-name">{{ fileName }}</p></div>
     <div id="attention-div" *ngIf="show_attention">
       <img ngSrc=" {{ imageUrl_attention }}" alt="attention" height="15" width="15">
       <p class="txt" id="attention-txt">{{ attention_msg }}</p>
     </div>
   </div>
-  <div>
-    <button class="submit-btn btn" [disabled]="!json" (click)="uploadFile()">Upload</button>
-  </div>
+  <button class="submit-btn btn" [disabled]="!json" (click)="uploadFile()">Upload</button>
 </div>
