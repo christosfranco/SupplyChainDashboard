@@ -1,16 +1,55 @@
-.import-btn{
+.btn{
   border-radius: 8px;
   border: none;
   font-weight: 700;
   font-size: 0.9375rem;
   /*margin: -0 px auto 0 560px;*/
   padding: 14px 23px;
-  color: #ffffff;
-  background-color: #77aad9;
+  cursor: pointer;
+
 }
 
-.import-btn:hover {
-  background-color: #5d9ad2;
+.choose-btn{
+  display: inline-block;
+  margin-left: 20px;
+  background-color: #3a7370;
+  color: white;
+  text-decoration: none;
+}
+
+.choose-btn:hover {
+  background-color: #4a9895;
   cursor: pointer;
+}
+
+input[type="file"] {
+  display:none
+}
+
+.file-wrapper {
+  margin-top: 20px;
+  display: flex;
+}
+
+.submit-btn {
+  margin-left: 20px;
+  margin-top: 10px;
+  background-color: #4f4f4f;
+  color: white;
+}
+
+.submit-btn:hover:enabled {
+  background-color: grey;
+  color: white;
+}
+
+.submit-btn:disabled {
+  opacity: 0.1;
+  cursor: auto;
+}
+
+#file-name {
+  margin-left: 20px;
+
 }
 

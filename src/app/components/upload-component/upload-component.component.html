@@ -1,9 +1,10 @@
-<dialog #dialog>
-  <input id="file-input" #Image type="file" accept=".json,application/json" (change)="fileChanged($event)"/>
-  <div>
-    <button class="submit-btn" [disabled]="!json" (click)="uploadFile()">Upload</button>
-    <button (click)="dialog.close()">Close</button>
+<div>
+  <div class="file-wrapper">
+  <label for="file-input" class="btn choose-btn">Choose file</label>
+  <input id="file-input" type="file" accept=".json,application/json" (change)="fileChanged($event)"/>
+    <div *ngIf="json"><p id="file-name">{{ fileName }}</p></div>
   </div>
-</dialog>
-<button class="import-btn" (click)="dialog.showModal()">
-  {{ text }}</button>
+  <div>
+    <button class="submit-btn btn" [disabled]="!json" (click)="uploadFile()">Upload</button>
+  </div>
+</div>

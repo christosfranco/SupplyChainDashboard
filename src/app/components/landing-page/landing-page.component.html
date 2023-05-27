@@ -7,14 +7,27 @@
     <p class="text">A tool for visualising supply chains and tracking their concerns and
       risks.</p>
     <div class="import-btns">
-      <app-upload-component text="Import Supply Chain"></app-upload-component>
+      <div>
+      <button class="import-btn" (click)="openModal('import-sc')">
+        Import Supply Chain</button>
+        <div *ngIf="fileName"><p class="txt">{{fileName}}</p></div>
+      </div>
+
+      <div>
       <app-import text="Import Concern Forest"></app-import>
+        <div ><p class="txt"></p></div>
+      </div>
+
     </div>
     <div class="visualize">
       <a href="/visualise"
          class="visualize-btn">VISUALIZE</a>
     </div>
   </div>
+
+  <modal id="import-sc" title="Import a new Supply Chain">
+    <app-upload-component text="Import Supply Chain" [modalService]="modalService" (fileEvent)="setFileName($event)"></app-upload-component>
+  </modal>
 </div>
 
 

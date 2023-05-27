@@ -1,5 +1,6 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {UploadService} from "../../services/upload.service";
+import {ModalService} from "../modal/modal.service";
 
 @Component({
   selector: 'app-upload-component',
@@ -10,13 +11,16 @@ export class UploadComponentComponent {
 
   constructor(private uploadService: UploadService) {
   }
-
   @Input() text: string = "Import Supply Chain"
-  @ViewChild ('dialog') dialogModal: any | undefined;
+  @Input() modalService: ModalService | undefined;
+  @Output() fileEvent = new EventEmitter<string>;
   json: JSON | undefined
+
+  fileName=""
 
   fileChanged(e: any) {
     const file = e.target.files[0];
+    this.fileName = file.name;
     const fileReader = new FileReader();
     fileReader.readAsText(file, "UTF-8");
     fileReader.onload = () => {
@@ -29,9 +33,10 @@ export class UploadComponentComponent {
   }
 
   public uploadFile() {
-    this.uploadService.uploadFile(<JSON>this.json)
+    this.uploadService.uploadFile(<JSON>this.json);
     // @ts-ignore
-    this.dialogModal.nativeElement.close()
+    this.modalService?.close("import-sc");
+    this.fileEvent.emit(this.fileName);
   }
 
 }
