@@ -3,9 +3,12 @@ import { Node } from "../../model/node";
 import { NodesService } from "../../services/nodes.service";
 import { DagVisualisationComponent } from "../dag-visualisation/dag-visualisation.component";
 import { DetailsComponent } from "../details/details.component";
-import {FilterComponent} from "../filter/filter.component";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import {ModalService} from "../modal/modal.service";
+import {FilterService} from "../../services/filter.service";
+import {ConcernForest, Filter} from "../../model/filters";
+import {FilterComponent} from "../filter/filter.component";
+import {AppliedFiltersComponent} from "../applied-filters/applied-filters.component";
 
 @Component({
   selector: 'app-visualization-page',
@@ -15,27 +18,23 @@ import {ModalService} from "../modal/modal.service";
 
 export class VisualizationPageComponent {
   @ViewChild(DagVisualisationComponent) graph: any;
-  public imageUrl_edit = "../../assets/images/edit.png";
-  public imageUrl_trash = "../../assets/images/trash.png";
+  @ViewChild(FilterComponent) filterForm: any;
+  @ViewChild(AppliedFiltersComponent) appliedFilters: any;
+
+
   public imageUrl_attention = "../../assets/images/attention.png";
 
-
-
   nodes: Node[] | undefined;
-  highlightedNodesIds: String[] = [];
+  filters: Filter | undefined;
+  concernForest: ConcernForest = {roots: CONCERN_FOREST_EXAMPLE};
 
   constructor(private nodesService: NodesService, private dialog: MatDialog,
-              private modalService: ModalService) {
-
-    this.filters = FILTERS_EXAMPLE;
+              private modalService: ModalService, private filterService: FilterService) {
   }
 
   ngOnInit(): void {
     this.nodesService.getNodes().subscribe(nodes => {
       this.nodes = nodes;
-    });
-    this.nodesService.getHighlights().subscribe(highlightedNodesIds => {
-      this.highlightedNodesIds = highlightedNodesIds;
     });
   }
 
@@ -53,12 +52,19 @@ export class VisualizationPageComponent {
     this.dialog.open(DetailsComponent, dialogConfig);
   }
 
-  button(): void {
-    this.graph.highlightNodes(this.highlightedNodesIds);
+  handleFilterSelected(selectedFilters: Filter) {
+    this.graph.removeHighlight();
+    this.filters = selectedFilters;
+    this.filterService
+      .filterNodes(JSON.parse(JSON.stringify(selectedFilters)))
+      .subscribe((response: any) => this.graph.highlightNodes(response));
   }
 
-  removeButton(): void {
-    this.graph.removeHighlight();
+  handleClearFilters() {
+      this.graph.removeHighlight();
+      this.filters = undefined;
+      this.appliedFilters.hideApplied();
+      this.filterForm.resetCheckboxes();
   }
 
   onNodeClick(d: any) {
@@ -69,22 +75,24 @@ export class VisualizationPageComponent {
     this.modalService.open(id)
   }
 
+  handleEditFilters(id: string, selectedFilters: Filter | undefined) {
+    this.modalService.open(id);
+    this.filterForm.populateFilters(selectedFilters);
+  }
+
   closeModal(id: string) {
     this.modalService.close(id)
   }
 
   noFiltersMsg = false;
 
-  public hideApplied() {
-    const appliedFilters = document.getElementById("applied-filters");
-    appliedFilters!.hidden = true;
-  }
-  public filters: Filter[] | undefined;
-
   public showApplied() {
-    if (this.filters?.length) {
+    if (this.filters) {
       const appliedFilters = document.getElementById("applied-filters");
       appliedFilters!.hidden = false;
+
+      const showButton = document.getElementById("show-applied");
+      showButton!.style.display = "none";
     } else {
       this.noFiltersMsg = true;
       setTimeout(() => {
@@ -92,44 +100,66 @@ export class VisualizationPageComponent {
       }, 2000);
     }
   }
+
 }
 
-interface Filter {
-  id: string;
-  name: string;
-  color: string;
-  concerns: null | string[];
-  risks: null | string[];
-  risk_level: null | number[];
-  likelihood: null | number[];
-  risk_factor: null | number[];
-  mitigation_strategy: null | boolean;
-}
-
-
-const FILTERS_EXAMPLE = [
+const CONCERN_FOREST_EXAMPLE = [
   {
-    "id": "1",
-    "name": "This is long filter name",
-    "color": "#DEB92AFF",
-    "concerns": ["1"],
-    "risks": null,
-    "risk_level": null,
-    "likelihood": null,
-    "risk_factor": null,
-    "mitigation_strategy": null
+    concern: "Concern1",
+    id: "1",
+    subconcerns: [
+      {
+        concern: "Concern1.1",
+        id: "1.1",
+        subconcerns: []
+      },
+      {
+        concern: "Concern1.2",
+        id: "1.2",
+        subconcerns: [
+          {
+            concern: "Concern1.2.1",
+            id: "1.2.1",
+            subconcerns: []
+          },
+          {
+            concern: "Concern1.2.2",
+            id: "1.2.2",
+            subconcerns: [
+              {
+                concern: "Concern1.2.2.1",
+                id: "1.2.2.1",
+                subconcerns: []
+              },
+              {
+                concern: "Concern1.2.2.2",
+                id: "1.2.2.2",
+                subconcerns: []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        concern: "Concern1.3",
+        id: "1.3",
+        subconcerns: []
+      }
+    ]
   },
   {
-    "id": "2",
-    "name": "Filter2",
-    "color": "#3FCFDCFF",
-    "concerns": ["2"],
-    "risks": null,
-    "risk_level": null,
-    "likelihood": null,
-    "risk_factor": null,
-    "mitigation_strategy": null
+    concern: "Concern2",
+    id: "2",
+    subconcerns: [
+      {
+        concern: "Concern2.1",
+        id: "2.1",
+        subconcerns: []
+      },
+      {
+        concern: "Concern2.2",
+        id: "2.2",
+        subconcerns: []
+      }]
   }
-]
-
-
+];

@@ -21,6 +21,8 @@ import {FilterComponent} from "./components/filter/filter.component";
 import {MatDialogModule} from "@angular/material/dialog";
 import {ModalModule} from "./components/modal/modal.component.module";
 import {FormsModule} from "@angular/forms";
+import {MatSliderModule} from "@angular/material/slider";
+import {AppliedFiltersComponent} from "./components/applied-filters/applied-filters.component";
 
 
 @NgModule({
@@ -35,7 +37,8 @@ import {FormsModule} from "@angular/forms";
     HighChartsVisComponent,
     UploadComponentComponent,
     DetailsComponent,
-    FilterComponent
+    FilterComponent,
+    AppliedFiltersComponent
   ],
   imports: [
     BrowserModule,
@@ -48,7 +51,8 @@ import {FormsModule} from "@angular/forms";
     MatDialogModule,
     NgxPanZoomModule,
     ModalModule,
-    FormsModule
+    FormsModule,
+    MatSliderModule
   ],
   providers: [],
   bootstrap: [AppComponent]
