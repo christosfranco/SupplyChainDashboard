@@ -1,5 +1,5 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import { Filter } from '../../model/filters';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {ConcernForest, ConcernNode, Filter} from '../../model/filters';
 
 @Component({
   selector: 'app-applied-filters',
@@ -8,12 +8,18 @@ import { Filter } from '../../model/filters';
 })
 export class AppliedFiltersComponent {
   @Input() filters: Filter | undefined;
+  @Input() concernForest: ConcernForest | undefined;
   @Output() clearFilters: EventEmitter<void> = new EventEmitter<void>();
-  @Output() editFilters: EventEmitter<{ id: string; selectedFilters: Filter | undefined }> = new EventEmitter<{ id: string; selectedFilters: Filter | undefined }>();
-
+  @Output() editFilters: EventEmitter<{ id: string; selectedFilters: Filter | undefined }> =
+    new EventEmitter<{ id: string; selectedFilters: Filter | undefined }>();
 
   public imageUrl_edit = "../../assets/images/edit.png";
   public imageUrl_trash = "../../assets/images/trash.png";
+
+  ngOnInit(): void {
+    const appliedFilters = document.getElementById("applied-filters");
+    appliedFilters!.hidden = true;
+  }
 
   // @ts-ignore
   filterNamesSet : string[] = Array(new Set(this.filters?.conditions.map(filter => filter.conditionName) || []));
@@ -23,7 +29,6 @@ export class AppliedFiltersComponent {
   }
 
   handleEditFilters(id: string, selectedFilters: Filter | undefined) {
-    console.log(this.filters)
     this.editFilters.emit({ id, selectedFilters });
   }
 
@@ -44,14 +49,42 @@ export class AppliedFiltersComponent {
     }
   }
 
-  getMinValue(filter: any): any {
-    const minFilter = this.filters?.conditions.find((f: any) => f.conditionName === filter.conditionName && f.operator === 'GT');
-    return minFilter ? minFilter.value : 0;
+  getFilterDisplay(filter: any) {
+    if (filter.operator == "EQ") {
+      return " is equal to "+ filter.value+".";
+    }
+    const ltValue = filter.value;
+    const gtValue = this.filters!.conditions.find((f: any) => f.conditionName === filter.conditionName && f.operator === 'GT')!.value;
+    return " is between "+gtValue+" and "+ltValue+".";
   }
 
-  getMaxValue(filter: any): any {
-    const maxFilter = this.filters?.conditions.find((f: any) => f.conditionName === filter.conditionName && f.operator === 'LT');
-    return maxFilter ? maxFilter.value : 0;
+  getConcernNames(concernIds: string[]|string): string {
+    var appliedConcerns = "";
+    for (const concernId of concernIds) {
+      const concern = this.getConcernById(concernId, this.concernForest!.roots);
+      if (concern) {
+        if (appliedConcerns) {
+          appliedConcerns += ", "
+        }
+        appliedConcerns += concern
+      }
+    }
+    return appliedConcerns;
+  }
+
+  getConcernById(concernId:string, concerns: ConcernNode[]): string | undefined {
+    for (const concern of concerns) {
+      if (concern.id == concernId) {
+        return concern.concern
+      }
+      if (concern.subconcerns.length) {
+        const foundConcern = this.getConcernById(concernId, concern.subconcerns)
+        if (foundConcern) {
+          return foundConcern;
+        }
+      }
+    }
+    return undefined;
   }
 
   public hideApplied() {

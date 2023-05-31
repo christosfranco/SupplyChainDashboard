@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ModalService} from "../modal/modal.service";
 import {ConcernForest, ConcernNode, Condition, Filter} from '../../model/filters';
 
@@ -9,26 +9,21 @@ import {ConcernForest, ConcernNode, Condition, Filter} from '../../model/filters
 })
 
 export class FilterComponent {
+  @Input() concernForest: ConcernForest | undefined;
   @Output() filterSelected = new EventEmitter<Filter>();
 
   public show_attention = false;
   public imageUrl_attention = "../../assets/images/attention.png";
   public attention_msg = "";
 
-  public concernForest: ConcernForest;
-
   selectedConcernNodes: string[];
-  selectedRisks: string[];
 
   selectedColor: string;
   filterNameField: string | undefined;
 
   constructor(private modalService: ModalService) {
 
-    this.concernForest = {roots: CONCERN_FOREST_EXAMPLE};
-
     this.selectedConcernNodes = [];
-    this.selectedRisks = [];
 
     this.selectedColor = "#e3c75e";
   }
@@ -147,12 +142,15 @@ export class FilterComponent {
   }
 
   check(node: any, value: boolean) {
+
     node.check = value;
     node.subconcerns.forEach((x: any) => {
       this.check(x, value);
     })
     if (value) {
-      this.selectedConcernNodes.push(node.id);
+      if (!(this.selectedConcernNodes.includes(node.id))) {
+        this.selectedConcernNodes.push(node.id);
+      }
     } else {
       const index = this.selectedConcernNodes.indexOf(node.id, 0);
       if (index > -1) {
@@ -173,6 +171,13 @@ export class FilterComponent {
     this.filterByLikelihood = false;
     this.filterByRiskFactor = false;
     this.filterByMitigation = false;
+    this.selectedConcernNodes = [];
+
+    // @ts-ignore
+    for (const root of this.concernForest.roots) {
+      this.selectNode(root, false)
+    }
+
   }
 
   public applyFilter() {
@@ -291,9 +296,11 @@ export class FilterComponent {
         conditions: conditionList
       }
 
-      this.resetCheckboxes();
+
       this.modalService.close("filter-modal");
+
       this.filterSelected.emit(JSON.parse(JSON.stringify(newFilter)));
+      this.resetCheckboxes();
     } else {
       this.attention_msg = "Please select at least one condition."
 
@@ -353,66 +360,5 @@ export class FilterComponent {
     }
   }
 }
-
-const CONCERN_FOREST_EXAMPLE = [
-  {
-    concern: "Concern1",
-    id: "1",
-    subconcerns: [
-      {
-        concern: "Concern1.1",
-        id: "1.1",
-        subconcerns: []
-      },
-      {
-        concern: "Concern1.2",
-        id: "1.2",
-        subconcerns: [
-          {
-            concern: "Concern1.2.1",
-            id: "1.2.1",
-            subconcerns: []
-          },
-          {
-            concern: "Concern1.2.2",
-            id: "1.2.2",
-            subconcerns: [
-              {
-                concern: "Concern1.2.2.1",
-                id: "1.2.2.1",
-                subconcerns: []
-              },
-              {
-                concern: "Concern1.2.2.2",
-                id: "1.2.2.2",
-                subconcerns: []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        concern: "Concern1.3",
-        id: "1.3",
-        subconcerns: []
-      }
-    ]
-  },
-  {
-    concern: "Concern2",
-    id: "2",
-    subconcerns: [
-      {
-        concern: "Concern2.1",
-        id: "2.1",
-        subconcerns: []
-      },
-      {
-        concern: "Concern2.2",
-        id: "2.2",
-        subconcerns: []
-      }]
-  }
-];
 
 

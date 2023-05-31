@@ -5,15 +5,16 @@
         <a href="" class="btn new-sc-btn">Import a new Supply Chain</a>
         <button class="btn export-btn" (click)="openModal('export-modal')">Export</button>
       </div>
-      <button class="filter-btn btn" (click)="openModal('filter-modal')">Add Filter</button>
+      <button *ngIf="!filters" class="filter-btn btn" (click)="openModal('filter-modal')">Add Filter</button>
+      <button *ngIf="filters" class="btn" id="show-applied" (click)="showApplied()">Show applied filter</button>
     </div>
   </div>
 
-  <button class="btn" id="show-applied" (click)="showApplied()">Show applied filters</button>
-  <div *ngIf="noFiltersMsg" id="no-filters-msg">
-    <img id="no-filters-img"
-         ngSrc="{{ imageUrl_attention }}" height="20" width="20" alt="Attention">
-    <p>No filters to show</p></div>
+
+<!--  <div *ngIf="noFiltersMsg" id="no-filters-msg">-->
+<!--    <img id="no-filters-img"-->
+<!--         ngSrc="{{ imageUrl_attention }}" height="20" width="20" alt="Attention">-->
+<!--    <p>No filter to show</p></div>-->
 
   <div class="content-container">
     <div class="graph-container">
@@ -23,11 +24,16 @@
     </div>
 
     <div class="applied-filters-container">
-      <app-applied-filters [filters]="filters" (clearFilters)="handleClearFilters()" (editFilters)="handleEditFilters($event.id, $event.selectedFilters)"></app-applied-filters>
+      <app-applied-filters
+        [filters]="filters" (clearFilters)="handleClearFilters()" [concernForest]="concernForest"
+        (editFilters)="handleEditFilters($event.id, $event.selectedFilters)">
+      </app-applied-filters>
     </div>
   </div>
 
-  <modal id="filter-modal" title ="Add New Filter"><filter (filterSelected)="handleFilterSelected($event)"></filter></modal>
+  <modal id="filter-modal" title ="Add New Filter">
+    <filter (filterSelected)="handleFilterSelected($event)" [concernForest]="concernForest" ></filter>
+  </modal>
 
   <modal class="export-modal" id="export-modal" title="Export Supply Chain">
   </modal>
