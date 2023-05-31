@@ -183,3 +183,20 @@
   background: #d5d5d5;
 }
 
+.content-container {
+  display: flex;
+}
+
+.graph-container {
+  flex: 1;
+  position: relative;
+}
+
+.applied-filters-container {
+  width: 25%;
+  position: absolute;
+  top: 0;
+  right: 2%;
+}
+
+
