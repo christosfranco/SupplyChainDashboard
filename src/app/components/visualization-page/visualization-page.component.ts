@@ -43,10 +43,10 @@ export class VisualizationPageComponent {
     dialogConfig.data = { nodeId };
     dialogConfig.disableClose = false;
     dialogConfig.autoFocus = true;
-    dialogConfig.width = '40vw';
-    dialogConfig.height = '60vh';
+    dialogConfig.width = '60vw';
+    dialogConfig.height = 'auto';
     dialogConfig.maxHeight = '90vh';
-    dialogConfig.position = { top: '25vh', left: '35vw' };
+    dialogConfig.position = { top: '25vh', left: '20vw' };
     dialogConfig.panelClass = 'my-dialog';
 
     this.dialog.open(DetailsComponent, dialogConfig);
