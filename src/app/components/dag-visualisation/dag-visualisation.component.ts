@@ -107,6 +107,12 @@ export class DagVisualisationComponent {
       .append("g")
       .attr("class", "node")// @ts-ignore
       .attr("transform", ({x, y}) => `translate(${2*y}, ${x})`)
+      .on("mouseenter", (event, d) => {
+        d3.select(event.currentTarget).style("cursor", "grab");
+      })
+      .on("mouseleave", (event, d) => {
+        d3.select(event.currentTarget).style("cursor", "default");
+      })
       .on("click", (event, d) => {
         this.nodeClick.emit(d.data.id);
       });
