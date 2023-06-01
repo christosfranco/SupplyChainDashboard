@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import {NgOptimizedImage} from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
-import { ImportComponent } from './components/import/import.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VisualizationPageComponent } from './components/visualization-page/visualization-page.component';
 import { DagVisualisationComponent } from './components/dag-visualisation/dag-visualisation.component';
@@ -24,7 +23,6 @@ import {FormsModule} from "@angular/forms";
   declarations: [
     AppComponent,
     LandingPageComponent,
-    ImportComponent,
     VisualizationPageComponent,
     DagVisualisationComponent,
     UploadComponentComponent,

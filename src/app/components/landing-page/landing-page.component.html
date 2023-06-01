@@ -35,7 +35,8 @@
   </modal>
 
   <modal id="import-cf" title="Import a Concern Forest">
-    <app-import text="Import Concern Forest"></app-import>
+    <app-upload-component text="Import Concern Tree" [modalService]="modalService"
+                          (fileEvent)="setFileName($event)"></app-upload-component>
   </modal>
 
   <modal id="help-modal" title="HELP">
