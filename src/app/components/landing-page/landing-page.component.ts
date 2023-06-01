@@ -1,6 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {ModalService} from "../../services/modal.service";
 import {UploadComponentComponent} from "../upload-component/upload-component.component";
+import {UploadService} from "../../services/upload.service";
 
 @Component({
   selector: 'app-landing-page',
@@ -12,7 +13,7 @@ export class LandingPageComponent {
   public imageUrl_help = "../../assets/images/help.png";
   fileName = "";
 
-  constructor(public modalService: ModalService) {
+  constructor(public modalService: ModalService, private uploadService: UploadService) {
   }
 
   setFileName(fileName: string) {
@@ -26,5 +27,9 @@ export class LandingPageComponent {
   closeModal(id: string) {
     this.modalService.close(id)
   }
+  uploadSupplyChain(json:JSON) {
+    this.uploadService.uploadFile(<JSON>json);
+  }
+
 
 }

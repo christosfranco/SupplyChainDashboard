@@ -14,6 +14,7 @@ export class UploadComponentComponent {
   @Input() text: string = "Import Supply Chain"
   @Input() modalService: ModalService | undefined;
   @Output() fileEvent = new EventEmitter<string>;
+  @Output() uploadEvent = new EventEmitter<JSON>();
   json: JSON | undefined
 
   public show_attention = false;
@@ -54,8 +55,11 @@ export class UploadComponentComponent {
     }
   }
 
+
+
   public uploadFile() {
-    this.uploadService.uploadFile(<JSON>this.json);
+    this.uploadEvent.emit(<JSON>this.json)
+    //this.uploadService.uploadFile(<JSON>this.json);
     // @ts-ignore
     this.modalService?.close("import-sc");
     this.fileEvent.emit(this.fileName);

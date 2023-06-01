@@ -31,7 +31,7 @@
 
   <modal id="import-sc" title="Import a new Supply Chain">
     <app-upload-component text="Import Supply Chain" [modalService]="modalService"
-                          (fileEvent)="setFileName($event)"></app-upload-component>
+                          (fileEvent)="setFileName($event)" (uploadEvent)="uploadSupplyChain($event)"></app-upload-component>
   </modal>
 
   <modal id="import-cf" title="Import a Concern Forest">
