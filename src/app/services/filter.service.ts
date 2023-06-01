@@ -8,12 +8,11 @@ import {catchError, throwError} from "rxjs";
 export class FilterService {
 
   private httpHeaders: HttpHeaders =  new HttpHeaders({ 'Content-Type': 'application/json' });
-
   constructor(private httpClient: HttpClient) { }
 
   public filterNodes(json: JSON) {
     const httpOptions:Object = { headers: this.httpHeaders, responseType: 'text'}
-    this.httpClient
+    return this.httpClient
       .post("api/nodes/filtered",json, httpOptions)
       .pipe(
         catchError(
@@ -23,7 +22,6 @@ export class FilterService {
           }
         )
       )
-      .subscribe(x => console.log(x));
   }
 
   private log(message: string) {
