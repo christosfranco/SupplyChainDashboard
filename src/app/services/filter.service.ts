@@ -11,7 +11,7 @@ export class FilterService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public filerNodes(json: JSON) {
+  public filterNodes(json: JSON) {
     const httpOptions:Object = { headers: this.httpHeaders, responseType: 'text'}
     this.httpClient
       .post("api/nodes/filtered",json, httpOptions)

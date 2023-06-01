@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {ModalService} from "../../services/modal.service";
 import {FilterService} from "../../services/filter.service";
 
@@ -21,6 +21,8 @@ export class FilterComponent {
 
   selectedColor: string;
   filterNameField: string | undefined;
+
+  @Output() filterEvent = new EventEmitter<JSON>();
 
   constructor(private modalService: ModalService, private filterService: FilterService) {
 
@@ -300,8 +302,7 @@ export class FilterComponent {
         this.resetCheckboxes();
         this.modalService.close("filter-modal");
         console.log(newFilter);
-
-        this.filterService.filerNodes(JSON.parse(JSON.stringify(newFilter)));
+        this.filterEvent.emit(<JSON>JSON.parse(JSON.stringify(newFilter)))
 
       } else {
         this.attention_msg = "Please select at least one condition."

@@ -88,6 +88,10 @@ export class VisualizationPageComponent {
       }, 2000);
     }
   }
+
+  public filterSupplyChain(filterJson: JSON) {
+
+  }
 }
 
 interface Filter {
