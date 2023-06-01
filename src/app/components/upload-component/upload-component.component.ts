@@ -13,6 +13,7 @@ export class UploadComponentComponent {
   }
   @Input() text: string = "Import Supply Chain"
   @Input() modalService: ModalService | undefined;
+  @Input() id: string | undefined;
   @Output() fileEvent = new EventEmitter<string>;
   @Output() uploadEvent = new EventEmitter<JSON>();
   json: JSON | undefined

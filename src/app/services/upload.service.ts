@@ -29,10 +29,12 @@ export class UploadService {
   }
 
   public uploadSupplyChain(json: JSON) {
+    this.log("Upload Supply Chain")
     this.uploadFile(json)
   }
 
   public uploadConcernTree(json: JSON) {
+    this.log("Upload Concern Tree")
     this.uploadFile(json)
   }
 

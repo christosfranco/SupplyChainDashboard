@@ -11,13 +11,18 @@ import {UploadService} from "../../services/upload.service";
 export class LandingPageComponent {
   @ViewChild(UploadComponentComponent) uploadComponent: any | undefined;
   public imageUrl_help = "../../assets/images/help.png";
-  fileName = "";
+  supplyChainFileName = "";
+  concernTreeFileName = "";
 
   constructor(public modalService: ModalService, private uploadService: UploadService) {
   }
 
-  setFileName(fileName: string) {
-    this.fileName = fileName
+  setSupplyChainFileName(fileName: string) {
+    this.supplyChainFileName = fileName
+  }
+
+  setConcernTreeFileName(fileName: string) {
+    this.concernTreeFileName = fileName
   }
 
   openModal(id: string) {

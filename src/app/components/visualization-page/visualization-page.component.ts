@@ -33,9 +33,6 @@ export class VisualizationPageComponent {
     this.nodesService.getNodes().subscribe(nodes => {
       this.nodes = nodes;
     });
-    this.nodesService.getHighlights().subscribe(highlightedNodesIds => {
-      this.highlightedNodesIds = highlightedNodesIds;
-    });
   }
 
   openDialog(nodeId: string) {
