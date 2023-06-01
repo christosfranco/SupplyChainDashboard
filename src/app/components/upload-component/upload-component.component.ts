@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {UploadService} from "../../services/upload.service";
-import {ModalService} from "../modal/modal.service";
+import {ModalService} from "../../services/modal.service";
 
 @Component({
   selector: 'app-upload-component',

@@ -3,9 +3,8 @@ import { Node } from "../../model/node";
 import { NodesService } from "../../services/nodes.service";
 import { DagVisualisationComponent } from "../dag-visualisation/dag-visualisation.component";
 import { DetailsComponent } from "../details/details.component";
-import {FilterComponent} from "../filter/filter.component";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import {ModalService} from "../modal/modal.service";
+import {ModalService} from "../../services/modal.service";
 
 @Component({
   selector: 'app-visualization-page',

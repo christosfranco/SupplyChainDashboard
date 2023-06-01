@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {ModalService} from "../modal/modal.service";
+import {ModalService} from "../../services/modal.service";
 import {UploadComponentComponent} from "../upload-component/upload-component.component";
 
 @Component({
