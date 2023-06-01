@@ -28,6 +28,14 @@ export class UploadService {
       .subscribe(_ => console.log("Upload handling finished"));
   }
 
+  public uploadSupplyChain(json: JSON) {
+    this.uploadFile(json)
+  }
+
+  public uploadConcernTree(json: JSON) {
+    this.uploadFile(json)
+  }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.log(`${operation}: ${error.message}`);

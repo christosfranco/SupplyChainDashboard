@@ -28,7 +28,11 @@ export class LandingPageComponent {
     this.modalService.close(id)
   }
   uploadSupplyChain(json:JSON) {
-    this.uploadService.uploadFile(<JSON>json);
+    this.uploadService.uploadSupplyChain(<JSON>json);
+  }
+
+  uploadConcernTree(json:JSON) {
+    this.uploadService.uploadConcernTree(<JSON>json);
   }
 
 
