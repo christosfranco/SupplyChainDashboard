@@ -1,7 +1,7 @@
 <div>
   <div class="file-wrapper">
-    <label for="{{id + 'file-input'}}" class="btn choose-btn">Choose file</label>
-    <input id="{{id + 'file-input'}}" type="file" accept=".json,application/json" (change)="fileChanged($event)"/>
+    <label for="{{modal + 'file-input'}}" class="btn choose-btn">Choose file</label>
+    <input id="{{modal + 'file-input'}}" type="file" accept=".json,application/json" (change)="fileChanged($event)"/>
     <div *ngIf="json"><p id="file-name">{{ fileName }}</p></div>
     <div id="attention-div" *ngIf="show_attention">
       <img ngSrc=" {{ imageUrl_attention }}" alt="attention" height="15" width="15">

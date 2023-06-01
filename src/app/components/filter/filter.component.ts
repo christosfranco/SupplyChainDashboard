@@ -1,7 +1,7 @@
 
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ModalService} from "../modal/modal.service";
 import {ConcernForest, ConcernNode, Condition, Filter} from '../../model/filters';
+import {ModalService} from "../../services/modal.service";
 
 @Component({
   selector: 'filter',

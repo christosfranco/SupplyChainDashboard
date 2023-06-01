@@ -4,11 +4,11 @@ import { NodesService } from "../../services/nodes.service";
 import { DagVisualisationComponent } from "../dag-visualisation/dag-visualisation.component";
 import { DetailsComponent } from "../details/details.component";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
-import {ModalService} from "../modal/modal.service";
 import {FilterService} from "../../services/filter.service";
 import {ConcernForest, Filter} from "../../model/filters";
 import {FilterComponent} from "../filter/filter.component";
 import {AppliedFiltersComponent} from "../applied-filters/applied-filters.component";
+import {ModalService} from "../../services/modal.service";
 
 
 @Component({
@@ -101,9 +101,6 @@ export class VisualizationPageComponent {
       }, 2000);
     }
   }
-
-}
-
 }
 
 const CONCERN_FOREST_EXAMPLE = [
