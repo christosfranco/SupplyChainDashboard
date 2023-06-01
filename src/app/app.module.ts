@@ -12,7 +12,6 @@ import { ImportComponent } from './components/import/import.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VisualizationPageComponent } from './components/visualization-page/visualization-page.component';
 import { DagVisualisationComponent } from './components/dag-visualisation/dag-visualisation.component';
-import { HighChartsVisComponent } from './components/high-charts-vis/high-charts-vis.component';
 import {HighchartsChartModule} from "highcharts-angular";
 import {NgxPanZoomModule} from "ngx-panzoom";
 import { UploadComponentComponent } from './components/upload-component/upload-component.component';
@@ -32,7 +31,6 @@ import {FormsModule} from "@angular/forms";
     ImportComponent,
     VisualizationPageComponent,
     DagVisualisationComponent,
-    HighChartsVisComponent,
     UploadComponentComponent,
     DetailsComponent,
     FilterComponent
