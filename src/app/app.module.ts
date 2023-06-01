@@ -3,8 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {SupplyChainHome} from "./MVC/Controller/demo_controller";
-import {SupplyChainVisualise} from "./MVC/Controller/visualization_controller";
 import {NgOptimizedImage} from "@angular/common";
 import { HttpClientModule } from "@angular/common/http";
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
@@ -25,8 +23,6 @@ import {FormsModule} from "@angular/forms";
 @NgModule({
   declarations: [
     AppComponent,
-    SupplyChainHome,
-    SupplyChainVisualise,
     LandingPageComponent,
     ImportComponent,
     VisualizationPageComponent,
