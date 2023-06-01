@@ -89,9 +89,7 @@ export class VisualizationPageComponent {
     }
   }
 
-  public filterSupplyChain(filterJson: JSON) {
 
-  }
 }
 
 interface Filter {
