@@ -171,7 +171,7 @@ export class DagVisualisationComponent {
 
   downloadSvgAsPng(): void {
     const theElement = this.downloadEl?.nativeElement;
-    htmlToImage.toPng(theElement).then(dataUrl => {
+    htmlToImage.toPng(theElement, {backgroundColor: "#FFFFFF"}).then(dataUrl => {
       this.downloadDataUrl(dataUrl, "supply-chain.png");
     });
   }
