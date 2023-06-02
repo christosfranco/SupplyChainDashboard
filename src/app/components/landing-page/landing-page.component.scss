@@ -10,8 +10,8 @@
   align-items: center;
 }
 .card {
-  width: 50rem;
-  height: 30rem;
+  width: 55rem;
+  height: 35rem;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
 }
@@ -37,11 +37,12 @@
 .import-btns {
   padding-top: 1.5rem;
   display: flex;
+  align-items: center;
   justify-content: space-evenly;
 }
 
 .visualize {
-  padding-top: 4rem;
+  padding-top: 1.5rem;
   display: flex;
   justify-content: center;
 }
@@ -64,15 +65,15 @@
   cursor: pointer;
 }
 
-.import-btn{
+.import-btn {
   border-radius: 8px;
   border: none;
   font-weight: 700;
   font-size: 0.9375rem;
-  /*margin: -0 px auto 0 560px;*/
   padding: 14px 23px;
   color: #ffffff;
   background-color: #77aad9;
+  margin-bottom: 1rem;
 }
 
 .import-btn:hover {
