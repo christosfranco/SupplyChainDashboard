@@ -10,7 +10,8 @@ import {UploadService} from "../../services/upload.service";
 })
 export class LandingPageComponent {
   @ViewChild(UploadComponentComponent) uploadComponent: any | undefined;
-  public imageUrl_help = "../../assets/images/help.png";
+  public imageUrl_help = "assets/images/help.png";
+
   supplyChainFileName = "";
   concernTreeFileName = "";
 

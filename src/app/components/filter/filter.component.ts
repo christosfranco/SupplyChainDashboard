@@ -14,7 +14,8 @@ export class FilterComponent {
   @Output() filterSelected = new EventEmitter<Filter>();
 
   public show_attention = false;
-  public imageUrl_attention = "../../assets/images/attention.png";
+  public imageUrl_attention = "assets/images/attention.png";
+
   public attention_msg = "";
 
   selectedConcernNodes: string[];

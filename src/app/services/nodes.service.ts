@@ -57,7 +57,7 @@ export class NodesService {
     }
   ]
 
-  private nodeUrl = 'api/nodes';
+  private nodeUrl = 'http://localhost:4200/api/nodes';
 
   constructor(private httpClient: HttpClient) { }
 

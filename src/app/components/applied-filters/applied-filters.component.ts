@@ -13,8 +13,8 @@ export class AppliedFiltersComponent {
   @Output() editFilters: EventEmitter<{ id: string; selectedFilters: Filter | undefined }> =
     new EventEmitter<{ id: string; selectedFilters: Filter | undefined }>();
 
-  public imageUrl_edit = "../../assets/images/edit.png";
-  public imageUrl_trash = "../../assets/images/trash.png";
+  public imageUrl_edit = "assets/images/edit.png";
+  public imageUrl_trash = "assets/images/trash.png";
 
   ngOnInit(): void {
     const appliedFilters = document.getElementById("applied-filters");
