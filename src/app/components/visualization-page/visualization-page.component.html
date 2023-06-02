@@ -2,7 +2,7 @@
   <div class="header">
     <div class="button-span">
       <div class="import-export">
-        <a href="" class="btn new-sc-btn">Import a new Supply Chain</a>
+        <a routerLink="/"  class="btn new-sc-btn">Import a new Supply Chain</a>
         <button class="btn export-btn" (click)="openModal('export-modal')">Export</button>
       </div>
       <button *ngIf="!filters" class="filter-btn btn" (click)="openModal('filter-modal')">Add Filter</button>
