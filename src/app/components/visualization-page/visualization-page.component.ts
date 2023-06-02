@@ -80,6 +80,12 @@ export class VisualizationPageComponent {
     this.filterForm.populateFilters(selectedFilters);
   }
 
+  exportChart() {
+    if (this.graph) {
+      this.graph.downloadSvgAsPng();
+    }
+  }
+
   closeModal(id: string) {
     this.modalService.close(id)
   }
