@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ConcernForest, ConcernNode, Filter} from '../../model/filters';
 
 @Component({
@@ -20,9 +20,6 @@ export class AppliedFiltersComponent {
     const appliedFilters = document.getElementById("applied-filters");
     appliedFilters!.hidden = true;
   }
-
-  // @ts-ignore
-  filterNamesSet : string[] = Array(new Set(this.filters?.conditions.map(filter => filter.conditionName) || []));
 
   handleClearFilters() {
     this.clearFilters.emit();

@@ -20,7 +20,6 @@ export class FilterComponent {
   selectedConcernNodes: string[];
 
   selectedColor: string;
-  filterNameField: string | undefined;
 
   constructor(private modalService: ModalService) {
 

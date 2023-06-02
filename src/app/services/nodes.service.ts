@@ -57,7 +57,6 @@ export class NodesService {
     }
   ]
 
-  private highlightedNodes:String[] = ["8", "1"]
   private nodeUrl = 'api/nodes';
 
   constructor(private httpClient: HttpClient) { }
@@ -65,11 +64,6 @@ export class NodesService {
   public getNodes(): Observable<Node[]> {
     const url = this.nodeUrl
     return this.httpClient.get<Node[]>(url)
-  }
-
-  public getHighlights(): Observable<String[]> {
-    const body = { message: '' }
-    return this.httpClient.post<String[]>(`${this.nodeUrl}/filtered`, body)
   }
 
   public getDetails(node: string): Observable<NodeDetails> {
