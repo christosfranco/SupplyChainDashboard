@@ -19,7 +19,7 @@
           "Consequence": 5,
           "Likelihood": 3,
           "Mitigation_Strategies": ["Train Speed Control", "Signaling System"],
-          "Concern_IDs": [1, 2, 3]
+          "Concern_IDs": ["1", "2", "3"]
         },
         {
           "Name": "Track Damage",
@@ -27,7 +27,7 @@
           "Consequence": 4,
           "Likelihood": 2,
           "Mitigation_Strategies": ["Regular Inspections", "Maintenance"],
-          "Concern_IDs": [4, 5]
+          "Concern_IDs": ["4", "5"]
         }
       ]
     },
@@ -43,7 +43,7 @@
           "Consequence": 4,
           "Likelihood": 1,
           "Mitigation_Strategies": ["Fire Suppression System", "Regular Safety Drills"],
-          "Concern_IDs": [6, 7, 8]
+          "Concern_IDs": ["6", "7", "8"]
         }
       ]
     },
@@ -59,7 +59,7 @@
           "Consequence": 5,
           "Likelihood": 2,
           "Mitigation_Strategies": ["Track Maintenance", "Train Inspection"],
-          "Concern_IDs": [9, 10]
+          "Concern_IDs": ["9", "10"]
         }
       ]
     },

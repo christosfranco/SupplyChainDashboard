@@ -22,9 +22,9 @@
           "Likelihood": 1,
           "Mitigation_Strategies": ["Strategy 1", "Strategy 2"],
           "Concern_IDs": [
-            1,
-            2,
-            3
+            "1",
+            "2",
+            "3"
           ]
         }
       ]
