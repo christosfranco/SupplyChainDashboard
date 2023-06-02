@@ -9,7 +9,6 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { VisualizationPageComponent } from './components/visualization-page/visualization-page.component';
 import { DagVisualisationComponent } from './components/dag-visualisation/dag-visualisation.component';
-import {HighchartsChartModule} from "highcharts-angular";
 import {NgxPanZoomModule} from "ngx-panzoom";
 import { UploadComponentComponent } from './components/upload-component/upload-component.component';
 import { DetailsComponent } from './components/details/details.component';
@@ -38,7 +37,6 @@ import {AppliedFiltersComponent} from "./components/applied-filters/applied-filt
     NgOptimizedImage,
     HttpClientModule,
     BrowserAnimationsModule,
-    HighchartsChartModule,
     NgxPanZoomModule,
     MatDialogModule,
     NgxPanZoomModule,
