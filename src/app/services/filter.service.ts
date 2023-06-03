@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {catchError, throwError} from "rxjs";
+import {catchError, Observable, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +12,10 @@ export class FilterService {
 
   private nodeUrl = 'http://localhost:4200/api/nodes';
 
-public filterNodes(json: JSON) {
-    const httpOptions:Object = { headers: this.httpHeaders, responseType: 'text'}
+public filterNodes(json: JSON):Observable<string[]> {
+    const httpOptions:Object = { headers: this.httpHeaders, responseType: 'json'}
     return this.httpClient
-      .post(`${this.nodeUrl}/filtered`,json, httpOptions)
+      .post<string[]>(`${this.nodeUrl}/filtered`,json, httpOptions)
       .pipe(
         catchError(
           error => {
