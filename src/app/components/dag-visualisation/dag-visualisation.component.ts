@@ -145,21 +145,54 @@ export class DagVisualisationComponent {
   }
 
   public highlightNodes(highlightedNodesIds: string[]) {
-    const nodes = d3.select("svg")
+
+    const r = this.nodeRadius
+
+    d3.select("svg")
       .selectAll('.node')// @ts-ignore
-      .filter((d) => highlightedNodesIds.includes(d.data.id))
-      .append("circle")
-      .attr("class", "highlight")
-      .attr("r", this.nodeRadius + 35)
-      .attr("fill", "none")
-      .style("stroke", "yellow")
-      .style("stroke-width", 5);
+      .filter((d) => highlightedNodesIds.includes(d.data.id))// @ts-ignore
+      .each(this.displayRiskColors)
+
+    d3.select("svg")
+      .selectAll('.node')// @ts-ignore
+      .filter((d) => highlightedNodesIds.includes(d.data.id))// @ts-ignore
   }
 
   public removeHighlight() {
     const nodes = d3.select("svg")
       .selectAll('.highlight')
       .remove();
+  }
+
+  private displayRiskColors(d:any) {
+    console.log(d.data.id)
+    let colors = ["green", "orange", "red"]
+    let risks = [5,10,15]
+    for (let i:number = 0;i<risks.length;i++) {
+      // @ts-ignore
+      const highlights = d3.select(this)
+        .append("g")
+        .attr("class", "highlight")// @ts-ignore
+        .attr("transform", ({x, y}) => `translate(${-48+(i*33)}, ${-38})`)
+
+      highlights
+        .append("rect")
+        .attr("fill", (n) => colors[i])
+        .attr('width', 30)
+        .attr('height', 10)
+        .style("stroke", d => "black")
+        .style("stroke-width", d => 1)
+
+      highlights
+        .append("text")
+        .text((d) => risks[i])
+        .attr("fill", "white")
+        .attr("text-anchor", "middle")
+        .attr("font-size", "10px")// @ts-ignore
+        .attr("transform", ({x, y}) => `translate(${15}, ${9})`)
+        .attr("font-weight", "bold")
+        .attr("font-family", "sans-serif")
+    }
   }
 
   downloadDataUrl(dataUrl: string, filename: string): void {
