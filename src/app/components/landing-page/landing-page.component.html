@@ -1,20 +1,47 @@
-<div class="base" >
+<div class="base">
   <div class="card">
-    <span
-       data-href="#sec-0765"><img class="help-icon"
-      ngSrc="{{ imageUrl_help }}" height="128" width="128" alt="Help image"></span>
+    <button id="help" title="Help" (click)="openModal('help-modal')">
+      <img class="help-icon"
+           ngSrc="{{ imageUrl_help }}" height="128" width="128" alt="Help image">
+    </button>
     <h2 class="name">Supply Chain Viewer</h2>
     <p class="text">A tool for visualising supply chains and tracking their concerns and
       risks.</p>
     <div class="import-btns">
-      <app-upload-component text="Import Supply Chain"></app-upload-component>
-      <app-import text="Import Concern Forest"></app-import>
+      <div>
+        <button class="import-btn" (click)="openModal('import-sc')">
+          Import Supply Chain
+        </button>
+        <div *ngIf="supplyChainFileName"><p class="txt">{{supplyChainFileName}}</p></div>
+
+      </div>
+
+      <div>
+        <button class="import-btn" (click)="openModal('import-cf')">
+          Import Concern Forest
+        </button>
+        <div *ngIf="concernTreeFileName"><p class="txt">{{concernTreeFileName}}</p></div>
+      </div>
+
     </div>
     <div class="visualize">
-      <a href="/visualise"
-         class="visualize-btn">VISUALIZE</a>
+      <a routerLink="/visualise" class="visualize-btn">VISUALIZE</a>
     </div>
   </div>
+
+  <modal id="import-sc" title="Import a new Supply Chain">
+    <app-upload-component modal="import-sc" text="Import Supply Chain" [modalService]="modalService"
+                          (fileEvent)="setSupplyChainFileName($event)" (uploadEvent)="uploadSupplyChain($event)"></app-upload-component>
+  </modal>
+
+  <modal id="import-cf" title="Import a Concern Forest">
+    <app-upload-component modal="import-cf" text="Import Concern Tree" [modalService]="modalService"
+                          (fileEvent)="setConcernTreeFileName($event)" (uploadEvent)="uploadConcernTree($event)"></app-upload-component>
+  </modal>
+
+  <modal id="help-modal" title="HELP">
+
+  </modal>
 </div>
 
 

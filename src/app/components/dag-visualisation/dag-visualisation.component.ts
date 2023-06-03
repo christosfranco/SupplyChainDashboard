@@ -107,12 +107,6 @@ export class DagVisualisationComponent {
       .append("g")
       .attr("class", "node")// @ts-ignore
       .attr("transform", ({x, y}) => `translate(${2*y}, ${x})`)
-      .on("mouseenter", (event, d) => {
-        d3.select(event.currentTarget).style("cursor", "grab");
-      })
-      .on("mouseleave", (event, d) => {
-        d3.select(event.currentTarget).style("cursor", "default");
-      })
       .on("click", (event, d) => {
         this.nodeClick.emit(d.data.id);
       });
@@ -123,6 +117,14 @@ export class DagVisualisationComponent {
       .attr('width', 96)
       .attr('height', 40)
       .style("stroke", d => "black")
+      .on("mouseenter", (event, d) => {
+        d3.select(event.currentTarget).style("cursor", "pointer");
+        d3.select(event.currentTarget).style("fill", "#5d9ad2");
+      })
+      .on("mouseleave", (event, d) => {
+        d3.select(event.currentTarget).style("cursor", "default");
+        d3.select(event.currentTarget).style("fill", "#77aad9");
+      })
       .style("stroke-width", d=> 1)// @ts-ignore
       .attr("transform", ({x, y}) => `translate(${-48}, ${-24})`);
 
