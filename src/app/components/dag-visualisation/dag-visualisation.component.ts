@@ -1,7 +1,9 @@
-import {Component, EventEmitter, Input, Output, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, ElementRef, EventEmitter, Input, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
 import * as d3dag from'd3-dag';
 import { Node } from '../../model/node'
+import { DOCUMENT } from "@angular/common";
+import * as htmlToImage from "html-to-image";
 
 @Component({
   selector: 'app-dag-visualisation',
@@ -16,7 +18,9 @@ import { Node } from '../../model/node'
 
 export class DagVisualisationComponent {
 
-  constructor() { }
+  constructor(@Inject(DOCUMENT) private coreDoc: Document) { }
+
+  @ViewChild("dagChart") downloadEl: ElementRef | undefined;
   @Input() public nodes: Node[] = []
   @Output() nodeClick: EventEmitter<any> = new EventEmitter<any>();
 
@@ -156,6 +160,22 @@ export class DagVisualisationComponent {
     const nodes = d3.select("svg")
       .selectAll('.highlight')
       .remove();
+  }
+
+  downloadDataUrl(dataUrl: string, filename: string): void {
+    var a = this.coreDoc.createElement("a");
+    a.href = dataUrl;
+    a.download = filename;
+    this.coreDoc.body.appendChild(a);
+    a.click();
+    this.coreDoc.body.removeChild(a);
+  }
+
+  downloadSvgAsPng(): void {
+    const theElement = this.downloadEl?.nativeElement;
+    htmlToImage.toPng(theElement, {backgroundColor: "#FFFFFF"}).then(dataUrl => {
+      this.downloadDataUrl(dataUrl, "supply-chain.png");
+    });
   }
 }
 

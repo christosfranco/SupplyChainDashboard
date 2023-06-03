@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {catchError, throwError} from "rxjs";
-import {NodeDetails} from "../model/node";
 
 @Injectable({
   providedIn: 'root'

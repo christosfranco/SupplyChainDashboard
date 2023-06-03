@@ -1,61 +1,12 @@
 import { Injectable } from '@angular/core';
 import {Node, NodeDetails} from '../model/node'
-import {Observable, of} from "rxjs";
+import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class NodesService {
-
-  private nodes:Node[] = [
-    {
-      "id": "0",
-      "name":"Hotel",
-      "parentIds": []
-    },
-    {
-      "id": "1",
-      "name":"Website",
-      "parentIds": ["0"]
-    }
-    ,
-    {
-      "id": "2",
-      "name":"Booking Site",
-      "parentIds": ["0"]
-    },
-    {
-      "id": "3",
-      "name":"Booking Site",
-      "parentIds": ["0"]
-    },
-    {
-      "id": "4",
-      "name":"Server",
-      "parentIds": ["1"]
-    },
-    {
-      "id": "5",
-      "name":"Firewall",
-      "parentIds": ["4"]
-    },
-    {
-      "id": "6",
-      "name":"Physical Security",
-      "parentIds": ["4"]
-    },
-    {
-      "id": "7",
-      "name":"Work Scheduler",
-      "parentIds": ["0"]
-    },
-    {
-      "id": "8",
-      "name":"Cleaning Supply",
-      "parentIds": ["0"]
-    }
-  ]
 
   private nodeUrl = 'http://localhost:4200/api/nodes';
 

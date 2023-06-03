@@ -9,7 +9,7 @@ import {ModalService} from "../../services/modal.service";
 })
 export class UploadComponentComponent {
 
-  constructor(private uploadService: UploadService) {
+  constructor() {
   }
   @Input() text: string = "Import Supply Chain"
   @Input() modalService: ModalService | undefined;
