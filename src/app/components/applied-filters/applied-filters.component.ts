@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {ConcernForest, ConcernNode, Filter} from '../../model/filters';
 
 @Component({
@@ -13,16 +13,13 @@ export class AppliedFiltersComponent {
   @Output() editFilters: EventEmitter<{ id: string; selectedFilters: Filter | undefined }> =
     new EventEmitter<{ id: string; selectedFilters: Filter | undefined }>();
 
-  public imageUrl_edit = "../../assets/images/edit.png";
-  public imageUrl_trash = "../../assets/images/trash.png";
+  public imageUrl_edit = "assets/images/edit.png";
+  public imageUrl_trash = "assets/images/trash.png";
 
   ngOnInit(): void {
     const appliedFilters = document.getElementById("applied-filters");
     appliedFilters!.hidden = true;
   }
-
-  // @ts-ignore
-  filterNamesSet : string[] = Array(new Set(this.filters?.conditions.map(filter => filter.conditionName) || []));
 
   handleClearFilters() {
     this.clearFilters.emit();

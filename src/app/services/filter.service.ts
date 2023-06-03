@@ -10,10 +10,12 @@ export class FilterService {
   private httpHeaders: HttpHeaders =  new HttpHeaders({ 'Content-Type': 'application/json' });
   constructor(private httpClient: HttpClient) { }
 
-  public filterNodes(json: JSON) {
+  private nodeUrl = 'http://localhost:4200/api/nodes';
+
+public filterNodes(json: JSON) {
     const httpOptions:Object = { headers: this.httpHeaders, responseType: 'text'}
     return this.httpClient
-      .post("api/nodes/filtered",json, httpOptions)
+      .post(`${this.nodeUrl}/filtered`,json, httpOptions)
       .pipe(
         catchError(
           error => {

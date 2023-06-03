@@ -1,6 +1,7 @@
+
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ModalService} from "../modal/modal.service";
 import {ConcernForest, ConcernNode, Condition, Filter} from '../../model/filters';
+import {ModalService} from "../../services/modal.service";
 
 @Component({
   selector: 'filter',
@@ -13,13 +14,13 @@ export class FilterComponent {
   @Output() filterSelected = new EventEmitter<Filter>();
 
   public show_attention = false;
-  public imageUrl_attention = "../../assets/images/attention.png";
+  public imageUrl_attention = "assets/images/attention.png";
+
   public attention_msg = "";
 
   selectedConcernNodes: string[];
 
   selectedColor: string;
-  filterNameField: string | undefined;
 
   constructor(private modalService: ModalService) {
 
@@ -291,11 +292,11 @@ export class FilterComponent {
       }
     }
 
+
     if (conditionList.length) {
       const newFilter: Filter = {
         conditions: conditionList
       }
-
 
       this.modalService.close("filter-modal");
 
@@ -360,5 +361,3 @@ export class FilterComponent {
     }
   }
 }
-
-

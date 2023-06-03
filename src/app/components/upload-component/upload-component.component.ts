@@ -1,5 +1,6 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {UploadService} from "../../services/upload.service";
+import {ModalService} from "../../services/modal.service";
 
 @Component({
   selector: 'app-upload-component',
@@ -8,30 +9,61 @@ import {UploadService} from "../../services/upload.service";
 })
 export class UploadComponentComponent {
 
-  constructor(private uploadService: UploadService) {
+  constructor() {
   }
-
   @Input() text: string = "Import Supply Chain"
-  @ViewChild ('dialog') dialogModal: any | undefined;
+  @Input() modalService: ModalService | undefined;
+  @Input() modal: string | undefined;
+  @Output() fileEvent = new EventEmitter<string>;
+  @Output() uploadEvent = new EventEmitter<JSON>();
   json: JSON | undefined
+
+  public show_attention = false;
+  public imageUrl_attention = "../../assets/images/attention.png";
+  public attention_msg = "";
+
+  fileName=""
 
   fileChanged(e: any) {
     const file = e.target.files[0];
+    this.fileName = file.name;
     const fileReader = new FileReader();
     fileReader.readAsText(file, "UTF-8");
     fileReader.onload = () => {
-      // @ts-ignore
-      this.json = JSON.parse(fileReader.result)
+
+      try {
+        // @ts-ignore
+        this.json = JSON.parse(fileReader.result)
+      } catch (e) {
+        console.error(e);
+        this.attention_msg = "Please select a valid json file."
+
+        this.show_attention = true;
+        setTimeout(() => {
+          this.show_attention = false;
+        }, 2000);
+      }
+
     }
     fileReader.onerror = (error) => {
-      console.log(error);
+      console.error(error);
+      this.attention_msg = "Please select a valid json file."
+
+      this.show_attention = true;
+      setTimeout(() => {
+        this.show_attention = false;
+      }, 2000);
     }
   }
 
+
+
   public uploadFile() {
-    this.uploadService.uploadFile(<JSON>this.json)
+    this.uploadEvent.emit(<JSON>this.json)
+    //this.uploadService.uploadFile(<JSON>this.json);
     // @ts-ignore
-    this.dialogModal.nativeElement.close()
+    this.modalService?.close(this.modal);
+    this.fileEvent.emit(this.fileName);
   }
 
 }
