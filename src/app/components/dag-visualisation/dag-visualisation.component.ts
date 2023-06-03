@@ -151,17 +151,56 @@ export class DagVisualisationComponent {
     d3.select("svg")
       .selectAll('.node')// @ts-ignore
       .filter((d) => highlightedNodesIds.includes(d.data.id))// @ts-ignore
-      .each(this.displayRiskColors)
+      .selectAll("rect")
+      .attr("fill", "#FFAE03")
+      .on("mouseenter", (event, d) => {
+        d3.select(event.currentTarget).style("fill", "#E09900");
+        d3.select(event.currentTarget).style("cursor", "pointer");
+      })
+      .on("mouseleave", (event, d) => {
+        d3.select(event.currentTarget).style("fill", "#FFAE03");
+        d3.select(event.currentTarget).style("cursor", "default");
+      })
+
 
     d3.select("svg")
       .selectAll('.node')// @ts-ignore
       .filter((d) => highlightedNodesIds.includes(d.data.id))// @ts-ignore
+      .each(this.displayRiskColors)
+
+    d3.select("svg")
+      .selectAll('.node')// @ts-ignore
+      .filter((d) => !highlightedNodesIds.includes(d.data.id))
+      .selectAll("rect")
+      .attr("fill", "#a0b3d5")
+      .on("mouseenter", (event, d) => {
+        d3.select(event.currentTarget).style("fill", "#8EA5CD");
+        d3.select(event.currentTarget).style("cursor", "pointer");
+      })
+      .on("mouseleave", (event, d) => {
+        d3.select(event.currentTarget).style("fill", "#a0b3d5");
+        d3.select(event.currentTarget).style("cursor", "default");
+      })
   }
 
   public removeHighlight() {
     const nodes = d3.select("svg")
       .selectAll('.highlight')
       .remove();
+
+    d3.select("svg")
+      .selectAll('.node')// @ts-ignore
+      .selectAll("rect")
+      .attr("fill", "#77aad9")
+      .on("mouseenter", (event, d) => {
+        d3.select(event.currentTarget).style("fill", "#5d9ad2");
+        d3.select(event.currentTarget).style("cursor", "pointer");
+      })
+      .on("mouseleave", (event, d) => {
+        d3.select(event.currentTarget).style("fill", "#77aad9");
+        d3.select(event.currentTarget).style("cursor", "default");
+      })
+
   }
 
   private displayRiskColors(d:any) {
