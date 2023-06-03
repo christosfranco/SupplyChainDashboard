@@ -122,12 +122,10 @@ export class DagVisualisationComponent {
       .attr('height', 40)
       .style("stroke", d => "black")
       .on("mouseenter", (event, d) => {
-        d3.select(event.currentTarget).style("cursor", "pointer");
-        d3.select(event.currentTarget).style("fill", "#5d9ad2");
+        d3.select(event.currentTarget).classed("hover-default", true);
       })
       .on("mouseleave", (event, d) => {
-        d3.select(event.currentTarget).style("cursor", "default");
-        d3.select(event.currentTarget).style("fill", "#77aad9");
+        d3.select(event.currentTarget).classed("hover-default", false);
       })
       .style("stroke-width", d=> 1)// @ts-ignore
       .attr("transform", ({x, y}) => `translate(${-48}, ${-24})`);
@@ -146,40 +144,33 @@ export class DagVisualisationComponent {
 
   public highlightNodes(highlightedNodesIds: string[]) {
 
-    const r = this.nodeRadius
+    const svg = d3.select("svg")
 
-    d3.select("svg")
+    const filteredNodes = svg
       .selectAll('.node')// @ts-ignore
       .filter((d) => highlightedNodesIds.includes(d.data.id))// @ts-ignore
-      .selectAll("rect")
-      .attr("fill", "#FFAE03")
+
+    filteredNodes.selectAll("rect")
+      .attr("fill", "#1553FF")
       .on("mouseenter", (event, d) => {
-        d3.select(event.currentTarget).style("fill", "#E09900");
-        d3.select(event.currentTarget).style("cursor", "pointer");
+        d3.select(event.currentTarget).classed("highlight-hover-active", true);
       })
       .on("mouseleave", (event, d) => {
-        d3.select(event.currentTarget).style("fill", "#FFAE03");
-        d3.select(event.currentTarget).style("cursor", "default");
+        d3.select(event.currentTarget).classed("highlight-hover-active", false);
       })
 
+    filteredNodes.each(this.displayRiskColors)
 
-    d3.select("svg")
-      .selectAll('.node')// @ts-ignore
-      .filter((d) => highlightedNodesIds.includes(d.data.id))// @ts-ignore
-      .each(this.displayRiskColors)
 
-    d3.select("svg")
-      .selectAll('.node')// @ts-ignore
+    svg.selectAll('.node')// @ts-ignore
       .filter((d) => !highlightedNodesIds.includes(d.data.id))
       .selectAll("rect")
-      .attr("fill", "#a0b3d5")
+      .attr("fill", "#bbc9e1")
       .on("mouseenter", (event, d) => {
-        d3.select(event.currentTarget).style("fill", "#8EA5CD");
-        d3.select(event.currentTarget).style("cursor", "pointer");
+        d3.select(event.currentTarget).classed("highlight-hover-inactive", true);
       })
       .on("mouseleave", (event, d) => {
-        d3.select(event.currentTarget).style("fill", "#a0b3d5");
-        d3.select(event.currentTarget).style("cursor", "default");
+        d3.select(event.currentTarget).classed("highlight-hover-inactive", false);
       })
   }
 
@@ -193,18 +184,15 @@ export class DagVisualisationComponent {
       .selectAll("rect")
       .attr("fill", "#77aad9")
       .on("mouseenter", (event, d) => {
-        d3.select(event.currentTarget).style("fill", "#5d9ad2");
-        d3.select(event.currentTarget).style("cursor", "pointer");
+        d3.select(event.currentTarget).classed("hover-default", true);
       })
       .on("mouseleave", (event, d) => {
-        d3.select(event.currentTarget).style("fill", "#77aad9");
-        d3.select(event.currentTarget).style("cursor", "default");
+        d3.select(event.currentTarget).classed("hover-default", false);
       })
 
   }
 
   private displayRiskColors(d:any) {
-    console.log(d.data.id)
     let colors = ["green", "orange", "red"]
     let risks = [5,10,15]
     for (let i:number = 0;i<risks.length;i++) {
