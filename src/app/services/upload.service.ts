@@ -8,15 +8,16 @@ import {catchError, Observable, of, throwError} from "rxjs";
 export class UploadService {
 
   private httpHeaders: HttpHeaders =  new HttpHeaders({ 'Content-Type': 'application/json' });
-  private url: string = "/api/postSupplyChainData"
+  private url: string = "http://localhost:3000/api" // TODO change endpoints in backend, use upload api
 
   constructor(private httpClient: HttpClient) { }
 
-  public uploadFile(json: JSON) {
+  public uploadFile(json: JSON, endpoint: string) {
 
     const httpOptions:Object = { headers: this.httpHeaders, responseType: 'text'}
+    console.log(`${this.url}/${endpoint}`)
     this.httpClient
-      .post(`${this.url}`,json, httpOptions)
+      .post(`${this.url}/${endpoint}`,json, httpOptions)
       .pipe(
         catchError(
           error => {
@@ -30,12 +31,14 @@ export class UploadService {
 
   public uploadSupplyChain(json: JSON) {
     this.log("Upload Supply Chain")
-    this.uploadFile(json)
+    const endpoint = "postSupplyChainData"
+    this.uploadFile(json, endpoint)
   }
 
   public uploadConcernTree(json: JSON) {
     this.log("Upload Concern Tree")
-    this.uploadFile(json)
+    const endpoint = "upload/concerntree"
+    this.uploadFile(json, endpoint)
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
