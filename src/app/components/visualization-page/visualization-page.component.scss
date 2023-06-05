@@ -2,14 +2,22 @@
   font-family: IBM-plex, arial, serif;
   width: auto;
   height: 100%;
+  background-color: #f5f7fa;
 }
 
 .header {
-  background-color: #f5f7fa;
-  height: 15%;
+  background-color: #235380;
+  border: 1px solid black;
+  border-top: none;
+  height: 12%;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+h1 {
+  color: white;
+  font-weight: bold;
 }
 
 .button-span {
@@ -19,34 +27,36 @@
 }
 
 .import-export {
-  width: 35%;
+  width: 25%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  align-items: center;
 }
 
-.btn {
-  border-radius: 8px;
-  border: none;
+.vis-page-btns {
+  border: 1px solid black;
   font-weight: 700;
-  font-size: 0.9375rem;
-  padding: 14px 23px;
+  font-size: 0.8375rem;
+  padding: 10px 23px;
   cursor: pointer;
 }
 
 .new-sc-btn {
   color: #ffffff;
-  background-color: #a4a5a6;
+  display: flex;
+  align-items: center;
+  background-color: #7c7e7e;
   text-decoration: none;
 }
 
 .new-sc-btn:hover {
-  background-color: #7c7e7e;
+  background-color: #5d9ad2;
   cursor: pointer;
 }
 
 .export-btn {
+  background-color: #7c7e7e;
   color: #ffffff;
-  background-color: #77aad9;
 }
 
 .export-btn:hover {
@@ -54,8 +64,16 @@
   cursor: pointer;
 }
 
+.filter-div{
+  display: flex;
+  justify-content: right;
+  width: 25%;
+  align-items: center;
+}
+
 .filter-btn {
   color: #ffffff;
+  float: right;
   background-color: #176ab9;
 }
 
@@ -78,7 +96,8 @@
   position: relative;
   width: 90%;
   height: 80vh;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.7);;
   transition: 0.3s;
   margin: 0 auto;
 }
@@ -89,19 +108,14 @@
 
 
 #applied-filters {
-  position: absolute;
-  right: 3%;
-  width: 25%;
   box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.2);
   background: white;
   z-index: 4;
 }
 
 #show-applied {
-  position: absolute;
   font-size: 80%;
-  right: 8%;
-  margin-top: 5px;
+  float: right;
   z-index: 3;
 }
 

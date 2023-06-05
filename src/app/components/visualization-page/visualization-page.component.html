@@ -2,13 +2,19 @@
   <div class="header">
     <div class="button-span">
       <div class="import-export">
-        <a routerLink="/"  class="btn new-sc-btn">Import a new Supply Chain</a>
-        <button class="btn export-btn" (click)="exportChart()">Export</button>
+        <a routerLink="/"  class="vis-page-btns  new-sc-btn">Import new Files</a>
+        <button class="vis-page-btns  export-btn" (click)="exportChart()">Export Graph</button>
       </div>
-      <button *ngIf="!filters" class="filter-btn btn" (click)="openModal('filter-modal')">Add Filter</button>
-      <button *ngIf="filters" class="btn" id="show-applied" (click)="showApplied()">Show applied filter</button>
+      <h1>Supply Chain Visualisation</h1>
+      <div class="filter-div">
+        <button *ngIf="!filters;else appliedButton" class="filter-btn vis-page-btns" (click)="openModal('filter-modal')">Add Filter</button>
+      </div>
     </div>
   </div>
+
+  <ng-template #appliedButton>
+    <button *ngIf="filters" class="vis-page-btns" id="show-applied" (click)="showApplied()">Show applied filter</button>
+  </ng-template>
 
 
 <!--  <div *ngIf="noFiltersMsg" id="no-filters-msg">-->
