@@ -19,7 +19,8 @@
   <div class="content-container">
     <div class="graph-container">
       <div class="vis-card">
-        <app-dag-visualisation *ngIf="nodes" [nodes]="nodes" (nodeClick)="onNodeClick($event)"></app-dag-visualisation>
+        <app-dag-visualisation *ngIf="nodes && (nodes.length > 0)" [nodes]="nodes" (nodeClick)="onNodeClick($event)"></app-dag-visualisation>
+        <p class="error-msg" *ngIf="!(nodes && (nodes.length > 0))" >To start upload a supply chain</p>
       </div>
     </div>
 
