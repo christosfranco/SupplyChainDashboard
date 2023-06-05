@@ -38,7 +38,7 @@ export class UploadService {
 
   public uploadConcernTree(json: JSON) {
     this.log("Upload Concern Tree")
-    const endpoint = "upload/concerntree"
+    const endpoint = "concerntree"
     this.uploadFile(json, endpoint)
   }
 
