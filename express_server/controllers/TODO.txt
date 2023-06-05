@@ -4,8 +4,21 @@ DONE check that suppliers and supplying to node_ids exist
 
 DONE check special type cons and likelihood
 
+DONE change supply chain files concern_id array number -> string
+  DONE change model concern_ids number []-> string[]
+
+
+DONE calculate risklevel when parsing
+
+
 error message correct output, either node id or risk id. also output field
+
+
 
 make tests,
   unit test for each function
+    parser supply chain
+DONE risk levels
+    concern tree default checks
+
   integration test with API

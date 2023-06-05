@@ -1,11 +1,14 @@
 const { Node, Risk, Data } = require('../models/supplyChainTree.js');
+const {checkConcernIdsExist} = require('./parserConcernTreeController');
+const {concernTreeDefault} = require('../models/concernTreeModel');
+const {calculateRiskLevel} = require('./riskLevelCalculateController');
 
+// constants
 const data = new Data();
 const inputFile = require('../../src/assets/nodes.json')
-
 const debugLog = true;
 const allowSelfSupply = false;
-const rootNode = 0;
+const rootNodeNumber = 0;
 
 
 const handleFilePost = (req, res, _next) => {
@@ -162,6 +165,7 @@ function parseNode(jsonNode) {
     nodeIDs.add(jsonNode.Node_ID);
   }
   // ensure data not overwritten unless all parsed
+  // this is fixed with init of new node.
   for (const field in jsonNode) {
     switch (field){
       case 'Risks':
@@ -171,7 +175,6 @@ function parseNode(jsonNode) {
         node[field] = jsonNode[field];
     }
   }
-
   return node;
 }
 
@@ -220,9 +223,16 @@ function parseRisk(jsonRisk) {
         break;
 
       case 'Concern_IDs':
-        const arrResCon = checkTypeArray(jsonRisk[field], 1);
+        const concernIDS = jsonRisk[field]
+        const arrResCon = checkTypeArray(concernIDS, " ");
         if (arrResCon instanceof Error) {
           return arrResCon;
+        }
+        // concernforest is a list of concerntree
+        // if returning false throw error
+        const checkIdsInConcernTree = checkConcernIdsExist(concernTreeDefault,concernIDS);
+        if (checkIdsInConcernTree  instanceof Error){
+          return checkIdsInConcernTree;
         }
         break;
 
@@ -241,6 +251,9 @@ function parseRisk(jsonRisk) {
   for (const field in jsonRisk) {
     risk[field] = jsonRisk[field];
   }
+
+  //calculate risk level
+  risk['Risk_Level'] = calculateRiskLevel(jsonRisk['Consequence'], jsonRisk['Likelihood']);
 
   return risk;
 }
@@ -264,7 +277,7 @@ function checkTypeArray(array, expected) {
 function checkType(actual, expected) {
   const tactual = typeof actual;
   const texpected = typeof expected;
-  if (tactual !== texpected || (texpected === ('number') && actual < 0) || (texpected === 'string' && actual === '')) {
+  if (tactual !== texpected || (texpected === ('number') && actual < rootNodeNumber) || (texpected === 'string' && actual === '')) {
     return Error(`Expected type: ${texpected} \n \
     Got type: ${tactual} and value: ${actual.valueOf()}\n \
     In Node with ID: ${actual.Node_ID} \n \

@@ -18,6 +18,7 @@ function Risk() {
   this.Risk_ID = 0;
   this.Consequence = RiskFactorLevels.VALUE1;
   this.Likelihood = RiskFactorLevels.VALUE1;
+  this.Risk_Level = RiskFactorLevels.VALUE1;
   this.Mitigation_Strategies = [];
   this.Concern_IDs = [];
 }
