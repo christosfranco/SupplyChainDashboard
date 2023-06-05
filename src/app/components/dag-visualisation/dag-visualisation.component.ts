@@ -1,7 +1,7 @@
 import {Component, Inject, ElementRef, EventEmitter, Input, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
 import * as d3dag from'd3-dag';
-import { Node } from '../../model/node'
+import {Node, NodeDetails, NodeRisks} from '../../model/node'
 import { DOCUMENT } from "@angular/common";
 import * as htmlToImage from "html-to-image";
 
@@ -142,8 +142,11 @@ export class DagVisualisationComponent {
 
   }
 
-  public highlightNodes(highlightedNodesIds: string[]) {
+  public highlightNodes(highlightedNodes: NodeRisks[]) {
 
+    const highlightedNodesIds = highlightedNodes.map(elem => elem.id)
+    console.log(highlightedNodes)
+    console.log(highlightedNodesIds)
     const svg = d3.select("svg")
 
     const filteredNodes = svg
@@ -158,8 +161,13 @@ export class DagVisualisationComponent {
       .on("mouseleave", (event, d) => {
         d3.select(event.currentTarget).classed("highlight-hover-active", false);
       })
-
-    filteredNodes.each(this.displayRiskColors)
+    const displayRiskColors = this.displayRiskColors
+    //filteredNodes.each(this.displayRiskColors)
+    filteredNodes.each(function (d:any) {
+      const node:NodeRisks | undefined = highlightedNodes.find(i => i.id === d.data.id)
+      // We filtered only for elements that are in the array, therefor ensuring that a node is found
+      displayRiskColors(this, node!)
+    })
 
 
     svg.selectAll('.node')// @ts-ignore
@@ -192,34 +200,48 @@ export class DagVisualisationComponent {
 
   }
 
-  private displayRiskColors(d:any) {
-    let colors = ["green", "orange", "red"]
-    let risks = [5,10,15]
-    for (let i:number = 0;i<risks.length;i++) {
-      // @ts-ignore
-      const highlights = d3.select(this)
+  private displayRiskColors(selection:any , r:NodeRisks) {
+    let colors: { [key:string]: string } = {"high": "red", "medium": "orange","low": "green"}
+    let risks: { [key:string]: number }= {"high": r.high, "medium": r.medium,"low": r.low}
+
+    Object.keys(risks).forEach((key) => {
+      if (risks[key] < 1) {
+        delete risks[key];
+      }
+    });
+
+    //let risks: any= [r.high, r.medium, r.low]
+    //for (let i:number = 0;i<risks.length;i++) {
+    const len = Object.keys(risks).length
+    let i:number = 0
+    Object.entries(risks).forEach(([key, value])=> {
+      const trans_y = -38
+      const trans_x =  -48+(i*(96/(len)))
+      const highlights = d3.select(selection)
         .append("g")
         .attr("class", "highlight")// @ts-ignore
-        .attr("transform", ({x, y}) => `translate(${-48+(i*33)}, ${-38})`)
+        .attr("transform", ({x, y}) => `translate(${trans_x}, ${trans_y})`)
 
       highlights
         .append("rect")
-        .attr("fill", (n) => colors[i])
-        .attr('width', 30)
+        .attr("fill", (n) => colors[key])
+        .attr('width', (96-3*(len-1))/len)
         .attr('height', 10)
         .style("stroke", d => "black")
         .style("stroke-width", d => 1)
 
+
       highlights
         .append("text")
-        .text((d) => risks[i])
+        .text((d) => value)
         .attr("fill", "white")
         .attr("text-anchor", "middle")
         .attr("font-size", "10px")// @ts-ignore
-        .attr("transform", ({x, y}) => `translate(${15}, ${9})`)
+        .attr("transform", ({x, y}) => `translate(${((96-3*(len-1))/len)/2}, ${9})`)
         .attr("font-weight", "bold")
         .attr("font-family", "sans-serif")
-    }
+      i++
+    })
   }
 
   downloadDataUrl(dataUrl: string, filename: string): void {
