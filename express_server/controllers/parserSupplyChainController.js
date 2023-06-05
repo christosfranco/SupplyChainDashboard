@@ -1,6 +1,7 @@
 const { Node, Risk, Data } = require('../models/supplyChainTree.js');
 const {checkConcernIdsExist} = require('./parserConcernTreeController');
 const {concernTreeDefault} = require('../models/concernTreeModel');
+const {calculateRiskLevel} = require('./riskLevelCalculateController');
 
 // constants
 const data = new Data();
@@ -193,7 +194,7 @@ function parseRisks(jsonRisks) {
 
 function parseRisk(jsonRisk) {
   const risk = new Risk();
-  console.log(jsonRisk);
+  // console.log(jsonRisk);
   if (jsonRisk === []) {
     return risk;
   }
@@ -252,7 +253,7 @@ function parseRisk(jsonRisk) {
   }
 
   //calculate risk level
-  risk['Risk_Level'] = jsonRisk['Consequence'] * jsonRisk['Likelihood'];
+  risk['Risk_Level'] = calculateRiskLevel(jsonRisk['Consequence'], jsonRisk['Likelihood']);
 
   return risk;
 }

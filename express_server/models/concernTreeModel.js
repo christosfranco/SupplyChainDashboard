@@ -70,11 +70,32 @@ concernTreeDefault = [
     id: "3",
     subconcerns: [
       {
-        concern: "Concern4",
-        id: "4",
+        concern: "Concern3.1",
+        id: "3.1",
+        subconcerns: []
+      }]
+  },
+  {
+    concern: "Concern4",
+    id: "4",
+    subconcerns: [
+      {
+        concern: "Concern4.1",
+        id: "4.1",
+        subconcerns: []
+      }]
+  },
+  {
+    concern: "Concern5",
+    id: "5",
+    subconcerns: [
+      {
+        concern: "Concern5.1",
+        id: "5.1",
         subconcerns: []
       }]
   }
+
 ];
 
 

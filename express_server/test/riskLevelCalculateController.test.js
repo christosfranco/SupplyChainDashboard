@@ -19,6 +19,22 @@ describe('calculateRiskLevel', () => {
     const riskLevel4 = calculateRiskLevel(3, 3);
     expect(riskLevel4).to.equal(3);
 
+    // Test case 5: Consequence and likelihood both low
+    const riskLevel5 = calculateRiskLevel(1, 1);
+    expect(riskLevel5).to.equal(1);
+
+    // Test case 6: Consequence and likelihood both high
+    const riskLevel6 = calculateRiskLevel(5, 5);
+    expect(riskLevel6).to.equal(5);
+
+    // Test case 7: Consequence low, likelihood high
+    const riskLevel7 = calculateRiskLevel(1, 5);
+    expect(riskLevel7).to.equal(3);
+
+    // Test case 8: Consequence high, likelihood low
+    const riskLevel8 = calculateRiskLevel(5, 1);
+    expect(riskLevel8).to.equal(3);
+
     // Add more test cases as needed
   });
 });
