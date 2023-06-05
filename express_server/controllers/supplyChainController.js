@@ -105,7 +105,7 @@ const getNodeDetails = (req, res) => {
           'consequenceLevel': 1,
           'likelihoodLevel':3,
           'riskFactor': 3,
-          'mitigationStrategy': 'Updating Firewall maybe??'
+          'mitigationStrategy': ['Updating Firewall maybe??']
         },
         {
           'id': 6,
@@ -115,7 +115,7 @@ const getNodeDetails = (req, res) => {
           'consequenceLevel': 1,
           'likelihoodLevel':3,
           'riskFactor': 4,
-          'mitigationStrategy': 'Security Cameras'
+          'mitigationStrategy': ['Security Cameras']
         }
       ]}
   ];
@@ -146,7 +146,26 @@ const filterNodes = (req, res) => {
           "2"
         ]
 */
-  res.send(["1", "2"])
+  res.send([
+    {
+      "id":"5",
+      "high": 1,
+      "medium": 0,
+      "low": 0
+    },
+    {
+      "id":"2",
+      "high": 4,
+      "medium": 2,
+      "low": 1
+    },
+    {
+      "id":"3",
+      "high": 0,
+      "medium": 5,
+      "low": 10
+    }
+    ])
 };
 
 const uploadSupplyChain = (req, res) => {
