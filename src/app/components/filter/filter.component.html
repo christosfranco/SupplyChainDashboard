@@ -5,8 +5,8 @@
     <ng-template #concernTemplateRef let-concern="node">
       <div class="node">
         <label class="node-label">
-          <input type="checkbox" [ngModel]="concern.check" class="filter"
-                 (ngModelChange)="selectNode(concern, $event)"> {{concern.concern}}
+          <input type="checkbox" [checked]="concern.check" [ngModel]="concern.check" class="filter"
+                 (ngModelChange)="selectNode(concern, $event)" [id]="concern.id">{{concern.concern}}
         </label>
         <div *ngIf="concern.subconcerns.length" class="node-children">
           <ng-template ngFor let-subconcern [ngForOf]="concern.subconcerns">
@@ -19,7 +19,7 @@
         </div>
       </div>
     </ng-template>
-    <ng-template ngFor let-concerns [ngForOf]="concernForest.roots">
+    <ng-template ngFor let-concerns [ngForOf]="concernForest!.roots">
       <ng-template
         [ngTemplateOutlet]="concernTemplateRef"
         [ngTemplateOutletContext]="{node:concerns}">
@@ -107,16 +107,6 @@
       <label class="radio-text txt" for="no-mitigation">don't have a mitigation strategy</label>
     </div>
   </div>
-</div>
-
-<div class="filter-specs">
-  <div class="filter-name"><p class="txt">Name the filter: </p>
-    <input type="text" id="filter-name" maxlength="25" placeholder="Filter Name" [(ngModel)]="filterNameField"
-           required>
-  </div>
-  <div class="filter-color"><p class="txt">Select color for the filter: </p><input type="color" id="filter-color"
-                                                                                   value="#e3c75e"></div>
-
 </div>
 
 <div class="bottom">

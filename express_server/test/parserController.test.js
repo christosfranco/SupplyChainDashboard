@@ -1,5 +1,5 @@
 const { expect, assert } = require('chai');
-const { Risk, Node, parseNode, parseRisks, parseRisk, checkTypeArray, checkType } = require('../controllers/parserController');
+const { Risk, Node, parseNode, parseRisks, parseRisk, checkTypeArray, checkType } = require('../controllers/parserSupplyChainController');
 // const {assert} = require('assert');
 // const {strictEqual} = require('chai').assert;
 describe('Nodes and Risk Parsing', () => {
@@ -41,7 +41,7 @@ describe('Nodes and Risk Parsing', () => {
   });
 
   it('should return a valid Risk object', () => {
-    const risk = parseRisk(mockJsonNodes.Nodes[0].Risks[0]);
+    const risk = parseRisk(mockJsonNodes.Nodes[0].Risks);
     expect(risk).to.be.instanceOf(Risk);
     // Add more assertions to validate the parsed Risk object
     // ...

@@ -1,7 +1,9 @@
-import {Component, EventEmitter, Input, Output, ViewEncapsulation} from '@angular/core';
+import {Component, Inject, ElementRef, EventEmitter, Input, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import * as d3 from 'd3';
 import * as d3dag from'd3-dag';
 import { Node } from '../../model/node'
+import { DOCUMENT } from "@angular/common";
+import * as htmlToImage from "html-to-image";
 
 @Component({
   selector: 'app-dag-visualisation',
@@ -16,7 +18,9 @@ import { Node } from '../../model/node'
 
 export class DagVisualisationComponent {
 
-  constructor() { }
+  constructor(@Inject(DOCUMENT) private coreDoc: Document) { }
+
+  @ViewChild("dagChart") downloadEl: ElementRef | undefined;
   @Input() public nodes: Node[] = []
   @Output() nodeClick: EventEmitter<any> = new EventEmitter<any>();
 
@@ -117,6 +121,14 @@ export class DagVisualisationComponent {
       .attr('width', 96)
       .attr('height', 40)
       .style("stroke", d => "black")
+      .on("mouseenter", (event, d) => {
+        d3.select(event.currentTarget).style("cursor", "pointer");
+        d3.select(event.currentTarget).style("fill", "#5d9ad2");
+      })
+      .on("mouseleave", (event, d) => {
+        d3.select(event.currentTarget).style("cursor", "default");
+        d3.select(event.currentTarget).style("fill", "#77aad9");
+      })
       .style("stroke-width", d=> 1)// @ts-ignore
       .attr("transform", ({x, y}) => `translate(${-48}, ${-24})`);
 
@@ -132,23 +144,38 @@ export class DagVisualisationComponent {
 
   }
 
-  public highlightNodes(highlightedNodesIds: String[]) {
-  const nodes = d3.select("svg")
-    .selectAll('.node')// @ts-ignore
-    .filter((d) => highlightedNodesIds.includes(d.data.id))
-    .append("circle")
-    .attr("class", "highlight")
-    .attr("r", this.nodeRadius+35)
-    .attr("fill", (n) => "none")
-    .style("stroke", d => "yellow")
-    .style("stroke-width", d=> 5);
-}
+  public highlightNodes(highlightedNodesIds: string[]) {
+    const nodes = d3.select("svg")
+      .selectAll('.node')// @ts-ignore
+      .filter((d) => highlightedNodesIds.includes(d.data.id))
+      .append("circle")
+      .attr("class", "highlight")
+      .attr("r", this.nodeRadius + 35)
+      .attr("fill", "none")
+      .style("stroke", "yellow")
+      .style("stroke-width", 5);
+  }
 
   public removeHighlight() {
     const nodes = d3.select("svg")
-      .selectAll('.highlight')// @ts-ignore
-      .remove()
+      .selectAll('.highlight')
+      .remove();
   }
 
+  downloadDataUrl(dataUrl: string, filename: string): void {
+    var a = this.coreDoc.createElement("a");
+    a.href = dataUrl;
+    a.download = filename;
+    this.coreDoc.body.appendChild(a);
+    a.click();
+    this.coreDoc.body.removeChild(a);
+  }
+
+  downloadSvgAsPng(): void {
+    const theElement = this.downloadEl?.nativeElement;
+    htmlToImage.toPng(theElement, {backgroundColor: "#FFFFFF"}).then(dataUrl => {
+      this.downloadDataUrl(dataUrl, "supply-chain.png");
+    });
+  }
 }
 

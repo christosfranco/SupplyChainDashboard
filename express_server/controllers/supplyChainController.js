@@ -238,6 +238,7 @@ const uploadSupplyChain = (req, res) => {
 };
 
 const uploadConcernTree = (req, res) => {
+  res.sendStatus(200)
   /*
   * Upload is JSON format from architecture document
   * No response
