@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParamsOptions} from "@angular/common/http";
-import {catchError, Observable, of, tap, throwError} from "rxjs";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {catchError, Observable, of, throwError} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +10,15 @@ export class UploadService {
   private httpHeaders: HttpHeaders =  new HttpHeaders({ 'Content-Type': 'application/json' });
   private url: string = "/api/upload/supplychain"
 
+
   constructor(private httpClient: HttpClient) { }
 
-  public uploadFile(json: JSON) {
+  public uploadFile(json: JSON, endpoint: string) {
 
     const httpOptions:Object = { headers: this.httpHeaders, responseType: 'text'}
+    console.log(`${this.url}/${endpoint}`)
     this.httpClient
-      .post(`${this.url}`,json, httpOptions)
+      .post(`${this.url}/${endpoint}`,json, httpOptions)
       .pipe(
         catchError(
           error => {
@@ -26,6 +28,18 @@ export class UploadService {
         )
       )
       .subscribe(_ => console.log("Upload handling finished"));
+  }
+
+  public uploadSupplyChain(json: JSON) {
+    this.log("Upload Supply Chain")
+    const endpoint = "postSupplyChainData"
+    this.uploadFile(json, endpoint)
+  }
+
+  public uploadConcernTree(json: JSON) {
+    this.log("Upload Concern Tree")
+    const endpoint = "upload/concerntree"
+    this.uploadFile(json, endpoint)
   }
 
   private handleError<T>(operation = 'operation', result?: T) {

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HighChartsVisComponent } from './high-charts-vis.component';
+import { AppliedFiltersComponent } from './applied-filters.component';
 
-describe('HighChartsVisComponent', () => {
-  let component: HighChartsVisComponent;
-  let fixture: ComponentFixture<HighChartsVisComponent>;
+describe('AppliedFiltersComponent', () => {
+  let component: AppliedFiltersComponent;
+  let fixture: ComponentFixture<AppliedFiltersComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HighChartsVisComponent ]
+      declarations: [ AppliedFiltersComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HighChartsVisComponent);
+    fixture = TestBed.createComponent(AppliedFiltersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
