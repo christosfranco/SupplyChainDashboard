@@ -1,4 +1,4 @@
-const { Node, Risk, Data } = require('../models/supplyChainTree.js');
+const { Node, Risk, Data, GetNodesResponse } = require('../models/supplyChainTree.js');
 const {checkConcernIdsExist} = require('./parserConcernTreeController');
 const {concernTreeDefault} = require('../models/concernTreeModel');
 const {calculateRiskLevel} = require('./riskLevelCalculateController');
@@ -77,7 +77,8 @@ const handleFileGet = (req, res,_next) => {
 
 // test that the data instance is set globally
 const handleFileGetTest = (req, res,_next) => {
-  res.send(data);
+  const getNodesResponse = GetNodesResponse(data.Nodes);
+  res.send(getNodesResponse);
 }
 
 
