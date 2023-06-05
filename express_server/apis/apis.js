@@ -11,9 +11,8 @@ const jsonParser = bodyParser.json()
 // router.post('/postSupplyChainData',jsonParser,parserController.handleFilePost);
 // router.get('/getSupplyChainData',parserController.handleFileGetTest);
 
-router.get('/nodes',parserController.handleFileGetTest);
-//router.get('/nodes', supplyChainController.getNodes);
-router.post('/upload/supplychain',jsonParser,parserController.handleFilePost);
+router.get('/nodes',parserController.getNodes);
+router.post('/upload/supplychain',jsonParser,parserController.uploadSupplyChain);
 router.get('/nodes/:nodeID/details', supplyChainController.getNodeDetails);
 router.post('/nodes/filtered', supplyChainController.filterNodes);
 router.post('/upload/concerntree', supplyChainController.uploadConcernTree);
