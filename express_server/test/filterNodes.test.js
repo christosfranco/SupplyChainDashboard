@@ -90,7 +90,7 @@ describe('Test filtering', () => {
       },
       send: function (responseBody){
         expect(responseBody).to.deep.equal([{
-          "id":8,
+          "id":'8',
           "high":0,
           "medium":0,
           "low":1
@@ -116,25 +116,25 @@ describe('Test filtering', () => {
       send: function (responseBody){
         expect(responseBody).to.deep.equal([
           {
-            "id":2,
+            "id":'2',
             "high":0,
             "medium":1,
             "low":0
           },
           {
-            "id":3,
+            "id":'3',
             "high":0,
             "medium":1,
             "low":0
           },
           {
-            "id":5,
+            "id":'5',
             "high":0,
             "medium":1,
             "low":0
           },
           {
-            "id":6,
+            "id":'6',
             "high":0,
             "medium":1,
             "low":0
@@ -181,7 +181,7 @@ describe('Test filtering', () => {
       },
       send: function (responseBody){
         expect(responseBody).to.deep.equal([{
-          "id":8,
+          "id":'8',
           "high":0,
           "medium":0,
           "low":1
@@ -209,7 +209,7 @@ describe('Test filtering', () => {
       },
       send: function (responseBody){
         expect(responseBody).to.deep.equal([{
-          "id":6,
+          "id":'6',
           "high":0,
           "medium":1,
           "low":0
@@ -238,19 +238,19 @@ describe('Test filtering', () => {
       send: function (responseBody){
         expect(responseBody).to.deep.equal([
           {
-            "id":2,
+            "id":'2',
             "high":0,
             "medium":1,
             "low":0
           },
           {
-            "id":3,
+            "id":'3',
             "high":0,
             "medium":1,
             "low":0
           },
           {
-            "id":5,
+            "id":'5',
             "high":0,
             "medium":1,
             "low":0

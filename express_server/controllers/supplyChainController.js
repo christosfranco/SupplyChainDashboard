@@ -301,7 +301,7 @@ const filterNodes = (req, res) => {
         });
         // append to the final structure
         finalFilterStructure.push({
-          "id"      : node_id,
+          "id"      : node_id.toString(),
           "high"    : hml[2],
           "medium"  : hml[1],
           "low"     : hml[0]
