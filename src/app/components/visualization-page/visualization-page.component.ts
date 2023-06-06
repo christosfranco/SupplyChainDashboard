@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Node } from "../../model/node";
+import {Node, NodeRisks} from "../../model/node";
 import { NodesService } from "../../services/nodes.service";
 import { DagVisualisationComponent } from "../dag-visualisation/dag-visualisation.component";
 import { DetailsComponent } from "../details/details.component";
@@ -58,7 +58,7 @@ export class VisualizationPageComponent {
     this.filters = selectedFilters;
     this.filterService
       .filterNodes(JSON.parse(JSON.stringify(selectedFilters)))
-      .subscribe((response: any) => this.graph.highlightNodes(response));
+      .subscribe((response: NodeRisks[]) => this.graph.highlightNodes(response));
   }
 
   handleClearFilters() {
