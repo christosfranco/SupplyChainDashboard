@@ -235,7 +235,6 @@ const filterNodes = (req, res) => {
       const tmp_node_id = node.Node_ID;
       // if this will be true at the end of loop then node satisfies all conditions and is added to return array
       let tmp_condition = false;
-      console.log("Node trala: ", node);
       (node.Risks).forEach((risk) => {
         if(tmp_condition) // do not loop if it is not necessary anymore
           return;
@@ -295,7 +294,7 @@ const filterNodes = (req, res) => {
     //res.send(return_ids);
     // return final structure
     console.log("Filtering returns: ", finalFilterStructure);
-    res.send(finalFilterStructure);
+    res.status(200).send(finalFilterStructure);
   }
 };
 
