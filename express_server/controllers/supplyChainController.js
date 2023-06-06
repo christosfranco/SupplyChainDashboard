@@ -107,7 +107,17 @@ const getNodeDetails = (req, res) => {
           'consequenceLevel': 1,
           'likelihoodLevel':3,
           'riskFactor': 3,
-          'mitigationStrategy': 'Updating Firewall maybe??'
+          'mitigationStrategy': ['Updating Firewall maybe??']
+        },
+        {
+          'id': 6,
+          'name': 'Access breach',
+          'concern': ['Physical Security'],
+          'description': 'Guards not attentive',
+          'consequenceLevel': 1,
+          'likelihoodLevel':3,
+          'riskFactor': 4,
+          'mitigationStrategy': ['Security Cameras']
         }
       ]}
   ];

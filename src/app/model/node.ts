@@ -5,6 +5,13 @@ export interface Node {
   parentIds: string[]
 }
 
+export interface NodeRisks {
+  id: string,
+  low: number,
+  medium: number,
+  high: number
+}
+
 export interface NodeDetails {
   id: string;
   name: string;

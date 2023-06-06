@@ -1,4 +1,24 @@
-#svg {
+#svg, #workarea {
   width: 100%;
-  height: 100%
+  height: 100%;
+}
+
+
+.highlight-inactive {
+  fill: #bbc9e1;
+}
+
+.highlight-hover-active {
+  fill: #0041F5;
+  cursor: pointer;
+}
+
+.highlight-hover-inactive {
+  fill: #8EA5CD;
+  cursor: pointer
+}
+
+.hover-default {
+  fill: #5d9ad2;
+  cursor: pointer
 }
