@@ -1,6 +1,7 @@
 const Node = require('../models/node');
 const SupplyChainTree = require('../models/supplyChainTree');
-const parserController = require('./parserController');
+const parserController = require('./parserSupplyChainController');
+const {of} = require("rxjs");
 
 const getNodes = (req, res) => {
   /*
@@ -125,6 +126,42 @@ const checkCondition = (array, is_in_range, inspect_value) => {
 }
 const filterNodes = (req, res) => {
   const body_json = req.body['conditions'];
+
+  const mapping_matrix =  [
+    ["M", "H", "H", "H", "H"],
+    ["L", "M", "M", "H", "H"],
+    ["L", "M", "M", "M", "H"],
+    ["L", "L", "M", "M", "M"],
+    ["L", "L", "L", "L", "M"]
+  ];
+
+  function custom_map(consequence, likelihood) {
+      /*
+      * Mapping is done based on picture in provided word document by customer
+      * Label -> L = low, M = medium, H = high
+      * x - axe corresponds to consequence and y - axe corresponds to likelihood
+      * [ M, H, H, H, H ]
+      * [ L, M, M, H, H ]
+      * [ L, M, M, M, H ]
+      * [ L, L, M, M, M ]
+      * [ L, L, L, L, M ]
+      * */
+    switch (mapping_matrix[likelihood-1][consequence-1]) {
+      case 'L':
+        return "low";
+        break;
+      case 'M':
+        return "medium";
+        break;
+      case 'H':
+        return "high";
+        break;
+      default:
+        break;
+    }
+    return undefined;
+  }
+
   if(!body_json){
     console.log("waiting for filter conditions...");
     //res.status(100).send("Waiting for filter conditions...");
@@ -198,6 +235,7 @@ const filterNodes = (req, res) => {
       const tmp_node_id = node.Node_ID;
       // if this will be true at the end of loop then node satisfies all conditions and is added to return array
       let tmp_condition = false;
+      console.log("Node trala: ", node);
       (node.Risks).forEach((risk) => {
         if(tmp_condition) // do not loop if it is not necessary anymore
           return;
@@ -224,8 +262,40 @@ const filterNodes = (req, res) => {
       if(tmp_condition)
         return_ids.push(tmp_node_id);
     });
-    //console.log("I have this ids for return:", return_ids);
-    res.send(return_ids);
+
+    /*
+        for each id that will be return go through its risk(s) and calculate
+        how many of them is [high, medium, low] and at the same time create final structure
+     */
+    let finalFilterStructure = [];
+    return_ids.forEach((node_id) => {
+      const tmp_risks = parserController.data.Nodes[node_id].Risks;
+      let hml = [0,0,0]; // [high, medium, low]
+      if (tmp_risks.length !== 0){
+        tmp_risks.forEach((risk) => {
+            let likelihood_map = custom_map(risk.Consequence, risk.Likelihood);
+            if (likelihood_map === "low")
+              hml[0]+=1;
+            else if(likelihood_map === "medium")
+              hml[1]+=1;
+            else if(likelihood_map === "high")
+              hml[2]+=1;
+            else
+              res.status(442).send("Error: Invalid option in likelihood_map!");
+        });
+        // append to the final structure
+        finalFilterStructure.push({
+          "id"      : node_id,
+          "high"    : hml[2],
+          "medium"  : hml[1],
+          "low"     : hml[0]
+        });
+      }
+    });
+    //res.send(return_ids);
+    // return final structure
+    console.log("Filtering returns: ", finalFilterStructure);
+    res.send(finalFilterStructure);
   }
 };
 

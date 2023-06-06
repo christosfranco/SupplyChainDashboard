@@ -14,7 +14,7 @@ const jsonParser = bodyParser.json()
 router.get('/nodes',parserController.getNodes);
 router.post('/upload/supplychain',jsonParser,parserController.uploadSupplyChain);
 router.get('/nodes/:nodeID/details', supplyChainController.getNodeDetails);
-router.post('/nodes/filtered', supplyChainController.filterNodes);
+router.post('/nodes/filtered', jsonParser, supplyChainController.filterNodes);
 router.post('/upload/concerntree', supplyChainController.uploadConcernTree);
 
 module.exports = router;
