@@ -128,11 +128,12 @@ const filterNodes = (req, res) => {
   const body_json = req.body['conditions'];
 
   const mapping_matrix =  [
-    ["M", "H", "H", "H", "H"],
-    ["L", "M", "M", "H", "H"],
+    // flipped matrix to correspond to coordinate system
+    ["L", "L", "L", "L", "M"],
+    ["L", "L", "M", "M", "H"],
     ["L", "M", "M", "M", "H"],
-    ["L", "L", "M", "M", "M"],
-    ["L", "L", "L", "L", "M"]
+    ["L", "M", "M", "H", "H"],
+    ["M", "H", "H", "H", "H"],
   ];
 
   function custom_map(consequence, likelihood) {
@@ -140,12 +141,14 @@ const filterNodes = (req, res) => {
       * Mapping is done based on picture in provided word document by customer
       * Label -> L = low, M = medium, H = high
       * x - axe corresponds to consequence and y - axe corresponds to likelihood
-      * [ M, H, H, H, H ]
-      * [ L, M, M, H, H ]
-      * [ L, M, M, M, H ]
-      * [ L, L, M, M, M ]
-      * [ L, L, L, L, M ]
+      * 4 [ M, H, H, H, H ]
+      * 3 [ L, M, M, H, H ]
+      * 2 [ L, M, M, M, H ]
+      * 1 [ L, L, M, M, H ]
+      * 0 [ L, L, L, L, M ]
+      *   0  1  2  3  4
       * */
+    //console.log("mapping between [row][column]", likelihood-1, consequence-1);
     switch (mapping_matrix[likelihood-1][consequence-1]) {
       case 'L':
         return "low";
@@ -180,6 +183,7 @@ const filterNodes = (req, res) => {
     let likelihood = [];
     let risk_factor = [];
     let mitigation_strategy = false;
+    let mitigation_strategy_value = false;
 
 
     // concerns are not yet relevant TODO awaiting @Katrine and @Thomas
@@ -218,7 +222,8 @@ const filterNodes = (req, res) => {
           risk_factor.push(condition.value);
           break;
         case 'mitigation':
-          mitigation_strategy = condition.value === 'yes';
+          mitigation_strategy = true;
+          mitigation_strategy_value = condition.value === 'yes';
           break;
         default:
           res.status(400).send("Error: Invalid option in conditionName!");
@@ -226,8 +231,14 @@ const filterNodes = (req, res) => {
       }
       previous_name = tmp_name;
     });
-    // console.log(concerns, risk_level, likelihood, risk_factor, mitigation_strategy);
+    //console.log(concerns, risk_level, likelihood, risk_factor, mitigation_strategy);
     //console.log("Supply Chain Tree data: ", parserController.data);
+    console.log("Is mitigation strategy among conditions: ", mitigation_strategy, " mitigation strategy value is: ", mitigation_strategy_value);
+
+    // Check if filtering requires filtering by risk_factor without both likelihood & risk_level
+    if(risk_factor.length > 0 && (likelihood.length === 0 || risk_level.length === 0))
+      res.send(500).send("Error: Cannot filter by risk_factor without both likelihood & risk_level!");
+
     // Iterate over nodes to find return id's
     let return_ids = [];
     const parsData = parserController.data.Nodes;
@@ -240,19 +251,22 @@ const filterNodes = (req, res) => {
           return;
         // check risk level
         //console.log("********* check risk_level for", tmp_node_id, "**********");
-        if(!checkCondition(risk_level, is_risk_level_range, risk.Consequence))
+        if(!checkCondition(risk_level, is_risk_level_range, risk.Consequence) && risk_level.length !== 0)
           return;
         // check likelihood
-        //console.log("********* check risk_level for", tmp_node_id, "**********");
-        if(!checkCondition(likelihood, is_likelihood_range, risk.Likelihood))
+        //console.log("********* check likelihood for", tmp_node_id, "**********");
+        if(!checkCondition(likelihood, is_likelihood_range, risk.Likelihood) && likelihood.length !== 0)
           return;
         // check risk_factor
-        //console.log("********* check risk_level for", tmp_node_id, "**********");
-        if(!checkCondition(risk_factor, is_risk_factor_range, (risk.Consequence * risk.Likelihood)))
+        //console.log("********* check risk_factor for", tmp_node_id, "**********");
+        if(!checkCondition(risk_factor, is_risk_factor_range, (risk.Consequence * risk.Likelihood)) && risk_factor.length !== 0)
           return;
+        //console.log("It proceed past risk_factor");
         // check mitigation strategy - if it applicable
         if(mitigation_strategy) {
-          if (risk.Mitigation_Strategies.length === 0)
+          //console.log("It went to mitigation strategy?");
+          if (mitigation_strategy_value && risk.Mitigation_Strategies.length === 0 ||
+              !mitigation_strategy_value && risk.Mitigation_Strategies.length !== 0)
             return;
         }
         // check concerns TODO awaiting @Katrine & @Thomas
@@ -261,6 +275,7 @@ const filterNodes = (req, res) => {
       if(tmp_condition)
         return_ids.push(tmp_node_id);
     });
+    //console.log("Return IDs: ",return_ids);
 
     /*
         for each id that will be return go through its risk(s) and calculate
@@ -268,11 +283,13 @@ const filterNodes = (req, res) => {
      */
     let finalFilterStructure = [];
     return_ids.forEach((node_id) => {
-      const tmp_risks = parserController.data.Nodes[node_id].Risks;
+      const tmp_risks = parserController.data.Nodes.find(Node => Node.Node_ID === node_id).Risks;
+      //console.log("tmp risks: ", tmp_risks);
       let hml = [0,0,0]; // [high, medium, low]
       if (tmp_risks.length !== 0){
         tmp_risks.forEach((risk) => {
             let likelihood_map = custom_map(risk.Consequence, risk.Likelihood);
+            //console.log("Mapped likelihood: ", likelihood_map);
             if (likelihood_map === "low")
               hml[0]+=1;
             else if(likelihood_map === "medium")
