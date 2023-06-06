@@ -17,10 +17,11 @@
 <!--    <p>No filter to show</p></div>-->
 
   <div class="content-container">
-    <div class="graph-container">
-      <div class="vis-card">
-        <app-dag-visualisation *ngIf="nodes" [nodes]="nodes" (nodeClick)="onNodeClick($event)"></app-dag-visualisation>
+    <div class="vis-card">
+      <div class="graph-container"*ngIf="nodes && (nodes.length > 0)" >
+        <app-dag-visualisation  [nodes]="nodes" (nodeClick)="onNodeClick($event)"></app-dag-visualisation>
       </div>
+      <p class="error-msg" *ngIf="!(nodes && (nodes.length > 0))" >To start upload a supply chain</p>
     </div>
 
     <div class="applied-filters-container">

@@ -4,9 +4,23 @@ function Node() {
   this.Node_ID = 0;
   this.Node_name = "";
   this.Type = "";
-  this.Suppliers = [];
+  this.Supplier = [];
   this.Risks = [];
 }
+
+const GetNodesResponse = (rawNodes) => {
+  return rawNodes.map( function(rawNode) {
+    const parentIds = rawNodes
+      .filter(n => n.Suppliers.includes(rawNode.Node_ID))
+      .map(n => n.Node_ID.toString());
+    return {
+      id: rawNode.Node_ID.toString(),
+      name: rawNode.Node_name,
+      parentIds: parentIds
+    }
+  })
+}
+
 const RiskFactorLevels =Object.freeze({
   VALUE1: 1,
   VALUE3: 3,
@@ -32,4 +46,5 @@ module.exports = {
   Risk,
   Data,
   RiskFactorLevels,
+  GetNodesResponse
 };
