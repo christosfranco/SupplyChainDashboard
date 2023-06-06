@@ -1,4 +1,4 @@
-const { Node, Risk, Data } = require('../models/supplyChainTree.js');
+const { Node, Risk, Data, GetNodesResponse } = require('../models/supplyChainTree.js');
 const {checkConcernIdsExist} = require('./parserConcernTreeController');
 const {concernTreeDefault} = require('../models/concernTreeModel');
 const {calculateRiskLevel} = require('./riskLevelCalculateController');
@@ -11,7 +11,7 @@ const allowSelfSupply = false;
 const rootNodeNumber = 0;
 
 
-const handleFilePost = (req, res, _next) => {
+const uploadSupplyChain = (req, res, _next) => {
   if (!req.accepts(['json', 'text'])) {
     res.status(406);
     res.send('Not Acceptable');
@@ -75,9 +75,10 @@ const handleFileGet = (req, res,_next) => {
   }
 };
 
-// test that the data instance is set globally
-const handleFileGetTest = (req, res,_next) => {
-  res.send(data);
+
+const getNodes = (req, res,_next) => {
+  const getNodesResponse = GetNodesResponse(data.Nodes);
+  res.send(getNodesResponse);
 }
 
 
@@ -288,9 +289,9 @@ function checkType(actual, expected) {
 
 module.exports = {
   data,
-  handleFilePost,
+  uploadSupplyChain,
   handleFileGet,
-  handleFileGetTest,
+  getNodes,
   Risk,
   parseNode,
   parseRisks,

@@ -8,7 +8,7 @@ import {catchError, Observable, of, throwError} from "rxjs";
 export class UploadService {
 
   private httpHeaders: HttpHeaders =  new HttpHeaders({ 'Content-Type': 'application/json' });
-  private url: string = "/api/upload/supplychain"
+  private url: string = "/api/upload"
 
 
   constructor(private httpClient: HttpClient) { }
@@ -32,13 +32,13 @@ export class UploadService {
 
   public uploadSupplyChain(json: JSON) {
     this.log("Upload Supply Chain")
-    const endpoint = "postSupplyChainData"
+    const endpoint = "supplychain"
     this.uploadFile(json, endpoint)
   }
 
   public uploadConcernTree(json: JSON) {
     this.log("Upload Concern Tree")
-    const endpoint = "upload/concerntree"
+    const endpoint = "concerntree"
     this.uploadFile(json, endpoint)
   }
 
