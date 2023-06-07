@@ -71,32 +71,7 @@ const getNodes = (req, res) => {
 };
 
 const getNodeDetails = (req, res) => {
-  /*
-    * Expected input: node_id
-    * Expected response:
-          [
-              {
-                "id": "1",
-                "name": "booking.com",
-                "category": "Booking Software",
-                "risks": [
-                  {
-                    "id": "5",
-                    "name": "IT Security",
-                    "concern": [
-                      "CyberSecurity",
-                      "Privacy"
-                    ],
-                    "description": "Firewall Security Outdated",
-                    "consequenceLevel": 1,
-                    "likelihoodLevel": 3,
-                    "riskFactor": 3,
-                    "mitigationStrategy": "Updating Firewall maybe??"
-                  }
-                ]
-              }
-          ]
-*/
+/*
   const data= [
     {'id':1, 'name': 'booking.com', 'category': 'Booking Software', 'risks': [
         {
@@ -122,6 +97,7 @@ const getNodeDetails = (req, res) => {
       ]}
   ];
   //res.send(data);
+  */
   console.log(req.params.nodeID);
   const requested_node_id = req.params.nodeID;
   const parsData = parserController.data.Nodes;
@@ -159,6 +135,9 @@ const getNodeDetails = (req, res) => {
                 tmp_risk[map_name_backend_fontend[risk_key]] = concern_sub_structure;
               }else{
                 let tmp_value = risk[risk_key];
+                if(risk_key === 'Risk_Level'){
+                  tmp_value = risk.Consequence * risk.Likelihood;
+                }
                 if (typeof tmp_value === "number")
                     tmp_value.toString();
                 tmp_risk[map_name_backend_fontend[risk_key]] = tmp_value;
