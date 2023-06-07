@@ -3,73 +3,6 @@ const SupplyChainTree = require('../models/supplyChainTree');
 const parserController = require('./parserSupplyChainController');
 const {of} = require("rxjs");
 
-const getNodes = (req, res) => {
-  /*
-  * Expected input: /
-  * Expected response:
-        [
-          {
-            "id": "1",
-            "name": "booking.com",
-            "parentIds": [
-              "2",
-              "3"
-            ]
-          }
-        ]
-  */
-
-  const data = [
-    {
-      "id": "0",
-      "name":"Hotel",
-      "parentIds": []
-    },
-    {
-      "id": "1",
-      "name":"Website",
-      "parentIds": ["0"]
-    }
-    ,
-    {
-      "id": "2",
-      "name":"Booking Site",
-      "parentIds": ["0"]
-    },
-    {
-      "id": "3",
-      "name":"Booking Site",
-      "parentIds": ["0"]
-    },
-    {
-      "id": "4",
-      "name":"Server",
-      "parentIds": ["1"]
-    },
-    {
-      "id": "5",
-      "name":"Firewall",
-      "parentIds": ["4"]
-    },
-    {
-      "id": "6",
-      "name":"Physical Security",
-      "parentIds": ["4"]
-    },
-    {
-      "id": "7",
-      "name":"Work Scheduler",
-      "parentIds": ["0"]
-    },
-    {
-      "id": "8",
-      "name":"Cleaning Supply",
-      "parentIds": ["0"]
-    }
-  ]
-  res.send(data);
-};
-
 const getNodeDetails = (req, res) => {
 /*
   const data= [
@@ -98,7 +31,7 @@ const getNodeDetails = (req, res) => {
   ];
   //res.send(data);
   */
-  console.log(req.params.nodeID);
+  //console.log(req.params.nodeID);
   const requested_node_id = req.params.nodeID;
   const parsData = parserController.data.Nodes;
   let ret_struct = {};
@@ -385,7 +318,6 @@ const uploadConcernTree = (req, res) => {
 };
 
 module.exports = {
-  getNodes,
   getNodeDetails,
   filterNodes,
   uploadSupplyChain,
