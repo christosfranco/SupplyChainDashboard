@@ -193,10 +193,6 @@ export class FilterComponent {
       });
     }
 
-    // RISKS
-    // TODO
-
-
     // RISK LEVEL
     if (this.filterByRiskLevel) {
       const fromRiskLevel = (<HTMLInputElement>document.getElementById("fromSliderRisk")!).value;
@@ -322,11 +318,6 @@ export class FilterComponent {
         const checkbox = document.getElementById(concernId) as HTMLInputElement;
         checkbox.checked = true;
       }
-    }
-
-    if (filter.conditions.find(condition => condition.conditionName === 'risks')) {
-      const riskCondition = filter.conditions.find(condition => condition.conditionName === 'risks')!;
-      // TODO
     }
 
     if (filter.conditions.find(condition => condition.conditionName === 'risk_level')) {
