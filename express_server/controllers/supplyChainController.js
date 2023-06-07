@@ -121,7 +121,71 @@ const getNodeDetails = (req, res) => {
         }
       ]}
   ];
-  res.send(data);
+  //res.send(data);
+  console.log(req.params.nodeID);
+  const requested_node_id = req.params.nodeID;
+  const parsData = parserController.data.Nodes;
+  let ret_struct = {};
+
+  const map_name_backend_fontend = {
+    "Node_ID"     :   "id",
+    "Node_name"   :   "name",
+    "Type"        :   "category",
+    "Supplier"    :   "omit",
+    "Risks"       :   "risks",
+    "Risk"        :   "omit",
+    "Name"        :   "name",
+    "Risk_ID"     :   "id",
+    "Consequence" :   "consequenceLevel",
+    "Likelihood"  :   "likelihoodLevel",
+    "Risk_Level"  :   "riskFactor",
+    "Mitigation_Strategies" : "mitigationStrategy",
+    "Concern_IDs" :   "concern", // TODO it needs to map concern_id's to actula concerns (text)!
+    "Suppliers"   :   "omit"
+  }
+  function adjust_data_for_frontend(node, json_s) {
+      let risk_sub_structure = [];
+      let concern_sub_structure = ['TODO'];
+      for (const key in node) {
+        if(map_name_backend_fontend[key] === "omit")
+          continue;
+        else if(key === "Risks"){
+          let all_risks = node[key];
+          all_risks.forEach((risk) =>{
+            let tmp_risk = {};
+            for (const risk_key in risk){
+              if(risk_key === "Concern_IDs"){
+                //TODO
+                tmp_risk[map_name_backend_fontend[risk_key]] = concern_sub_structure;
+              }else{
+                let tmp_value = risk[risk_key];
+                if (typeof tmp_value === "number")
+                    tmp_value.toString();
+                tmp_risk[map_name_backend_fontend[risk_key]] = tmp_value;
+              }
+            }
+            risk_sub_structure.push(tmp_risk);
+          });
+          json_s[map_name_backend_fontend[key]] = (risk_sub_structure);
+        }else{
+          let tmp_val = node[key];
+          if (typeof tmp_val === "number")
+            tmp_val.toString();
+          json_s[map_name_backend_fontend[key]] = tmp_val;
+        }
+      }
+    return [json_s];
+  }
+
+  let fstruct;
+  parsData.forEach((node) => {
+    if(node.Node_ID.toString() === requested_node_id){
+      fstruct = adjust_data_for_frontend(node, ret_struct);
+      return;
+    }
+  });
+  console.log("Final struct is: ", fstruct);
+  res.status(200).send(fstruct);
 };
 
 const checkCondition = (array, is_in_range, inspect_value) => {
@@ -243,7 +307,7 @@ const filterNodes = (req, res) => {
     });
     //console.log(concerns, risk_level, likelihood, risk_factor, mitigation_strategy);
     //console.log("Supply Chain Tree data: ", parserController.data);
-    console.log("Is mitigation strategy among conditions: ", mitigation_strategy, " mitigation strategy value is: ", mitigation_strategy_value);
+    // console.log("Is mitigation strategy among conditions: ", mitigation_strategy, " mitigation strategy value is: ", mitigation_strategy_value);
 
     // Check if filtering requires filtering by risk_factor without both likelihood & risk_level
     if(risk_factor.length > 0 && (likelihood.length === 0 || risk_level.length === 0))
