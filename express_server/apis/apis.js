@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const supplyChainController = require('../controllers/supplyChainController');
+const ConcernModelController = require('../controllers/parserConcernController');
 const {handleFileGet} = require("../controllers/parserSupplyChainController");
 const parserController  = require('../controllers/parserSupplyChainController')
 

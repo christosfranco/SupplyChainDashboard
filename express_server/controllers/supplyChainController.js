@@ -1,6 +1,7 @@
 const Node = require('../models/node');
 const SupplyChainTree = require('../models/supplyChainTree');
 const parserController = require('./parserSupplyChainController');
+const concernController = require('./parserConcernController');
 const {of} = require("rxjs");
 
 const getNodeDetails = (req, res) => {
@@ -151,6 +152,56 @@ const filterNodes = (req, res) => {
     return undefined;
   }
 
+  function extend_concerns_representation(risk_concerns) {
+    let final_struct = [];
+    //console.log("received risk_concerns:", risk_concerns);
+    for (const concern of risk_concerns){
+      //console.log("Before splited is: ", concern);
+      if(concern.length === 1){
+        // it is not relevant to split
+        //console.log("It is not relevant to split it");
+        if (!final_struct.includes(concern))
+          final_struct.push(concern);
+      }else {
+        // it is relevant
+        const splitted = concern.split('.');
+        //console.log("Splited is: ", splitted);
+        let tmp_string = "";
+        for (const sub_concern of splitted) {
+          if (tmp_string === "")
+            tmp_string += sub_concern;
+          else
+            tmp_string = tmp_string + '.' + sub_concern;
+          if (!final_struct.includes(tmp_string))
+            final_struct.push(tmp_string);
+        }
+      }
+    }
+    //console.log("Final structure looks like this: ", final_struct);
+    return final_struct;
+  }
+
+  function satisfiesConcerns(concerns, risk_concerns) {
+    // convert risk concerns to all possible representations (root, sub_root, actual_concern) iff relevant
+    risk_concerns = extend_concerns_representation(risk_concerns);
+    // loop trough concerns and look if all are present in risk_concerns (or their root)
+    for (const c of concerns) {
+      if (!risk_concerns.includes(c)){
+        // if it is not try its root until it reaches length 1
+        let tmp_c = c;
+        while(tmp_c.length > 1){
+          tmp_c = tmp_c.slice(0, -2);
+          if(risk_concerns.includes(tmp_c))
+            break;
+        }
+        // check once again
+        if(!risk_concerns.includes(tmp_c))
+          return false;
+      }
+    }
+    return true;
+  }
+
   if(!body_json){
     console.log("waiting for filter conditions...");
     //res.status(100).send("Waiting for filter conditions...");
@@ -171,8 +222,6 @@ const filterNodes = (req, res) => {
     let mitigation_strategy = false;
     let mitigation_strategy_value = false;
 
-
-    // concerns are not yet relevant TODO awaiting @Katrine and @Thomas
     let previous_name = '';
     body_json.forEach((condition) => {
       const tmp_name = condition.conditionName;
@@ -228,6 +277,7 @@ const filterNodes = (req, res) => {
     // Iterate over nodes to find return id's
     let return_ids = [];
     const parsData = parserController.data.Nodes;
+    const parsConcernData = concernController.concernData.Concern_Trees;
     parsData.forEach((node) => {
       const tmp_node_id = node.Node_ID;
       // if this will be true at the end of loop then node satisfies all conditions and is added to return array
@@ -255,7 +305,9 @@ const filterNodes = (req, res) => {
               !mitigation_strategy_value && risk.Mitigation_Strategies.length !== 0)
             return;
         }
-        // check concerns TODO awaiting @Katrine & @Thomas
+        // check concerns
+        if(concerns.length !== 0 && !satisfiesConcerns(concerns, risk.Concern_IDs))
+          return;
         tmp_condition = true;
       });
       if(tmp_condition)

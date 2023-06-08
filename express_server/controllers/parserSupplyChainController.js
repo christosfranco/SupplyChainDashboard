@@ -1,5 +1,5 @@
 const { Node, Risk, Data, GetNodesResponse } = require('../models/supplyChainTree.js');
-const {checkConcernIdsExist} = require('./parserConcernController');
+//const {checkConcernIdsExist} = require('./parserConcernController');
 const {concernTreeDefault} = require('../models/concernModel');
 const {calculateRiskLevel} = require('./riskLevelCalculateController');
 
@@ -231,10 +231,10 @@ function parseRisk(jsonRisk) {
         }
         // concernforest is a list of concerntree
         // if returning false throw error
-        const checkIdsInConcernTree = checkConcernIdsExist(concernTreeDefault,concernIDS);
+        /*const checkIdsInConcernTree = checkConcernIdsExist(concernTreeDefault,concernIDS);
         if (checkIdsInConcernTree  instanceof Error){
           return checkIdsInConcernTree;
-        }
+        }*/
         break;
 
       case 'Mitigation_Strategies':
