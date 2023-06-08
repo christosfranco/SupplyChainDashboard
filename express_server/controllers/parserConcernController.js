@@ -113,12 +113,14 @@ function parseChildren(jsonChildren) {
     return parsedChildren
   }
 }
-
-
+const returnConcernTree = (req, res) => {
+  res.status(200).send(concernData);
+}
 
 module.exports = {
   concernData,
   uploadConcernModel,
+  returnConcernTree
   //handleConcernFileGet,
 
 }
