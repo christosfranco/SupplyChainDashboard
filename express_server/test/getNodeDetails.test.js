@@ -3,14 +3,34 @@ const chai = require('chai');
 const api = require('../apis/apis');
 const handler = require('../controllers/supplyChainController');
 const parserHandler = require('../controllers/parserSupplyChainController');
+const parserConcernHandler = require('../controllers/parserConcernController');
 const initialJson = require('../../src/assets/hotel_example.json');
+const initialConcernJson = require('../../src/assets/concern_model.json');
 const { expect, assert } = require('chai');
 
 const { createResponse } = require('node-mocks-http');
 
 describe('Test filtering', () => {
-  beforeEach((done) => {
-    console.log('Upload supply chain to server in order to test filtering.');
+  beforeAll((done) => {
+    console.log('Upload concern tree to the server in order to test getNodeDetails.');
+    //const req = {body:initialJson};
+    //const res = {};
+    const req = {
+      body: initialConcernJson,
+      headers: {
+        accept: ['json', 'text'],
+      },
+      accepts: (type) => {
+        return req.headers.accept;
+      }
+    };
+    const res = createResponse();
+    //parserHandler.uploadSupplyChain(req, res);
+    parserConcernHandler.uploadConcernModel(req, res);
+    done();
+  });
+  beforeAll((done) => {
+    console.log('Upload supply chain to server in order to test getNodeDetails.');
     //const req = {body:initialJson};
     //const res = {};
     const req = {
@@ -40,7 +60,7 @@ describe('Test filtering', () => {
               {
                 'id': 1,
                 'name': 'DDOS Attack',
-                'concern': ['TODO'],
+                'concern': ['Reliability', 'Safety', 'Confidentiality'],
                 'consequenceLevel': 5,
                 'likelihoodLevel':3,
                 'riskFactor': 15,
@@ -66,7 +86,7 @@ describe('Test filtering', () => {
               {
                 'id': 2,
                 'name': 'DDOS Attack',
-                'concern': ['TODO'],
+                'concern': ['Reliability', 'Safety', 'Confidentiality'],
                 'consequenceLevel': 5,
                 'likelihoodLevel':1,
                 'riskFactor': 5,
@@ -92,7 +112,7 @@ describe('Test filtering', () => {
               {
                 'id': 4,
                 'name': 'Exploit',
-                'concern': ['TODO'],
+                'concern': ['Privacy', 'Reliability', 'Resilience', 'Safety', 'Security'],
                 'consequenceLevel': 5,
                 'likelihoodLevel':1,
                 'riskFactor': 5,
@@ -118,7 +138,7 @@ describe('Test filtering', () => {
               {
                 'id': 6,
                 'name': 'Bugs',
-                'concern': ['TODO'],
+                'concern': ['Reliability', 'Resilience'],
                 'consequenceLevel': 3,
                 'likelihoodLevel':5,
                 'riskFactor': 15,

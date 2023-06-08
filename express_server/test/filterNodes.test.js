@@ -10,7 +10,7 @@ const { expect, assert } = require('chai');
 const { createResponse } = require('node-mocks-http');
 
 describe('Test filtering', () => {
-    beforeEach((done) => {
+    beforeAll((done) => {
       console.log('Upload supply chain to server in order to test filtering.');
       //const req = {body:initialJson};
       //const res = {};

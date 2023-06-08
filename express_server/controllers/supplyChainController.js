@@ -55,8 +55,8 @@ const getNodeDetails = (req, res) => {
   }
   function adjust_data_for_frontend(node, json_s) {
       let risk_sub_structure = [];
-      let concern_sub_structure = ['TODO'];
-      for (const key in node) {
+      let concern_sub_structure = [];
+    for (const key in node) {
         if(map_name_backend_fontend[key] === "omit")
           continue;
         else if(key === "Risks"){
@@ -65,7 +65,27 @@ const getNodeDetails = (req, res) => {
             let tmp_risk = {};
             for (const risk_key in risk){
               if(risk_key === "Concern_IDs"){
-                //TODO
+                let all_concern_ids = node[key];
+                const parsConcernData = concernController.concernData.Concern_Trees;
+                let concern_id_name = {};
+
+                function map_id_to_name_concerns(concern) {
+                  concern_id_name[concern.Concern_ID] = concern.Concern_name;
+                  concern.Children.forEach((sub_concern) => {
+                    map_id_to_name_concerns(sub_concern);
+                  });
+                }
+                parsConcernData.forEach((concern) =>{
+                  //concern_id_name[concern.Concern_ID] = concern.Concern_name;
+                  map_id_to_name_concerns(concern);
+                });
+                //console.log("Concern_id_name: ", concern_id_name);
+                for(const concern_id of all_concern_ids[0].Concern_IDs){
+                  //console.log("concern_id: ", concern_id);
+                  //console.log("For push: ", concern_id_name[concern_id]);
+                  concern_sub_structure.push(concern_id_name[concern_id]);
+                }
+                //console.log("concern_sub_structure == ", concern_sub_structure);
                 tmp_risk[map_name_backend_fontend[risk_key]] = concern_sub_structure;
               }else{
                 let tmp_value = risk[risk_key];
@@ -277,7 +297,6 @@ const filterNodes = (req, res) => {
     // Iterate over nodes to find return id's
     let return_ids = [];
     const parsData = parserController.data.Nodes;
-    const parsConcernData = concernController.concernData.Concern_Trees;
     parsData.forEach((node) => {
       const tmp_node_id = node.Node_ID;
       // if this will be true at the end of loop then node satisfies all conditions and is added to return array
