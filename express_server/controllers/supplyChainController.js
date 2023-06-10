@@ -50,7 +50,7 @@ const getNodeDetails = (req, res) => {
     "Likelihood"  :   "likelihoodLevel",
     "Risk_Level"  :   "riskFactor",
     "Mitigation_Strategies" : "mitigationStrategy",
-    "Concern_IDs" :   "concern", // TODO it needs to map concern_id's to actula concerns (text)!
+    "Concern_IDs" :   "concern",
     "Suppliers"   :   "omit"
   }
   function adjust_data_for_frontend(node, json_s) {
