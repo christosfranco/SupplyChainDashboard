@@ -21,6 +21,7 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
     if (this.nodeId) {
       this.nodesService.getDetails(this.nodeId).subscribe(nodeDetails => {
+        console.log(nodeDetails)
         if (Array.isArray(nodeDetails) && nodeDetails.length > 0) {
           this.details = nodeDetails[0];
         }
