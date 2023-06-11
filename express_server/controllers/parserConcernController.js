@@ -1,8 +1,11 @@
 const { Concern, ConcernData } = require('../models/concernModel')
+const { DefaultConcernTree } = require('../models/defaultConcernModel')
 
 const inputFile = require('../../src/assets/concern_model.json')
 
 const concernData = new ConcernData();
+let concernIDs = new Set();
+parseConcernData(DefaultConcernTree())
 const debugLog = true;
 
 const uploadConcernModel = (req, res, _next) => {
@@ -48,7 +51,6 @@ const uploadConcernModel = (req, res, _next) => {
   }
 }
 
-let concernIDs = new Set();
 
 function parseConcernData(jsonData) {
 
