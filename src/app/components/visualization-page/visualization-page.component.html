@@ -3,11 +3,11 @@
     <div class="button-span">
       <div class="import-export">
         <a routerLink="/"  class="vis-page-btns  new-sc-btn">Import new Files</a>
-        <button class="vis-page-btns  export-btn" (click)="exportChart()">Export Graph</button>
+        <button [disabled]="!nodes || nodes.length === 0" class="vis-page-btns  export-btn" (click)="exportChart()">Export Graph</button>
       </div>
       <h1>Supply Chain Visualisation</h1>
       <div class="filter-div">
-        <button *ngIf="!filters;else appliedButton" class="filter-btn vis-page-btns" (click)="openModal('filter-modal')">Add Filter</button>
+        <button [disabled]="!nodes || nodes.length === 0" *ngIf="!filters;else appliedButton" class="filter-btn vis-page-btns" (click)="openModal('filter-modal')">Add Filter</button>
       </div>
     </div>
   </div>

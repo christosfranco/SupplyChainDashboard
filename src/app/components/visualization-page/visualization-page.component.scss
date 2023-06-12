@@ -67,6 +67,11 @@ h1 {
   color: #ffffff;
 }
 
+.export-btn:disabled, .export-btn:disabled:hover  {
+  background-color: #bbbbbb;
+  cursor: not-allowed;
+}
+
 .export-btn:hover {
   background-color: #5d9ad2;
   cursor: pointer;
@@ -83,6 +88,11 @@ h1 {
   color: #ffffff;
   float: right;
   background-color: #176ab9;
+}
+
+.filter-btn:disabled, .filter-btn:disabled:hover{
+  background-color: #bbbbbb;
+  cursor: not-allowed;
 }
 
 .filter-btn:hover {

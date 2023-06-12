@@ -12,7 +12,7 @@
         <button class="import-btn" (click)="openModal('import-sc')">
           Import Supply Chain
         </button>
-        <div *ngIf="supplyChainFileName"><p class="txt">{{supplyChainFileName}}</p></div>
+        <div *ngIf="fileService.supplyChainFileName"><p class="txt">{{fileService.supplyChainFileName}}</p></div>
 
       </div>
 
@@ -20,7 +20,7 @@
         <button class="import-btn" (click)="openModal('import-cf')">
           Import Concern Forest
         </button>
-        <div *ngIf="concernTreeFileName"><p class="txt">{{concernTreeFileName}}</p></div>
+        <div *ngIf="fileService.concernTreeFileName"><p class="txt">{{fileService.concernTreeFileName}}</p></div>
       </div>
 
     </div>
