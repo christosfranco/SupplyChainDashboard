@@ -121,17 +121,20 @@
 
 .json-container {
   background-color: #f4f4f4;
-  padding: 10px;
+  padding: 11px;
   border-radius: 5px;
-  font-size: 15px;
+  font-size: 0.8vw;
+  width: 95%;
 }
 
 .spec {
   margin-left: 20px;
+  width: 50%;
 }
 
 .json-spec {
   display: flex;
+  justify-content: space-between;
 }
 
 .param {
