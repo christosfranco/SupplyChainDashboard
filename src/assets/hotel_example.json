@@ -163,7 +163,7 @@
       {
         "Node_ID": 0,
         "Node_name": "Hotel",
-        "Type": "Hotel",
+        "Type": "Renting Rooms",
         "Suppliers": [1, 2, 3, 7, 8],
         "Risks": []
       }
