@@ -90,6 +90,11 @@ h1 {
   background-color: #176ab9;
 }
 
+.filter-btn:disabled, .filter-btn:disabled:hover{
+  background-color: #bbbbbb;
+  cursor: not-allowed;
+}
+
 .filter-btn:hover {
   background-color: #608fd0;
   cursor: pointer;
