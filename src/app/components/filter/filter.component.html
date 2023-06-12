@@ -65,23 +65,23 @@
   </div>
 </div>
 
-<!--<div class="filter-slider">-->
-<!--  <div><label class="filter-selection"><input type="checkbox" id="factor-filter" name="risk-factor" class="filter"-->
-<!--                                              [checked]=false [(ngModel)]="filterByRiskFactor">Risk-->
-<!--    Factor</label></div>-->
-<!--  <div [hidden]="!filterByRiskFactor" class="slider-input">-->
-<!--    <div class="slider-container">-->
-<!--      <input id="fromSliderRiskFac" type="range" value="3" min="0" max="10">-->
-<!--      <input id="toSliderRiskFac" type="range" value="5" min="0" max="10">-->
-<!--    </div>-->
-<!--    <div class="slider-values">-->
-<!--      <div>Lowest Value<input class="slider-number-input" type="number" id="fromInputRiskFac" value="3" min="0"-->
-<!--                              max="10"></div>-->
-<!--      <div>Highest Value<input class="slider-number-input" type="number" id="toInputRiskFac" value="5" min="0"-->
-<!--                               max="10"></div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
+<div class="filter-slider">
+  <div><label class="filter-selection"><input type="checkbox" id="factor-filter" name="risk-factor" class="filter"
+                                              [checked]=false [(ngModel)]="filterByRiskFactor">Risk
+    Factor</label></div>
+  <div [hidden]="!filterByRiskFactor" class="slider-input">
+    <div class="slider-container">
+      <input id="fromSliderRiskFac" type="range" value="10" min="1" max="25">
+      <input id="toSliderRiskFac" type="range" value="15" min="1" max="25">
+    </div>
+    <div class="slider-values">
+      <div>Lowest Value<input class="slider-number-input" type="number" id="fromInputRiskFac" value="10" min="1"
+                              max="25"></div>
+      <div>Highest Value<input class="slider-number-input" type="number" id="toInputRiskFac" value="15" min="1"
+                               max="25"></div>
+    </div>
+  </div>
+</div>
 
 <div class="filter-slider">
   <div><label class="filter-selection"><input type="checkbox" id="mitigation-filter" name="mitigation"
