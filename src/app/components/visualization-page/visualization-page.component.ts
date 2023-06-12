@@ -40,7 +40,6 @@ export class VisualizationPageComponent {
       this.nodes = nodes;
     });
     this.filterService.getConcernData().subscribe(concerns => {
-      console.log(concerns)
       this.concernForest = concerns;
     });
   }

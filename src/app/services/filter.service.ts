@@ -35,8 +35,6 @@ export class FilterService {
   public getConcernData(): Observable<Concerns> {
     return this.httpClient.get<ConcernsDataResponse>(`${this.url}/concerntree`).pipe(
       map((json:ConcernsDataResponse) => {
-        console.log("json:")
-        console.log(json)
         return { roots : this.mapConcerns(json['Concern_Trees'])}
       })
     );
