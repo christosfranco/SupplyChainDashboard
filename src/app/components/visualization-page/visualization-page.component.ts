@@ -9,6 +9,7 @@ import {ConcernForest, Filter} from "../../model/filters";
 import {FilterComponent} from "../filter/filter.component";
 import {AppliedFiltersComponent} from "../applied-filters/applied-filters.component";
 import {ModalService} from "../../services/modal.service";
+import {Concerns} from "../../model/concerns";
 
 
 @Component({
@@ -28,6 +29,7 @@ export class VisualizationPageComponent {
   nodes: Node[] | undefined;
   filters: Filter | undefined;
   concernForest: ConcernForest = {roots: CONCERN_FOREST_EXAMPLE};
+  concerns : Concerns | undefined;
 
   constructor(private nodesService: NodesService, private dialog: MatDialog,
               private modalService: ModalService, private filterService: FilterService) {
@@ -36,6 +38,9 @@ export class VisualizationPageComponent {
   ngOnInit(): void {
     this.nodesService.getNodes().subscribe(nodes => {
       this.nodes = nodes;
+    });
+    this.filterService.getConcernData().subscribe(concerns => {
+      this.concernForest = concerns;
     });
   }
 
