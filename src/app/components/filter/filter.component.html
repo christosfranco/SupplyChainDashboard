@@ -34,14 +34,14 @@
     Level</label></div>
   <div [hidden]="!filterByRiskLevel" class="slider-input">
     <div class="slider-container">
-      <input id="fromSliderRisk" type="range" value="3" min="0" max="10">
-      <input id="toSliderRisk" type="range" value="5" min="0" max="10">
+      <input id="fromSliderRisk" type="range" value="3" min="1" max="5">
+      <input id="toSliderRisk" type="range" value="5" min="1" max="5">
     </div>
     <div class="slider-values">
-      <div>Lowest Value<input class="slider-number-input" type="number" id="fromInputRisk" value="3" min="0"
-                              max="10"></div>
-      <div>Highest Value<input class="slider-number-input" type="number" id="toInputRisk" value="5" min="0"
-                               max="10"></div>
+      <div>Lowest Value<input class="slider-number-input" type="number" id="fromInputRisk" value="3" min="1"
+                              max="5"></div>
+      <div>Highest Value<input class="slider-number-input" type="number" id="toInputRisk" value="5" min="1"
+                               max="5"></div>
     </div>
   </div>
 </div>
@@ -53,35 +53,35 @@
   </div>
   <div [hidden]="!filterByLikelihood" class="slider-input">
     <div class="slider-container">
-      <input id="fromSliderLikelihood" type="range" value="3" min="0" max="10">
-      <input id="toSliderLikelihood" type="range" value="5" min="0" max="10">
+      <input id="fromSliderLikelihood" type="range" value="3" min="1" max="5">
+      <input id="toSliderLikelihood" type="range" value="5" min="1" max="5">
     </div>
     <div class="slider-values">
-      <div>Lowest Value<input class="slider-number-input" type="number" id="fromInputLikelihood" value="3" min="0"
-                              max="10"></div>
-      <div>Highest Value<input class="slider-number-input" type="number" id="toInputLikelihood" value="5" min="0"
-                               max="10"></div>
+      <div>Lowest Value<input class="slider-number-input" type="number" id="fromInputLikelihood" value="3" min="1"
+                              max="5"></div>
+      <div>Highest Value<input class="slider-number-input" type="number" id="toInputLikelihood" value="5" min="1"
+                               max="5"></div>
     </div>
   </div>
 </div>
 
-<div class="filter-slider">
-  <div><label class="filter-selection"><input type="checkbox" id="factor-filter" name="risk-factor" class="filter"
-                                              [checked]=false [(ngModel)]="filterByRiskFactor">Risk
-    Factor</label></div>
-  <div [hidden]="!filterByRiskFactor" class="slider-input">
-    <div class="slider-container">
-      <input id="fromSliderRiskFac" type="range" value="3" min="0" max="10">
-      <input id="toSliderRiskFac" type="range" value="5" min="0" max="10">
-    </div>
-    <div class="slider-values">
-      <div>Lowest Value<input class="slider-number-input" type="number" id="fromInputRiskFac" value="3" min="0"
-                              max="10"></div>
-      <div>Highest Value<input class="slider-number-input" type="number" id="toInputRiskFac" value="5" min="0"
-                               max="10"></div>
-    </div>
-  </div>
-</div>
+<!--<div class="filter-slider">-->
+<!--  <div><label class="filter-selection"><input type="checkbox" id="factor-filter" name="risk-factor" class="filter"-->
+<!--                                              [checked]=false [(ngModel)]="filterByRiskFactor">Risk-->
+<!--    Factor</label></div>-->
+<!--  <div [hidden]="!filterByRiskFactor" class="slider-input">-->
+<!--    <div class="slider-container">-->
+<!--      <input id="fromSliderRiskFac" type="range" value="3" min="0" max="10">-->
+<!--      <input id="toSliderRiskFac" type="range" value="5" min="0" max="10">-->
+<!--    </div>-->
+<!--    <div class="slider-values">-->
+<!--      <div>Lowest Value<input class="slider-number-input" type="number" id="fromInputRiskFac" value="3" min="0"-->
+<!--                              max="10"></div>-->
+<!--      <div>Highest Value<input class="slider-number-input" type="number" id="toInputRiskFac" value="5" min="0"-->
+<!--                               max="10"></div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
 <div class="filter-slider">
   <div><label class="filter-selection"><input type="checkbox" id="mitigation-filter" name="mitigation"
