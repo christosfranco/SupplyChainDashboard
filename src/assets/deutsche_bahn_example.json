@@ -1,0 +1,503 @@
+{
+  "Metadata": {
+    "supply_chain_name": "Hotel Supply Chain"
+  },
+  "Nodes": [
+    {
+      "Node_ID": 0,
+      "Node_name": "Public Trains",
+      "Type": "Public Transport",
+      "Suppliers": [1, 2, 3],
+      "Risks": []
+    },
+    {
+      "Node_ID": 1,
+      "Node_name": "ICE Train",
+      "Type": "Deutsche Bahn",
+      "Suppliers": [8,9,10,11,12,13],
+      "Risks": []
+    },
+    {
+      "Node_ID": 2,
+      "Node_name": "DB Navigator",
+      "Type": "Ticket App",
+      "Suppliers": [6, 7],
+      "Risks": [
+        {
+          "Name": "Hack/Leakage of personal information",
+          "Risk_ID": 2,
+          "Consequence": 5,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [
+            "IT Security Team"
+          ],
+          "Concern_IDs": [
+            "1.1", "5.1"
+          ]
+        },
+        {
+          "Name": "Downtime due to bug",
+          "Risk_ID": 2,
+          "Consequence": 5,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [
+            "Refined Development Process"
+          ],
+          "Concern_IDs": [
+            "5.3", "2.1"
+          ]
+        },
+        {
+          "Name": "DDOS Attack",
+          "Risk_ID": 2,
+          "Consequence": 5,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [
+            "Regular Stress Test"
+          ],
+          "Concern_IDs": [
+            "3.1", "2.1", "5.3"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 3,
+      "Node_name": "deutschebahn.de",
+      "Type": "Website",
+      "Suppliers": [4, 5],
+      "Risks": [
+        {
+          "Name": "Hack/Leakage of personal information",
+          "Risk_ID": 2,
+          "Consequence": 5,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [
+            "IT Security Team"
+          ],
+          "Concern_IDs": [
+            "1.1", "5.1"
+          ]
+        },
+        {
+          "Name": "Downtime due to bug",
+          "Risk_ID": 2,
+          "Consequence": 3,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [
+            "Refined Development Process"
+          ],
+          "Concern_IDs": [
+            "5.3", "2.1"
+          ]
+        },
+        {
+          "Name": "DDOS Attack",
+          "Risk_ID": 2,
+          "Consequence": 3,
+          "Likelihood": 5,
+          "Mitigation_Strategies": [
+            "Regular Stress Test"
+          ],
+          "Concern_IDs": [
+            "3.1", "2.1", "5.3"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 4,
+      "Node_name": "AWS Cloud Hosting",
+      "Type": "Hosting",
+      "Suppliers": [],
+      "Risks": [
+        {
+          "Name": "Hack/Leakage of personal information",
+          "Risk_ID": 2,
+          "Consequence": 5,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [
+            "IT Security Team"
+          ],
+          "Concern_IDs": [
+            "1.1", "5.1"
+          ]
+        },
+        {
+          "Name": "Downtime due to too much traffic",
+          "Risk_ID": 2,
+          "Consequence": 3,
+          "Likelihood": 3,
+          "Mitigation_Strategies": [
+            "Auto Upscaling"
+          ],
+          "Concern_IDs": [
+            "5.3", "2.1"
+          ]
+        },
+        {
+          "Name": "Data Storage outside of EU",
+          "Risk_ID": 2,
+          "Consequence": 3,
+          "Likelihood": 5,
+          "Mitigation_Strategies": [
+            "AWS Region eu-central1"
+          ],
+          "Concern_IDs": [
+            "5.1"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 5,
+      "Node_name": "Route finder",
+      "Type": "Backend Service",
+      "Suppliers": [],
+      "Risks": [
+        {
+          "Name": "Incorrect Routes",
+          "Risk_ID": 2,
+          "Consequence": 3,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            "5.2", "3.1"
+          ]
+        },
+        {
+          "Name": "Too long routes",
+          "Risk_ID": 2,
+          "Consequence": 1,
+          "Likelihood": 3,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            "5.2", "3.1"
+          ]
+        },
+        {
+          "Name": "Exposing Private Route Information",
+          "Risk_ID": 2,
+          "Consequence": 3,
+          "Likelihood": 3,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            "5.1", "2.1"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 6,
+      "Node_name": "Development Team",
+      "Type": "External Team in Poland",
+      "Suppliers": [],
+      "Risks": [
+        {
+          "Name": "Downtime outside of office hours",
+          "Risk_ID": 2,
+          "Consequence": 3,
+          "Likelihood": 1,
+          "Mitigation_Strategies": ["SLA"],
+          "Concern_IDs": [
+            "5.3"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 7,
+      "Node_name": "Delay Information",
+      "Type": "Backend Service",
+      "Suppliers": [],
+      "Risks": [
+        {
+          "Name": "Long Processing Time",
+          "Risk_ID": 2,
+          "Consequence": 1,
+          "Likelihood": 1,
+          "Mitigation_Strategies": ["SLA"],
+          "Concern_IDs": [
+            "5.3"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 8,
+      "Node_name": "Bord Wlan",
+      "Type": "Wlan",
+      "Suppliers": [],
+      "Risks": [
+        {
+          "Name": "Downtime",
+          "Risk_ID": 2,
+          "Consequence": 1,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            "3.2", "5.3", "3.1"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 9,
+      "Node_name": "GPS Connector",
+      "Type": "Wlan",
+      "Suppliers": [21],
+      "Risks": [
+        {
+          "Name": "Downtime",
+          "Risk_ID": 2,
+          "Consequence": 1,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            "3.2", "5.3", "3.1"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 10,
+      "Node_name": "Wheelset Monitoring",
+      "Type": "Wlan",
+      "Suppliers": [],
+      "Risks": [
+        {
+          "Name": "Wrong alert",
+          "Risk_ID": 2,
+          "Consequence": 5,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            "5.2", "4", "2.1"
+          ]
+        },
+        {
+          "Name": "Update Missing",
+          "Risk_ID": 2,
+          "Consequence": 1,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            "3.2", "5.3", "3.1"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 11,
+      "Node_name": "Signal Detection",
+      "Type": "Wlan",
+      "Suppliers": [16, 20],
+      "Risks": [
+        {
+          "Name": "Failure to detect",
+          "Risk_ID": 2,
+          "Consequence": 1,
+          "Likelihood": 1,
+          "Mitigation_Strategies": ["Periodic Retraining"],
+          "Concern_IDs": [
+            "4"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 12,
+      "Node_name": "Telekom Telephone",
+      "Type": "Communication",
+      "Suppliers": [],
+      "Risks": [
+        {
+          "Name": "No Network",
+          "Risk_ID": 2,
+          "Consequence": 1,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            "2.1", "3.2", "3.1"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 13,
+      "Node_name": "Dispatcher",
+      "Type": "Sets rail switches",
+      "Suppliers": [14, 15],
+      "Risks": []
+    },
+    {
+      "Node_ID": 14,
+      "Node_name": "Siemens DispatchV2",
+      "Type": "Software",
+      "Suppliers": [],
+      "Risks": [
+        {
+          "Name": "Long Update Cycle",
+          "Risk_ID": 2,
+          "Consequence": 1,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            "2"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 15,
+      "Node_name": "Train Infos API",
+      "Type": "Train Information for dispatching",
+      "Suppliers": [],
+      "Risks": [
+        {
+          "Name": "Downtime",
+          "Risk_ID": 2,
+          "Consequence": 1,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            "4", "2.1", "2.2", "5.3"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 16,
+      "Node_name": "Detection Software",
+      "Type": "Software",
+      "Suppliers": [17, 18],
+      "Risks": [
+        {
+          "Name": "Wrong Detection",
+          "Risk_ID": 2,
+          "Consequence": 5,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            "4"
+          ]
+        },
+        {
+          "Name": "Missing Detection",
+          "Risk_ID": 2,
+          "Consequence": 5,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [],
+          "Concern_IDs": [
+            "4"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 17,
+      "Node_name": "Server",
+      "Type": "Wlan",
+      "Suppliers": [],
+      "Risks": [
+        {
+          "Name": "Hack/Leakage of personal information",
+          "Risk_ID": 2,
+          "Consequence": 5,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [
+            "IT Security Team"
+          ],
+          "Concern_IDs": [
+            "1.1", "5.1"
+          ]
+        },
+        {
+          "Name": "Downtime due to bug",
+          "Risk_ID": 2,
+          "Consequence": 3,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [
+            "Refined Development Process"
+          ],
+          "Concern_IDs": [
+            "5.3", "2.1"
+          ]
+        },
+        {
+          "Name": "DDOS Attack",
+          "Risk_ID": 2,
+          "Consequence": 3,
+          "Likelihood": 5,
+          "Mitigation_Strategies": [
+            "Regular Stress Test"
+          ],
+          "Concern_IDs": [
+            "3.1", "2.1", "5.3"
+          ]
+        }
+      ]
+    },
+    {
+      "Node_ID": 18,
+      "Node_name": "Transformer Model",
+      "Type": "Image recognition model",
+      "Suppliers": [19],
+      "Risks": [
+      ]
+    },
+    {
+      "Node_ID": 19,
+      "Node_name": "AWS Sagemaker",
+      "Type": "Training",
+      "Suppliers": [],
+      "Risks": []
+    },
+    {
+      "Node_ID": 20,
+      "Node_name": "Camera System",
+      "Type": "Olympus Camera",
+      "Suppliers": [],
+      "Risks": []
+    },
+    {
+      "Node_ID": 21,
+      "Node_name": "Satellites",
+      "Type": "GPS Real Time Connection",
+      "Suppliers": [22],
+      "Risks": []
+    },
+    {
+      "Node_ID": 22,
+      "Node_name": "Satellite Software",
+      "Type": "Software to keep satellite in orbit",
+      "Suppliers": [],
+      "Risks": [
+        {
+          "Name": "Downtime due to bug",
+          "Risk_ID": 2,
+          "Consequence": 3,
+          "Likelihood": 1,
+          "Mitigation_Strategies": [
+            "Refined Development Process"
+          ],
+          "Concern_IDs": [
+            "5.3", "2.1"
+          ]
+        },
+        {
+          "Name": "DDOS Attack",
+          "Risk_ID": 2,
+          "Consequence": 3,
+          "Likelihood": 5,
+          "Mitigation_Strategies": [
+            "Regular Stress Test"
+          ],
+          "Concern_IDs": [
+            "3.1", "2.1", "5.3"
+          ]
+        }
+      ]
+    }
+  ]
+  }

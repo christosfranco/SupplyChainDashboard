@@ -118,7 +118,7 @@ export class DagVisualisationComponent {
     nodes
       .append("rect")// @ts-ignore
       .attr("fill", (n) => "#77aad9")
-      .attr('width', 96)
+      .attr('width', 120)
       .attr('height', 40)
       .style("stroke", d => "black")
       .on("mouseenter", (event, d) => {
@@ -128,7 +128,7 @@ export class DagVisualisationComponent {
         d3.select(event.currentTarget).classed("hover-default", false);
       })
       .style("stroke-width", d=> 1)// @ts-ignore
-      .attr("transform", ({x, y}) => `translate(${-48}, ${-24})`);
+      .attr("transform", ({x, y}) => `translate(${-60}, ${-24})`);
 
     nodes
       .append("text")// @ts-ignore
@@ -216,7 +216,7 @@ export class DagVisualisationComponent {
     let i:number = 0
     Object.entries(risks).forEach(([key, value])=> {
       const trans_y = -38
-      const trans_x =  -48+(i*(96/(len)))
+      const trans_x =  -60+(i*(120/(len)))
       const highlights = d3.select(selection)
         .append("g")
         .attr("class", "highlight")// @ts-ignore
@@ -225,7 +225,7 @@ export class DagVisualisationComponent {
       highlights
         .append("rect")
         .attr("fill", (n) => colors[key])
-        .attr('width', (96-3*(len-1))/len)
+        .attr('width', (120-3*(len-1))/len)
         .attr('height', 10)
         .style("stroke", d => "black")
         .style("stroke-width", d => 1)
@@ -237,7 +237,7 @@ export class DagVisualisationComponent {
         .attr("fill", "white")
         .attr("text-anchor", "middle")
         .attr("font-size", "10px")// @ts-ignore
-        .attr("transform", ({x, y}) => `translate(${((96-3*(len-1))/len)/2}, ${9})`)
+        .attr("transform", ({x, y}) => `translate(${((120-3*(len-1))/len)/2}, ${9})`)
         .attr("font-weight", "bold")
         .attr("font-family", "sans-serif")
       i++
