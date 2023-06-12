@@ -8,7 +8,6 @@
     <thead>
     <tr>
       <th>Name</th>
-      <th>Description</th>
       <th>Consequence</th>
       <th>Likelihood</th>
       <th>Risk Factor</th>
@@ -19,7 +18,6 @@
     <tbody>
     <tr *ngFor="let risk of details.risks">
       <td>{{ risk.name }}</td>
-      <td>{{ risk.description }}</td>
       <td>{{ risk.consequenceLevel }}</td>
       <td>{{ risk.likelihoodLevel }}</td>
       <td>{{ risk.riskFactor }}</td>
