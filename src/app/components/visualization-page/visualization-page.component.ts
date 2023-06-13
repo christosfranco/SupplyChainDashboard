@@ -25,6 +25,8 @@ export class VisualizationPageComponent {
 
 
   public imageUrl_attention = "../../assets/images/attention.png";
+  public imageUrl_help = "../../assets/images/help.png";
+  public imageUrl_matrix = "../../assets/images/risk_factor_matrix.png";
 
   nodes: Node[] | undefined;
   filters: Filter | undefined;

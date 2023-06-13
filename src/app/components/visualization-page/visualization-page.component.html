@@ -1,13 +1,22 @@
 <div class="base">
+  <button id="help" title="Help" (click)="openModal('help-modal')">
+    <img class="help-icon"
+         ngSrc="{{ imageUrl_help }}" height="35" width="35" alt="Help image">
+  </button>
   <div class="header">
+
     <div class="button-span">
       <div class="import-export">
-        <a routerLink="/"  class="vis-page-btns  new-sc-btn">Import new Files</a>
-        <button [disabled]="!nodes || nodes.length === 0" class="vis-page-btns  export-btn" (click)="exportChart()">Export Graph</button>
+        <a routerLink="/" class="vis-page-btns  new-sc-btn">Import new Files</a>
+        <button [disabled]="!nodes || nodes.length === 0" class="vis-page-btns  export-btn" (click)="exportChart()">
+          Export Graph
+        </button>
       </div>
       <h1>Supply Chain Visualisation</h1>
       <div class="filter-div">
-        <button [disabled]="!nodes || nodes.length === 0" *ngIf="!filters;else appliedButton" class="filter-btn vis-page-btns" (click)="openModal('filter-modal')">Add Filter</button>
+        <button [disabled]="!nodes || nodes.length === 0" *ngIf="!filters;else appliedButton"
+                class="filter-btn vis-page-btns" (click)="openModal('filter-modal')">Add Filter
+        </button>
       </div>
     </div>
   </div>
@@ -17,17 +26,17 @@
   </ng-template>
 
 
-<!--  <div *ngIf="noFiltersMsg" id="no-filters-msg">-->
-<!--    <img id="no-filters-img"-->
-<!--         ngSrc="{{ imageUrl_attention }}" height="20" width="20" alt="Attention">-->
-<!--    <p>No filter to show</p></div>-->
+  <!--  <div *ngIf="noFiltersMsg" id="no-filters-msg">-->
+  <!--    <img id="no-filters-img"-->
+  <!--         ngSrc="{{ imageUrl_attention }}" height="20" width="20" alt="Attention">-->
+  <!--    <p>No filter to show</p></div>-->
 
   <div class="content-container">
     <div class="vis-card">
-      <div class="graph-container"*ngIf="nodes && (nodes.length > 0)" >
-        <app-dag-visualisation  [nodes]="nodes" (nodeClick)="onNodeClick($event)"></app-dag-visualisation>
+      <div class="graph-container" *ngIf="nodes && (nodes.length > 0)">
+        <app-dag-visualisation [nodes]="nodes" (nodeClick)="onNodeClick($event)"></app-dag-visualisation>
       </div>
-      <p class="error-msg" *ngIf="!(nodes && (nodes.length > 0))" >To start upload a supply chain</p>
+      <p class="error-msg" *ngIf="!(nodes && (nodes.length > 0))">To start upload a supply chain</p>
     </div>
 
     <div class="applied-filters-container">
@@ -38,11 +47,55 @@
     </div>
   </div>
 
-  <modal id="filter-modal" title ="Add New Filter">
-    <filter (filterSelected)="handleFilterSelected($event)" [concernForest]="concernForest" ></filter>
+  <modal id="filter-modal" title="Add New Filter">
+    <filter (filterSelected)="handleFilterSelected($event)" [concernForest]="concernForest"></filter>
   </modal>
 
-  <modal class="export-modal" id="export-modal" title="Export Supply Chain">
+
+  <modal id="help-modal" title="HELP">
+    <div class="help-container">
+      <h3 class="help-header">VISUALIZATION and DETAILS</h3>
+      <p>
+        On the main display, you can see the visualization of your imported Supply Chain.<br>
+        You can <i>zoom in</i> or <i>zoom out</i> of the visualization by scrolling and <i>move</i> the visualization
+        by clicking on the panel and dragging it in the desired direction.<br><br>
+        If you click on any of the nodes, the details for this node appear. They consist of the node <i>name</i>, <i>category</i>
+        and a table of <i>risks</i> associated with the node. Each risk has a specified <i>name</i>, <i>consequence</i>,
+        <i>likelihood</i>, <i>risk factor</i> (which is calculated as a multiplication of consequence and likelihood),
+        <i>concerns</i>, and <i>mitigation strategies</i>, if they are applied.
+      </p>
+    </div>
+    <div class="help-container">
+      <h3 class="help-header">Filtering</h3>
+      <p>
+        To add a new filter click the <b>Add Filter</b> button. <br>
+        After applying the selected filtered, the nodes that satisfy the given filter will highlight.
+        Each node will display the number of risks that have <span style="color: green">low</span>,
+        <span style="color: orange">medium</span> or <span style="color: red">high</span> risk factor, which is based on the
+        bellow matrix:
+      </p>
+      <img id="matrix" ngSrc="{{ imageUrl_matrix }}" alt="Risk factor matrix" width="300" height="300">
+      <p>
+        To see the applied filter, click the button <b>Show applied filter</b>.<br>
+        A field with currently applied filter will appear, which you can minimize by clicking the <b>Hide</b> button.<br>
+        You can edit the filter by clicking the <b>"edit"</b> icon or delete it, by clicking the <b>"trash"</b> icon.
+      </p>
+    </div>
+    <div class="help-container">
+      <h3 class="help-header">Exporting</h3>
+      <p>
+        You can download an image of your visualized Supply Chain by clicking the <b>Export</b>
+        button. Be aware that the image will capture exactly what you are currently displaying on the visualization
+        panel, so before exporting you should adjust the panel to your liking.
+      </p>
+    </div>
+    <div class="help-container">
+      <h3 class="help-header">Importing a new Supply Chain</h3>
+      <p>
+        Once you are done with visualizing current Supply Chain, you can return to the landing page by clicking the
+        button <b>Import new Files</b>.
+      </p>
+    </div>
   </modal>
 
 </div>
