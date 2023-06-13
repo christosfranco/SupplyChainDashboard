@@ -47,7 +47,7 @@
     </div>
   </div>
 
-  <modal id="filter-modal" title="Add New Filter">
+  <modal id="filter-modal" title="Add New Filter" [appliedFilter]="(filters !== undefined)">
     <filter (filterSelected)="handleFilterSelected($event)" [concernForest]="concernForest"></filter>
   </modal>
 
