@@ -21,8 +21,10 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
     if (this.nodeId) {
       this.nodesService.getDetails(this.nodeId).subscribe(nodeDetails => {
-        console.log(nodeDetails)
         if (Array.isArray(nodeDetails) && nodeDetails.length > 0) {
+          const sortedRisks = nodeDetails[0].risks;
+          sortedRisks.sort((x: { riskFactor: number; }, y: { riskFactor: number; }) => y.riskFactor - x.riskFactor)
+          nodeDetails[0].risks = sortedRisks;
           this.details = nodeDetails[0];
         }
       });
