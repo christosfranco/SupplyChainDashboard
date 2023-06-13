@@ -34,4 +34,16 @@ export class DetailsComponent implements OnInit {
   closeDialog(): void {
     this.dialogRef.close();
   }
+
+  getRowClass(value: number): string {
+    if (value > 10) {
+      return "red"
+    }
+    else if (value < 4) {
+      return "green"
+    }
+    else {
+      return "yellow"
+    }
+  }
 }

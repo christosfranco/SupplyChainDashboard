@@ -23,7 +23,7 @@
 .risk-table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #f5f7fa;
+  //background-color: #f5f7fa;
   border: 1px solid #414040;
 }
 
@@ -32,16 +32,11 @@
   padding: 8px;
   border: 1px solid #414040;
   font-size: 12px;
-  color: #414040;
 }
 
 .risk-table th {
   font-weight: bold;
   text-align: left;
-}
-
-.risk-table tbody tr:nth-child(even) {
-  background-color: white;
 }
 
 .risk-table ul {
@@ -70,4 +65,21 @@
   border: none;
   cursor: pointer;
 }
+
+.red {
+  background-color: rgba(213, 27, 27, 0.69);
+  color: white
+}
+
+.yellow {
+  background-color: rgba(232, 194, 6, 0.79);
+  color: black
+}
+
+.green {
+  background-color: rgba(34, 139, 34, 0.83);
+  color: white
+}
+
+
 

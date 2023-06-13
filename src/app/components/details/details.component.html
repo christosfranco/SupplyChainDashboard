@@ -16,7 +16,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let risk of details.risks">
+    <tr *ngFor="let risk of details.risks" [className]="getRowClass(risk.riskFactor)">
       <td>{{ risk.name }}</td>
       <td>{{ risk.consequenceLevel }}</td>
       <td>{{ risk.likelihoodLevel }}</td>
