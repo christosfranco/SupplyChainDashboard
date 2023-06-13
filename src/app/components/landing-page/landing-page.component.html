@@ -31,15 +31,128 @@
 
   <modal id="import-sc" title="Import a new Supply Chain">
     <app-upload-component modal="import-sc" text="Import Supply Chain" [modalService]="modalService"
-                          (fileEvent)="setSupplyChainFileName($event)" (uploadEvent)="uploadSupplyChain($event)"></app-upload-component>
+                          (fileEvent)="setSupplyChainFileName($event)"
+                          (uploadEvent)="uploadSupplyChain($event)"></app-upload-component>
   </modal>
 
   <modal id="import-cf" title="Import a Concern Forest">
     <app-upload-component modal="import-cf" text="Import Concern Tree" [modalService]="modalService"
-                          (fileEvent)="setConcernTreeFileName($event)" (uploadEvent)="uploadConcernTree($event)"></app-upload-component>
+                          (fileEvent)="setConcernTreeFileName($event)"
+                          (uploadEvent)="uploadConcernTree($event)"></app-upload-component>
   </modal>
 
-  <modal id="help-modal" title="HELP">
+  <modal id="help-modal" title="GET STARTED">
+    <div class="help-container">
+      <h3 class="help-header">Importing Supply Chain</h3>
+      <p>
+        To start viewing your Supply Chain, you must first import it with the button <b>Import Supply Chain</b>.<br>
+        Your file must be in a valid <span class="code">json</span> format with a structure specified like this:
+      </p>
+      <div class="json-spec">
+        <div>
+          <div class="json-container">
+        <pre>
+&#123;
+  "Metadata": &#123;
+    "supply_chain_name": <span class="emphasis">&#60;supply_chain_name&#62;</span>
+  &#125;,
+  "Nodes": [
+    &#123;
+      "Node_ID": <span class="emphasis">&#60;node_id&#62;</span>,
+      "Node_name": <span class="emphasis">&#60;node_name&#62;</span>,
+      "Type": <span class="emphasis">&#60;node_type&#62;</span>,
+      "Suppliers": <span class="emphasis">&#60;suppliers_list&#62;</span>,
+      "Risks": [
+        &#123;
+          "Name": <span class="emphasis">&#60;risk_name&#62;</span>,
+          "Risk_ID": <span class="emphasis">&#60;risk_id&#62;</span>,
+          "Consequence": <span class="emphasis">&#60;consequence&#62;</span>,
+          "Likelihood": <span class="emphasis">&#60;likelihood&#62;</span>,
+          "Mitigation_Strategies": <span class="emphasis">&#60;mitigation_list&#62;</span>,
+          "Concern_IDs": <span class="emphasis">&#60;concern_ids_list&#62;</span>
+        &#125;,
+        ...
+      ]
+    &#125;,
+    ...
+  ]
+&#125;
+        </pre>
+          </div>
+          <div class="example">
+            <a  class="download-btn" href="../../../assets/hotel_example.json" download="">Download an example</a>
+          </div>
+        </div>
+        <div class="spec">
+          <h4>Parameters</h4>
+          <p class="param">
+            <span class="code emphasis">supply_chain_name</span>: <i>string</i><br>
+            <span>Describes your supply chain name</span>
+          </p>
+          <p class="param">
+            <span class="code emphasis">node_id</span>: <i>int</i><br>
+            <span>Identification number of node</span>
+          </p>
+          <p class="param">
+            <span class="code emphasis">node_name</span>: <i>string</i><br>
+            <span>Name of the node</span>
+          </p>
+          <p class="param">
+            <span class="code emphasis">node_type</span>: <i>string</i><br>
+            <span>Type</span>
+          </p>
+          <p class="param">
+            <span class="code emphasis">suppliers_list</span>: <i>[int]</i><br>
+            <span>List of node ids that supply this node</span>
+          </p>
+          <p class="param">
+            <span class="code emphasis">risk_name</span>: <i>string</i><br>
+            <span>Name of the risk</span>
+          </p>
+          <p class="param">
+            <span class="code emphasis">risk_id</span>: <i>int</i><br>
+            <span>Identification number of risk</span>
+          </p>
+          <p class="param">
+            <span class="code emphasis">consequence</span>: <i>int</i><br>
+            <span>Number between 1 and 5 describing the consequence of a risk</span>
+          </p>
+          <p class="param">
+            <span class="code emphasis">likelihood</span>: <i>int</i><br>
+            <span>Number between 1 and 5 describing how likely is the risk going to happen</span>
+          </p>
+          <p class="param">
+            <span class="code emphasis">mitigation_list</span>: <i>[string]</i><br>
+            <span>List of strings, describing possible mitigation strategies</span>
+          </p>
+          <p class="param">
+            <span class="code emphasis">concern_ids_list</span>: <i>[int]</i><br>
+            <span>List of integers that correspond to concern ids in Concern Forest (see bellow)</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="help-container">
+      <h3 class="help-header">Importing Concern Forest</h3>
+      <p>
+        By default, the application uses an internal Concern Forest, which you can view by downloading it with bellow button.<br><br>
+        If you want to use your own Concern Forest, import it using <b>Import Concern Forest</b> button and selecting
+        a valid <span class="code">json</span> file with the same structure as the example.
+      </p>
+      <div class="example">
+        <a class="download-btn" href="../../../assets/concern_model.json" download="">Download a default Concern Forest</a>
+      </div>
+    </div>
+
+    <div class="help-container">
+      <h3 class="help-header">Filtering</h3>
+      <p>
+        Once you have visualized the Supply Chain, you can click <b>Add Filter</b> to add a new filter. <br>
+        After applying the selected filtered, the nodes that satisfy the given filter will highlight.
+        Each node will also display the number of risks that have <span style="color: green">low</span>,
+        <span style="color: orange">medium</span> or <span style="color: red">high</span> risk factor.
+      </p>
+    </div>
 
   </modal>
 </div>
