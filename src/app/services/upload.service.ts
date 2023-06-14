@@ -13,33 +13,24 @@ export class UploadService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public uploadFile(json: JSON, endpoint: string) {
+  public uploadFile(json: JSON, endpoint: string): Observable<Object> {
 
     const httpOptions:Object = { headers: this.httpHeaders, responseType: 'text'}
     console.log(`${this.url}/${endpoint}`)
-    this.httpClient
+    return this.httpClient
       .post(`${this.url}/${endpoint}`,json, httpOptions)
-      .pipe(
-        catchError(
-          error => {
-            this.log('Not Valid Json')
-            return throwError(error);
-          }
-        )
-      )
-      .subscribe(_ => console.log("Upload handling finished"));
   }
 
-  public uploadSupplyChain(json: JSON) {
+  public uploadSupplyChain(json: JSON): Observable<Object> {
     this.log("Upload Supply Chain")
     const endpoint = "supplychain"
-    this.uploadFile(json, endpoint)
+    return this.uploadFile(json, endpoint)
   }
 
-  public uploadConcernTree(json: JSON) {
+  public uploadConcernTree(json: JSON): Observable<Object> {
     this.log("Upload Concern Tree")
     const endpoint = "concerntree"
-    this.uploadFile(json, endpoint)
+    return this.uploadFile(json, endpoint)
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
