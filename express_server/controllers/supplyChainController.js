@@ -7,7 +7,7 @@ const {of} = require("rxjs");
 const getNodeDetails = (req, res) => {
   const requested_node_id = req.params.nodeID;
   const parsData = parserController.data.Nodes;
-  response = createNodeDetailsResponse(parsData, requested_node_id)
+  const response = createNodeDetailsResponse(parsData, requested_node_id)
   res.status(200).send(response);
 };
 
@@ -25,8 +25,8 @@ function createNodeDetailsResponse(parsData, requested_node_id) {
 }
 
 function mapConcernsToRisk(risk) {
-  concern_tree = concernController.concernData.Concern_Trees
-  concernNames = risk.Concern_IDs.map(concern_id => findConcernNameById(concern_tree,concern_id))
+  const concern_tree = concernController.concernData.Concern_Trees
+  const concernNames = risk.Concern_IDs.map(concern_id => findConcernNameById(concern_tree,concern_id))
   return {
     "name": risk.Name,
     "id": risk.Risk_ID,
