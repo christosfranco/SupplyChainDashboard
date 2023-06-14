@@ -3,6 +3,7 @@ import {ModalService} from "../../services/modal.service";
 import {UploadComponentComponent} from "../upload-component/upload-component.component";
 import {UploadService} from "../../services/upload.service";
 import {FilesNamesService} from "../../services/files-names.service";
+import {catchError, EMPTY} from "rxjs";
 
 @Component({
   selector: 'app-landing-page',
@@ -37,13 +38,5 @@ export class LandingPageComponent {
   closeModal(id: string) {
     this.modalService.close(id)
   }
-  uploadSupplyChain(json:JSON) {
-    this.uploadService.uploadSupplyChain(<JSON>json);
-  }
-
-  uploadConcernTree(json:JSON) {
-    this.uploadService.uploadConcernTree(<JSON>json);
-  }
-
 
 }
