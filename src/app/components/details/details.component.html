@@ -3,8 +3,9 @@
   <h2>Node details</h2>
   <h4><span class="label">Name:</span> <span class="value">{{ details.name }}</span></h4>
   <h4><span class="label">Category:</span> <span class="value">{{ details.category }}</span></h4>
-  <h4>Risks:</h4>
-  <table class="risk-table">
+  <h4><span class="label">Risks:</span> <span *ngIf="details.risks.length === 0" class="value"> No risk associated with this node</span></h4>
+
+  <table *ngIf="details.risks.length > 0" class="risk-table">
     <thead>
     <tr>
       <th>Name</th>
