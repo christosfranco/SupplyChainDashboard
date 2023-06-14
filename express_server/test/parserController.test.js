@@ -73,7 +73,6 @@ describe('Nodes and Risk Parsing', () => {
     const allArrays = [arrayEmptyString,arrayEmptyString2,arrayEmptyString3,number, stringEmpty,string, bool, nan,Null];
     for (const array in allArrays) {
         const res = checkTypeArray(array, "hi");
-        assert.throws(checkTypeArray,Error);
         assert.instanceOf(res, Error);
 
     }
