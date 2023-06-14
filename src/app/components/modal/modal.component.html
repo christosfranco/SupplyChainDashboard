@@ -1,6 +1,6 @@
 <div class="modal" >
   <div class="modal-body">
-    <button class="close-modal btn" (click)="close()">Close</button>
+    <button class="close-modal btn" (click)="close()" [disabled]="appliedFilter">Close</button>
     <h2 class="modal-title">{{ title }}</h2>
     <ng-content></ng-content>
   </div>

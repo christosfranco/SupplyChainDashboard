@@ -45,11 +45,11 @@ const calculateRiskLevel = (Consequence, Likelihood) => {
   }
 };
 
-const Cons = RiskFactorLevels.VALUE3; // Example concern IDs to check
-const Like = RiskFactorLevels.VALUE3
-
-const exist = calculateRiskLevel(Cons, Like);
-console.log(`RIsk level : ${exist}`);
+// const Cons = RiskFactorLevels.VALUE3; // Example concern IDs to check
+// const Like = RiskFactorLevels.VALUE3
+//
+// const exist = calculateRiskLevel(Cons, Like);
+// console.log(`RIsk level : ${exist}`);
 
 
 module.exports =  {

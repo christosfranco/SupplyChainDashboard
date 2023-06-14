@@ -4,7 +4,6 @@ function Node() {
   this.Node_ID = 0;
   this.Node_name = "";
   this.Type = "";
-  this.Supplier = [];
   this.Risks = [];
 }
 

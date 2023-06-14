@@ -5,121 +5,52 @@ const concernController = require('./parserConcernController');
 const {of} = require("rxjs");
 
 const getNodeDetails = (req, res) => {
-/*
-  const data= [
-    {'id':1, 'name': 'booking.com', 'category': 'Booking Software', 'risks': [
-        {
-          'id': 5,
-          'name': 'IT Security',
-          'concern': ['CyberSecurity', 'Privacy'],
-          'description': 'Firewall Security Outdated',
-          'consequenceLevel': 1,
-          'likelihoodLevel':3,
-          'riskFactor': 3,
-          'mitigationStrategy': ['Updating Firewall maybe??']
-        },
-        {
-          'id': 6,
-          'name': 'Access breach',
-          'concern': ['Physical Security'],
-          'description': 'Guards not attentive',
-          'consequenceLevel': 1,
-          'likelihoodLevel':3,
-          'riskFactor': 4,
-          'mitigationStrategy': ['Security Cameras']
-        }
-      ]}
-  ];
-  //res.send(data);
-  */
-  //console.log(req.params.nodeID);
   const requested_node_id = req.params.nodeID;
   const parsData = parserController.data.Nodes;
-  let ret_struct = {};
-
-  const map_name_backend_fontend = {
-    "Node_ID"     :   "id",
-    "Node_name"   :   "name",
-    "Type"        :   "category",
-    "Supplier"    :   "omit",
-    "Risks"       :   "risks",
-    "Risk"        :   "omit",
-    "Name"        :   "name",
-    "Risk_ID"     :   "id",
-    "Consequence" :   "consequenceLevel",
-    "Likelihood"  :   "likelihoodLevel",
-    "Risk_Level"  :   "riskFactor",
-    "Mitigation_Strategies" : "mitigationStrategy",
-    "Concern_IDs" :   "concern",
-    "Suppliers"   :   "omit"
-  }
-  function adjust_data_for_frontend(node, json_s) {
-      let risk_sub_structure = [];
-      let concern_sub_structure = [];
-    for (const key in node) {
-        if(map_name_backend_fontend[key] === "omit")
-          continue;
-        else if(key === "Risks"){
-          let all_risks = node[key];
-          all_risks.forEach((risk) =>{
-            let tmp_risk = {};
-            for (const risk_key in risk){
-              if(risk_key === "Concern_IDs"){
-                let all_concern_ids = node[key];
-                const parsConcernData = concernController.concernData.Concern_Trees;
-                let concern_id_name = {};
-
-                function map_id_to_name_concerns(concern) {
-                  concern_id_name[concern.Concern_ID] = concern.Concern_name;
-                  concern.Children.forEach((sub_concern) => {
-                    map_id_to_name_concerns(sub_concern);
-                  });
-                }
-                parsConcernData.forEach((concern) =>{
-                  //concern_id_name[concern.Concern_ID] = concern.Concern_name;
-                  map_id_to_name_concerns(concern);
-                });
-                //console.log("Concern_id_name: ", concern_id_name);
-                for(const concern_id of all_concern_ids[0].Concern_IDs){
-                  //console.log("concern_id: ", concern_id);
-                  //console.log("For push: ", concern_id_name[concern_id]);
-                  concern_sub_structure.push(concern_id_name[concern_id]);
-                }
-                //console.log("concern_sub_structure == ", concern_sub_structure);
-                tmp_risk[map_name_backend_fontend[risk_key]] = concern_sub_structure;
-              }else{
-                let tmp_value = risk[risk_key];
-                if(risk_key === 'Risk_Level'){
-                  tmp_value = risk.Consequence * risk.Likelihood;
-                }
-                if (typeof tmp_value === "number")
-                    tmp_value.toString();
-                tmp_risk[map_name_backend_fontend[risk_key]] = tmp_value;
-              }
-            }
-            risk_sub_structure.push(tmp_risk);
-          });
-          json_s[map_name_backend_fontend[key]] = (risk_sub_structure);
-        }else{
-          let tmp_val = node[key];
-          if (typeof tmp_val === "number")
-            tmp_val.toString();
-          json_s[map_name_backend_fontend[key]] = tmp_val;
-        }
-      }
-    return [json_s];
-  }
-
-  let fstruct;
-  parsData.forEach((node) => {
-    if(node.Node_ID.toString() === requested_node_id){
-      fstruct = adjust_data_for_frontend(node, ret_struct);
-      return;
-    }
-  });
-  console.log("Final struct is: ", fstruct);
-  res.status(200).send(fstruct);
+  const response = createNodeDetailsResponse(parsData, requested_node_id)
+  res.status(200).send(response);
 };
+
+function createNodeDetailsResponse(parsData, requested_node_id) {
+  return parsData
+    .filter(node => node.Node_ID.toString() === requested_node_id)
+    .map(node => {
+      return {
+        "id": node.Node_ID,
+        "name": node.Node_name,
+        "category": node.Type,
+        "risks": node.Risks.map(mapConcernsToRisk)
+      }
+    })
+}
+
+function mapConcernsToRisk(risk) {
+  const concern_tree = concernController.concernData.Concern_Trees
+  const concernNames = risk.Concern_IDs.map(concern_id => findConcernNameById(concern_tree,concern_id))
+  return {
+    "name": risk.Name,
+    "id": risk.Risk_ID,
+    "consequenceLevel": risk.Consequence,
+    "likelihoodLevel": risk.Likelihood,
+    "riskFactor": risk.Likelihood * risk.Consequence,
+    "mitigationStrategy": risk.Mitigation_Strategies,
+    "concern" : concernNames.filter( String )
+  }
+}
+function findConcernNameById(concern_tree, id) {
+  for (const concern of concern_tree) {
+    if (concern.Concern_ID === id) {
+      return concern.Concern_name;
+    }
+    if (concern.Children.length > 0) {
+      const childResult = findConcernNameById(concern.Children, id);
+      if (childResult) {
+        return childResult;
+      }
+    }
+  }
+  return undefined
+}
 
 const checkCondition = (array, is_in_range, inspect_value) => {
   //console.log("Parameters: ", array, is_in_range, inspect_value);

@@ -178,7 +178,19 @@ export class FilterComponent {
     for (const root of this.concernForest.roots) {
       this.selectNode(root, false)
     }
+  }
 
+  checkIfTrue(node: ConcernNode, selectedNodes: string[]) {
+    if (selectedNodes.length == 0) {
+      return;
+    }
+    const idx = selectedNodes.indexOf(node.id);
+    if (idx !== -1) {
+      node.check = true;
+      node.subconcerns.forEach((x: any) => {
+        this.checkIfTrue(x, selectedNodes);
+      })
+    }
   }
 
   public applyFilter() {
@@ -317,6 +329,10 @@ export class FilterComponent {
       for(const concernId of this.selectedConcernNodes){
         const checkbox = document.getElementById(concernId) as HTMLInputElement;
         checkbox.checked = true;
+      }
+      // @ts-ignore
+      for (const root of this.concernForest.roots) {
+        this.checkIfTrue(root, this.selectedConcernNodes);
       }
     }
 

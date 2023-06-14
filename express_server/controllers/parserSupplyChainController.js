@@ -6,8 +6,9 @@ const {calculateRiskLevel} = require('./riskLevelCalculateController');
 // constants
 const data = new Data();
 const inputFile = require('../../src/assets/nodes.json')
+const concernController = require("./parserConcernController");
 const debugLog = true;
-const allowSelfSupply = false;
+const allowSelfSupply = true;
 const rootNodeNumber = 0;
 
 
@@ -130,6 +131,8 @@ function parseNode(jsonNode) {
         }
         let res = checkType(jsonNode[field], node[field]);
         if (res instanceof Error) {
+          res.message += `In Node with 'Node_ID': ${jsonNode.Node_ID} \n` ;
+          res.message += `In field: ${field} \n` ;
           return res;
         }
         break;
@@ -138,6 +141,8 @@ function parseNode(jsonNode) {
       case 'Type':
         let res1 = checkType(jsonNode[field], node[field]);
         if (res1 instanceof Error) {
+          res1.message += `In Node with 'Node_ID': ${jsonNode.Node_ID} \n` ;
+          res1.message += `In field: ${field} \n` ;
           return res1;
         }
         break;
@@ -145,6 +150,9 @@ function parseNode(jsonNode) {
       case 'Suppliers':
         const arrResCon = checkTypeArray(jsonNode[field], 1);
         if (arrResCon instanceof Error) {
+
+          arrResCon.message += `In Node with 'Node_ID': ${jsonNode.Node_ID} \n` ;
+          arrResCon.message += `In field: ${field} \n` ;
           return arrResCon;
         }
         break;
@@ -152,12 +160,18 @@ function parseNode(jsonNode) {
       case 'Risks':
         risks = parseRisks(jsonNode[field]);
         if (risks instanceof Error) {
+
+          risks.message += `In Node with 'Node_ID': ${jsonNode.Node_ID} \n` ;
+          risks.message += `In field: ${field} \n` ;
           return risks;
         }
         break;
 
       default:
-        return Error(`Unexpected field '${field}' in Node: ${jsonNode.Node_ID}`);
+        let err = Error(`Unexpected field \n`);
+        err.message += `In Node with 'Node_ID': ${jsonNode.Node_ID} \n` ;
+        err.message += `In field: ${field} \n` ;
+        return err;
     }
 
   }
@@ -201,10 +215,23 @@ function parseRisk(jsonRisk) {
   }
   for (const field in jsonRisk) {
     switch (field) {
+
+      case 'Risk_ID':
+        let res = checkType(jsonRisk[field], risk[field]);
+        if (res instanceof Error) {
+          res.message += `In Risk with 'Risk_ID': ${jsonRisk.Risk_ID} \n` ;
+          res.message += `In field: ${field} \n` ;
+          return res;
+        }
+        break;
+
       case 'Name':
         let res0 = checkType(jsonRisk[field], risk[field]);
         if (res0 instanceof Error) {
-          return new Error("Invalid 'Name' field in Risk");
+
+          res0.message += `In Risk with 'Risk_ID': ${jsonRisk.Risk_ID} \n` ;
+          res0.message += `In field: ${field} \n` ;
+          return res0;
         }
         break;
 
@@ -212,14 +239,10 @@ function parseRisk(jsonRisk) {
       case 'Likelihood':
         let res1 = checkType(jsonRisk[field], risk[field]);
         if (res1 instanceof Error) {
-          return res1;
-        }
-        break;
 
-      case 'Risk_ID':
-        let res = checkType(jsonRisk[field], risk[field]);
-        if (res instanceof Error) {
-          return res;
+          res1.message += `In Risk with 'Risk_ID': ${jsonRisk.Risk_ID} \n` ;
+          res1.message += `In field: ${field} \n` ;
+          return res1;
         }
         break;
 
@@ -227,28 +250,42 @@ function parseRisk(jsonRisk) {
         const concernIDS = jsonRisk[field]
         const arrResCon = checkTypeArray(concernIDS, " ");
         if (arrResCon instanceof Error) {
+
+          arrResCon.message += `In Risk with 'Risk_ID': ${jsonRisk.Risk_ID} \n` ;
+          arrResCon.message += `In field: ${field} \n` ;
           return arrResCon;
         }
         // concernforest is a list of concerntree
         // if returning false throw error
-        /*const checkIdsInConcernTree = checkConcernIdsExist(concernTreeDefault,concernIDS);
+        const parsConcernData = concernController.concernData.Concern_Trees;
+
+        const checkIdsInConcernTree = checkConcernIdsExist(parsConcernData,concernIDS);
         if (checkIdsInConcernTree  instanceof Error){
+          checkIdsInConcernTree.message += `In Risk with 'Risk_ID': ${jsonRisk.Risk_ID} \n` ;
+          checkIdsInConcernTree.message += `In field: ${field} \n` ;
           return checkIdsInConcernTree;
-        }*/
+        }
         break;
 
       case 'Mitigation_Strategies':
         const arrRes = checkTypeArray(jsonRisk[field], " ");
         if (arrRes instanceof Error){
+
+          arrRes.message += `In Risk with 'Risk_ID': ${jsonRisk.Risk_ID} \n` ;
+          arrRes.message += `In field: ${field} \n` ;
           return arrRes;
         }
         break;
 
       default:
-        return Error(`Unexpected field '${field}' in Risk`);
+        let err = Error(`Unexpected field \n`);
+        err.message += `In Risk with 'Risk_ID': ${jsonRisk.Risk_ID} \n` ;
+        err.message += `In field: ${field} \n` ;
+        return err;
     }
   }
 
+  // assign all or nothing
   for (const field in jsonRisk) {
     risk[field] = jsonRisk[field];
   }
@@ -259,8 +296,9 @@ function parseRisk(jsonRisk) {
   return risk;
 }
 function checkTypeArray(array, expected) {
+
   if (!Array.isArray(array)) {
-    return Error(`Not array in Node: ${array.Node_ID}`);
+    return new Error(`Expected type: array\n`);
   }
   if (array === []) {
     return true;
@@ -279,13 +317,40 @@ function checkType(actual, expected) {
   const tactual = typeof actual;
   const texpected = typeof expected;
   if (tactual !== texpected || (texpected === ('number') && actual < rootNodeNumber) || (texpected === 'string' && actual === '')) {
-    return Error(`Expected type: ${texpected} \n \
-    Got type: ${tactual} and value: ${actual.valueOf()}\n \
-    In Node with ID: ${actual.Node_ID} \n \
-    In Risk with ID: ${actual.Risk_ID} \n \
-    In the field: ${JSON.stringify(actual[Object.keys(expected)[0]])}`);
+    return Error(
+      `\nExpected type: ${texpected} \nGot type: ${tactual} \nValue: ${actual.valueOf()}\n`);
   }
 }
+
+     // In the field: ${JSON.stringify(actual[Object.keys(expected)[0]])}`);
+
+
+const checkConcernIdsExist = (concernTree, concernIds) => {
+  const flattenedConcerns = flattenConcernTree(concernTree);
+  const flattenedConcernIds = flattenedConcerns.map((concern) => concern.Concern_ID);
+
+  const missingConcernIds = concernIds.filter((id) => !flattenedConcernIds.includes(id));
+
+  if (missingConcernIds.length > 0) {
+    return new Error(`The following concern IDs are not found in the concern tree: ${missingConcernIds.join(', ')}\n`);
+  }
+
+  return true; // All concern IDs exist in the tree
+};
+
+const flattenConcernTree = (concernTree) => {
+  let flattened = [];
+
+  for (const concern of concernTree) {
+    flattened.push(concern);
+    if (concern.Children && concern.Children.length > 0) {
+      flattened = flattened.concat(flattenConcernTree(concern.Children));
+    }
+  }
+
+  return flattened;
+};
+
 
 module.exports = {
   data,
