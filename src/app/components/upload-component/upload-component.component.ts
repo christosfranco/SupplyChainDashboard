@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {UploadService} from "../../services/upload.service";
 import {ModalService} from "../../services/modal.service";
+import {catchError, EMPTY} from "rxjs";
 
 @Component({
   selector: 'app-upload-component',
@@ -9,9 +10,10 @@ import {ModalService} from "../../services/modal.service";
 })
 export class UploadComponentComponent {
 
-  constructor() {
+  constructor(private uploadService: UploadService) {
   }
   @Input() text: string = "Import Supply Chain"
+  @Input() endpoint: string = ""
   @Input() modalService: ModalService | undefined;
   @Input() modal: string | undefined;
   @Output() fileEvent = new EventEmitter<string>;
@@ -19,9 +21,8 @@ export class UploadComponentComponent {
   json: JSON | undefined
 
   public show_attention = false;
-  public imageUrl_attention = "../../assets/images/attention.png";
+  public imageUrl_attention = "assets/images/attention.png";
   public attention_msg = "";
-
   fileName=""
 
   fileChanged(e: any) {
@@ -34,6 +35,7 @@ export class UploadComponentComponent {
       try {
         // @ts-ignore
         this.json = JSON.parse(fileReader.result)
+        this.show_attention = false;
       } catch (e) {
         console.error(e);
         this.attention_msg = "Please select a valid json file."
@@ -56,14 +58,22 @@ export class UploadComponentComponent {
     }
   }
 
-
-
   public uploadFile() {
-    this.uploadEvent.emit(<JSON>this.json)
-    //this.uploadService.uploadFile(<JSON>this.json);
-    // @ts-ignore
-    this.modalService?.close(this.modal);
-    this.fileEvent.emit(this.fileName);
+    this.uploadService.uploadFile(<JSON>this.json, this.endpoint)
+      .pipe(catchError(error => {
+        console.log(error.error)
+        this.fileName = ""
+        this.attention_msg = error.error
+        this.show_attention = true;
+        return EMPTY;
+      }))
+      .subscribe(
+        (_) => {
+          console.log("Upload supply chain finished")
+          this.modalService?.close(this.modal!);
+          this.fileEvent.emit(this.fileName);
+        }
+      );
   }
 
 }

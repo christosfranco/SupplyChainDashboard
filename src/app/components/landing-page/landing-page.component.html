@@ -32,13 +32,13 @@
   <modal id="import-sc" title="Import a new Supply Chain">
     <app-upload-component modal="import-sc" text="Import Supply Chain" [modalService]="modalService"
                           (fileEvent)="setSupplyChainFileName($event)"
-                          (uploadEvent)="uploadSupplyChain($event)"></app-upload-component>
+                          endpoint="supplychain"></app-upload-component>
   </modal>
 
   <modal id="import-cf" title="Import a Concern Forest">
     <app-upload-component modal="import-cf" text="Import Concern Tree" [modalService]="modalService"
                           (fileEvent)="setConcernTreeFileName($event)"
-                          (uploadEvent)="uploadConcernTree($event)"></app-upload-component>
+                          endpoint="concerntree"></app-upload-component>
   </modal>
 
 <!--  Help modal window -->
