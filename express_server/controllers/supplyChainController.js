@@ -1,8 +1,5 @@
-const Node = require('../models/node');
-const SupplyChainTree = require('../models/supplyChainTree');
 const parserController = require('./parserSupplyChainController');
 const concernController = require('./parserConcernController');
-const {of} = require("rxjs");
 
 const getNodeDetails = (req, res) => {
   const requested_node_id = req.params.nodeID;
