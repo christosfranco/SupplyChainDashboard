@@ -35,6 +35,7 @@ export class UploadComponentComponent {
       try {
         // @ts-ignore
         this.json = JSON.parse(fileReader.result)
+        this.show_attention = false;
       } catch (e) {
         console.error(e);
         this.attention_msg = "Please select a valid json file."
