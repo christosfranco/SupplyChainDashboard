@@ -32,7 +32,7 @@ export class AppliedFiltersComponent {
   getFilterDisplayName(conditionName: string): string {
     switch (conditionName) {
       case 'risk_level':
-        return 'Risk Level';
+        return 'Consequence';
       case 'likelihood':
         return 'Likelihood';
       case 'risk_factor':
