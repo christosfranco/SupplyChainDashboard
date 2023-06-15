@@ -106,7 +106,7 @@ const constructConditionFunction = {
   "risk_level" : function (risk, op, values) { return operator[op](risk["Consequence"], values) },
   "likelihood" : function (risk, op, values) { return operator[op](risk["Likelihood"], values) },
   "risk_factor": function (risk, op, values) { return operator[op](risk["Likelihood"] * risk["Consequence"], values)},
-  "mitigation" : function (risk, op, values) {
+  "mitigation" : function (risk, _ , values) {
     return values==="yes"? risk.Mitigation_Strategies.length > 0: risk.Mitigation_Strategies.length === 0},
   "concerns": function (risk, op, values) {
     return values.some(value => risk["Concern_IDs"].includes(value))}
