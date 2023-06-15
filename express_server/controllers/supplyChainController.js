@@ -57,13 +57,9 @@ const filterNodes = (req, res) => {
 
   if(!conditions){
     console.log("waiting for filter conditions...");
-    //res.status(100).send("Waiting for filter conditions...");
   }else {
     const nodes = parserController.data.Nodes;
     const filteredNodes = getFilteredNodesWithRiskLevels(conditions, nodes)
-    //console.log("Return IDs: ",return_ids);
-    //res.send(return_ids);
-    // return final structure
     console.log("Filtering returns: ", filteredNodes);
     res.status(200).send(filteredNodes);
   }
