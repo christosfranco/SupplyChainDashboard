@@ -1,3 +1,5 @@
+const { RiskFactorLevels} = require('../models/supplyChainTree.js');
+
 const parserController = require('./parserSupplyChainController');
 const concernController = require('./parserConcernController');
 
@@ -68,31 +70,19 @@ function getFilteredNodesWithRiskLevels(conditions, nodes) {
 
       const filteredRisk = node.Risks
         .filter(risk => filterRiskByConditions(risk, conditions))
-        .map(risk => calculateRiskFactor(risk.Likelihood, risk.Consequence))
+        .map(risk => risk.Risk_Level);
 
       if (filteredRisk.length >0) {
         filteredNodes.push({
           "id": node.Node_ID.toString(),
-          "high": filteredRisk.filter(riskFactor => riskFactor ==="H").length,
-          "medium": filteredRisk.filter(riskFactor => riskFactor ==="M").length,
-          "low": filteredRisk.filter(riskFactor => riskFactor ==="L").length
+          "high": filteredRisk.filter(riskFactor => riskFactor === RiskFactorLevels.HIGH).length,
+          "medium": filteredRisk.filter(riskFactor => riskFactor ===RiskFactorLevels.MEDIUM).length,
+          "low": filteredRisk.filter(riskFactor => riskFactor ===RiskFactorLevels.LOW).length
         })
       }
 
       return filteredNodes;
     }, []);
-}
-
-function calculateRiskFactor(likelihood, consequence) {
-  const mapping_matrix =  [
-    // flipped matrix to correspond to coordinate system
-    ["L", "L", "L", "L", "M"],
-    ["L", "L", "M", "M", "H"],
-    ["L", "M", "M", "M", "H"],
-    ["L", "M", "M", "H", "H"],
-    ["M", "H", "H", "H", "H"],
-  ];
-  return mapping_matrix[likelihood-1][consequence-1]
 }
 
 function filterRiskByConditions(risk, conditions) {

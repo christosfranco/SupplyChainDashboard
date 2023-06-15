@@ -1,6 +1,4 @@
 const { Node, Risk, Data, GetNodesResponse } = require('../models/supplyChainTree.js');
-//const {checkConcernIdsExist} = require('./parserConcernController');
-const {concernTreeDefault} = require('../models/concernModel');
 const {calculateRiskLevel} = require('./riskLevelCalculateController');
 
 // constants

@@ -26,8 +26,7 @@ describe('Nodes and Risk Parsing', () => {
   it('should return a valid Node object', () => {
     const node = parseNode(mockJsonNodes.Nodes[0]);
     expect(node).to.be.instanceOf(Node);
-    // Add more assertions to validate the parsed Node object
-    // ...
+
   });
 
   it('should return an array of valid Risk objects', () => {
@@ -35,16 +34,12 @@ describe('Nodes and Risk Parsing', () => {
     expect(risks).to.be.an('array');
     risks.forEach(risk => {
       expect(risk).to.be.instanceOf(Risk);
-      // Add more assertions to validate the parsed Risk objects
-      // ...
     });
   });
 
   it('should return a valid Risk object', () => {
     const risk = parseRisk(mockJsonNodes.Nodes[0].Risks);
     expect(risk).to.be.instanceOf(Risk);
-    // Add more assertions to validate the parsed Risk object
-    // ...
   });
 
   it('should return true for a valid array', () => {
@@ -52,7 +47,6 @@ describe('Nodes and Risk Parsing', () => {
     const arrayEmpty = [];
     const resultEmpty = checkTypeArray(arrayEmpty, "hi");
     const result1 = checkTypeArray(array1, "hi");
-    // Add more assertions for different scenarios
     assert.strictEqual(resultEmpty, true, 'Empty array is valid');
     assert.strictEqual(result1, true, 'String array is valid');
 
@@ -82,7 +76,5 @@ describe('Nodes and Risk Parsing', () => {
     const value = 123;
     const result = checkType(value, 1);
     expect(result).to.be.undefined;
-    // Add more assertions for different scenarios
-    // ...
   });
 });
