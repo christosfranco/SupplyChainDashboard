@@ -170,7 +170,7 @@
           "Risk_ID": 2,
           "Consequence": 1,
           "Likelihood": 3,
-          "Mitigation_Strategies": [],
+          "Mitigation_Strategies": ["Route length monitoring"],
           "Concern_IDs": [
             "5.2", "3.1"
           ]
