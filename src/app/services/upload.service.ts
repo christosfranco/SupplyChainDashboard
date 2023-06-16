@@ -8,7 +8,7 @@ import {catchError, Observable, of, throwError} from "rxjs";
 export class UploadService {
 
   private httpHeaders: HttpHeaders =  new HttpHeaders({ 'Content-Type': 'application/json' });
-  private url: string = "http://localhost:4200/api/upload"
+  private url: string = "http://localhost:3000/api/upload"
 
 
   constructor(private httpClient: HttpClient) { }

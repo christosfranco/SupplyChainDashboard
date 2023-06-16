@@ -16,7 +16,7 @@ export class FilterService {
   private httpHeaders: HttpHeaders =  new HttpHeaders({ 'Content-Type': 'application/json' });
   constructor(private httpClient: HttpClient) { }
 
-  private url = 'http://localhost:4200/api';
+  private url = 'http://localhost:3000/api';
 
   public filterNodes(json: JSON):Observable<NodeRisks[]> {
     const httpOptions:Object = { headers: this.httpHeaders, responseType: 'json'}

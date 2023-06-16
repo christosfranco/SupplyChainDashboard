@@ -8,7 +8,7 @@ import {HttpClient} from "@angular/common/http";
 })
 export class NodesService {
 
-  private nodeUrl = 'http://localhost:4200/api/nodes';
+  private nodeUrl = 'http://localhost:3000/api/nodes';
 
   constructor(private httpClient: HttpClient) { }
 
