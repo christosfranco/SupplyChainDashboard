@@ -1,11 +1,12 @@
 const { Concern, ConcernData } = require('../models/concernModel')
 const { DefaultConcernTree } = require('../models/defaultConcernModel')
 
-const inputFile = require('../../src/assets/concern_model.json')
+//const inputFile = require('../../src/assets/concern_model.json')
 
 const concernData = new ConcernData();
 let concernIDs = new Set();
-parseConcernData(DefaultConcernTree())
+let tempIDs = new Set();
+parseConcernData(DefaultConcernTree());
 const debugLog = true;
 
 const uploadConcernModel = (req, res, _next) => {
@@ -53,7 +54,7 @@ const uploadConcernModel = (req, res, _next) => {
 
 
 function parseConcernData(jsonData) {
-
+  tempIDs = new Set();
   if (!Array.isArray(jsonData.Concern_Trees)) {
     return Error('Invalid JSON: Missing or invalid "Concerns_tree" field');
   } else {
@@ -73,11 +74,19 @@ function parseConcern(jsonConcern) {
   for (const field in jsonConcern) {
     switch (field) {
       case 'Concern_ID' :
-        if (concernIDs.has(jsonConcern[field])) {
+        if (typeof jsonConcern[field] !== 'string') {
+          return Error(`Invalid type for 'Concern_ID' field: ${jsonConcern.Concern_ID}`);
+        }
+        if (tempIDs.has(jsonConcern[field])) {
           return Error(`Duplicate 'Concern_ID' found: ${jsonConcern.Concern_ID}`);
         }
+        tempIDs.add(jsonConcern[field]);
         break;
       case 'Concern_name':
+        if (typeof jsonConcern[field] !== 'string') {
+          return Error(`Invalid type for 'Concern_name' field: ${jsonConcern.Concern_ID}`);
+        }
+        break;
       case 'Children' :
         children = parseChildren(jsonConcern[field])
         if (children instanceof Error) {
@@ -90,6 +99,7 @@ function parseConcern(jsonConcern) {
 
     }
   }
+  concernIDs = tempIDs;
 
   for (const field in jsonConcern) {
     switch (field) {
@@ -114,15 +124,27 @@ function parseChildren(jsonChildren) {
     }
     return parsedChildren
   }
+  return Error(`Invalid type for 'Children' field: ${jsonChildren}`);
+
 }
 const returnConcernTree = (req, res) => {
   res.status(200).send(concernData);
 }
 
+function resetConcernIDs() {
+  concernIDs = new Set();
+  tempIDs = new Set();
+}
+
 module.exports = {
   concernData,
+  concernIDs,
+  parseConcernData,
+  parseConcern,
+  parseChildren,
   uploadConcernModel,
-  returnConcernTree
+  returnConcernTree,
+  resetConcernIDs
   //handleConcernFileGet,
 
 }
