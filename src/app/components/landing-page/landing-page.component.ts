@@ -1,9 +1,7 @@
 import {Component, ViewChild} from '@angular/core';
 import {ModalService} from "../../services/modal.service";
 import {UploadComponentComponent} from "../upload-component/upload-component.component";
-import {UploadService} from "../../services/upload.service";
 import {FilesNamesService} from "../../services/files-names.service";
-import {catchError, EMPTY} from "rxjs";
 
 @Component({
   selector: 'app-landing-page',
@@ -18,7 +16,6 @@ export class LandingPageComponent {
   concernTreeFileName = "";
 
   constructor(public modalService: ModalService,
-              private uploadService: UploadService,
               public fileService: FilesNamesService
   ) {
   }
