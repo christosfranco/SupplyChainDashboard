@@ -21,17 +21,17 @@ const GetNodesResponse = (rawNodes) => {
 }
 
 const RiskFactorLevels =Object.freeze({
-  VALUE1: 1,
-  VALUE3: 3,
-  VALUE5: 5
+  LOW: 1,
+  MEDIUM: 3,
+  HIGH: 5
 });
 
 function Risk() {
   this.Name = "";
   this.Risk_ID = 0;
-  this.Consequence = RiskFactorLevels.VALUE1;
-  this.Likelihood = RiskFactorLevels.VALUE1;
-  this.Risk_Level = RiskFactorLevels.VALUE1;
+  this.Consequence = RiskFactorLevels.LOW;
+  this.Likelihood = RiskFactorLevels.LOW;
+  this.Risk_Level = RiskFactorLevels.LOW;
   this.Mitigation_Strategies = [];
   this.Concern_IDs = [];
 }

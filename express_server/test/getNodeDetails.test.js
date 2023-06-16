@@ -151,4 +151,39 @@ describe('Test filtering', () => {
     };
     handler.getNodeDetails(req, res);
   });
+  it('Test node with ID=6', (done) => {
+    const req = {params: {nodeID:'6'}};
+    const res = {
+      status: function (statusCode) {
+        expect(statusCode).to.equal(200);
+        return this;
+      },
+      send: function (responseBody){
+        expect(responseBody).to.deep.equal([
+          {'id':6, 'name': 'Security Guards', 'category': 'Service', 'risks': [
+              {
+                'id': 5,
+                'name': 'Breach of phyiscal access',
+                'concern': ["Manipulation of phys. env."],
+                'consequenceLevel': 5,
+                'likelihoodLevel':1,
+                'riskFactor': 5,
+                'mitigationStrategy': []
+              },
+              {
+                'id': 5,
+                'name': 'Number of guards cannot patrol whole area',
+                'concern': ["Manipulation of phys. env."],
+                'consequenceLevel': 5,
+                'likelihoodLevel':5,
+                'riskFactor': 25,
+                'mitigationStrategy': ["Security Cameras"]
+              },
+            ]}
+        ]);
+        done();
+      }
+    };
+    handler.getNodeDetails(req, res);
+  });
 });

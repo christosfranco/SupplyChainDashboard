@@ -12,8 +12,7 @@ const { createResponse } = require('node-mocks-http');
 describe('Test filtering', () => {
     beforeAll((done) => {
       console.log('Upload supply chain to server in order to test filtering.');
-      //const req = {body:initialJson};
-      //const res = {};
+
       const req = {
         body: initialJson,
         headers: {
@@ -261,10 +260,10 @@ describe('Test filtering', () => {
     };
     handler.filterNodes(req, res);
   });
-  it('Example with concerns 01', (done) =>{
+  it('Filter for single concern', (done) =>{
     const front_input = {
       conditions:[
-        {conditionName:"concerns",operator:"IN",value:["2.1","2.2","3"]}
+        {conditionName:"concerns",operator:"IN",value:["3"]}
       ]
     };
     const req = {body:front_input};
@@ -275,7 +274,7 @@ describe('Test filtering', () => {
       },
       send: function (responseBody){
         expect(responseBody).to.deep.equal([
-         {
+          {
             "id":'5',
             "high":0,
             "medium":1,
@@ -299,36 +298,10 @@ describe('Test filtering', () => {
     };
     handler.filterNodes(req, res);
   });
-  it('Example with concerns 02', (done) =>{
+  it('Filter for all concerns under starting with 1', (done) =>{
     const front_input = {
       conditions:[
-        {conditionName:"concerns",operator:"IN",value:["1.1", "2.1", "3.1", "4", "5.1"]}
-      ]
-    };
-    const req = {body:front_input};
-    const res = {
-      status: function (statusCode) {
-        expect(statusCode).to.equal(200);
-        return this;
-      },
-      send: function (responseBody){
-        expect(responseBody).to.deep.equal([
-          {
-            "id":'5',
-            "high":0,
-            "medium":1,
-            "low":0
-          }
-        ]);
-        done();
-      }
-    };
-    handler.filterNodes(req, res);
-  });
-  it('Example with concerns 03', (done) =>{
-    const front_input = {
-      conditions:[
-        {conditionName:"concerns",operator:"IN",value:["1", "4", "5.1"]}
+        {conditionName:"concerns",operator:"IN",value:["1", "1.1", "1.2",]}
       ]
     };
     const req = {body:front_input};
@@ -346,34 +319,8 @@ describe('Test filtering', () => {
             "low":0
           },
           {
-            "id":'8',
-            "high":0,
-            "medium":0,
-            "low":1
-          }
-        ]);
-        done();
-      }
-    };
-    handler.filterNodes(req, res);
-  });
-  it('Example with concerns 03', (done) =>{
-    const front_input = {
-      conditions:[
-        {conditionName:"concerns",operator:"IN",value:["1", "4", "5.1"]}
-      ]
-    };
-    const req = {body:front_input};
-    const res = {
-      status: function (statusCode) {
-        expect(statusCode).to.equal(200);
-        return this;
-      },
-      send: function (responseBody){
-        expect(responseBody).to.deep.equal([
-          {
-            "id":'5',
-            "high":0,
+            "id":'6',
+            "high":1,
             "medium":1,
             "low":0
           },
@@ -389,12 +336,10 @@ describe('Test filtering', () => {
     };
     handler.filterNodes(req, res);
   });
-  it('Mixed example with concerns', (done) =>{
+  it('Combine multiple concerns from different trees', (done) =>{
     const front_input = {
       conditions:[
-        {conditionName: 'risk_level' ,operator: 'GT', value: '4'},
-        {conditionName: 'risk_level' ,operator: 'LT', value: '5'},
-        {conditionName:"concerns",operator:"IN",value:["1", "4", "5.1"]}
+        {conditionName:"concerns",operator:"IN",value:["1", "5.1"]}
       ]
     };
     const req = {body:front_input};
@@ -406,9 +351,108 @@ describe('Test filtering', () => {
       send: function (responseBody){
         expect(responseBody).to.deep.equal([
           {
+            "id":'2',
+            "high":0,
+            "medium":1,
+            "low":0
+          },
+          {
+            "id":'3',
+            "high":0,
+            "medium":1,
+            "low":0
+          },
+          {
             "id":'5',
             "high":0,
             "medium":1,
+            "low":0
+          },
+          {
+            "id":'1',
+            "high":1,
+            "medium":0,
+            "low":0
+          },
+          {
+            "id":'8',
+            "high":0,
+            "medium":0,
+            "low":1
+          }
+        ]);
+        done();
+      }
+    };
+    handler.filterNodes(req, res);
+  });
+  it('Filter risk level number only include risk that fulfill conditions', (done) =>{
+    // Node 6 has two risk (medium, high) with concern 1.2, the one with high risk leve. has a mitigation strategy
+    const front_input = {
+      conditions:[
+        {conditionName: "concerns",   operator: "IN", value:["1.2"]},
+        {conditionName: "mitigation", operator: "EQ", value: "yes"}
+      ]
+    };
+    const req = {body:front_input};
+    const res = {
+      status: function (statusCode) {
+        expect(statusCode).to.equal(200);
+        return this;
+      },
+      send: function (responseBody){
+        expect(responseBody).to.deep.equal([
+          {
+            "id":'6',
+            "high":1,
+            "medium":0,
+            "low":0
+          }
+        ]);
+        done();
+      }
+    };
+    handler.filterNodes(req, res);
+  });
+
+  it('Mixed example with concerns and risk level', (done) =>{
+    const front_input = {
+      conditions:[
+        {conditionName: 'risk_level', operator: 'GT', value: '3'},
+        {conditionName: 'risk_level', operator: 'LT', value: '5'},
+        {conditionName: 'concerns',   operator: 'IN', value: ["1", "5.1"]}
+      ]
+    };
+    const req = {body:front_input};
+    const res = {
+      status: function (statusCode) {
+        expect(statusCode).to.equal(200);
+        return this;
+      },
+      send: function (responseBody){
+        expect(responseBody).to.deep.equal([
+          {
+            "id":'2',
+            "high":0,
+            "medium":1,
+            "low":0
+          },
+          {
+            "id":'3',
+            "high":0,
+            "medium":1,
+            "low":0
+          },
+          {
+            "id":'5',
+            "high":0,
+            "medium":1,
+            "low":0
+          },
+          {
+            "id":'1',
+            "high":1,
+            "medium":0,
             "low":0
           }
         ]);

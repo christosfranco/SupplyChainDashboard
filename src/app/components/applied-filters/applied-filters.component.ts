@@ -32,7 +32,7 @@ export class AppliedFiltersComponent {
   getFilterDisplayName(conditionName: string): string {
     switch (conditionName) {
       case 'risk_level':
-        return 'Risk Level';
+        return 'Consequence';
       case 'likelihood':
         return 'Likelihood';
       case 'risk_factor':
@@ -56,7 +56,7 @@ export class AppliedFiltersComponent {
   }
 
   getConcernNames(concernIds: string[]|string): string {
-    var appliedConcerns = "";
+    let appliedConcerns = "";
     for (const concernId of concernIds) {
       const concern = this.getConcernById(concernId, this.concernForest!.roots);
       if (concern) {

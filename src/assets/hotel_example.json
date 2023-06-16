@@ -76,7 +76,17 @@
           "Likelihood": 1,
           "Mitigation_Strategies": [],
           "Concern_IDs": [
-            "3.1", "4", "5"
+            "1.2"
+          ]
+        },
+        {
+          "Name": "Number of guards cannot patrol whole area",
+          "Risk_ID": 5,
+          "Consequence": 5,
+          "Likelihood": 5,
+          "Mitigation_Strategies": ["Security Cameras"],
+          "Concern_IDs": [
+            "1.2"
           ]
         }
       ]
